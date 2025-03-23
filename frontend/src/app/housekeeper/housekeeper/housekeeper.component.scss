@@ -1,0 +1,43 @@
+.container-fluid {
+  height: 100vh;
+}
+
+mat-sidenav {
+  width: 250px;
+  background: #223344;
+  color: white;
+}
+
+mat-toolbar {
+  background: #009ebc;
+  color: white;
+  height: 4rem;
+}
+
+.mat-list-item {
+  color: white;
+}
+
+.mat-list-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
+
+.sidenav-title {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  font-size: 20px;
+}
+
+.toggle-button {
+  margin-right: 16px;
+}
+
+.mat-mini-fab.mat-accent {
+  background-color: #223344;
+  color:white;
+}
+
+

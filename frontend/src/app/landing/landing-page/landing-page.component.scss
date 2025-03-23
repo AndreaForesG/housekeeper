@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+html, body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.title {
+  font-family: 'Poppins', sans-serif;
+
+}
+
+.logoMenu {
+  width:6%;
+  }
+
+.titleHero {
+  color: #223344;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.title {
+  color: #223344;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.titleElegirnos {
+  color: #223344;
+  font-weight: bold;
+  font-size: 2rem;
+  text-decoration: underline;
+  margin-top:3rem;
+}
+
+.footer {
+  color: #e1dddd;
+  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%) fixed;
+}
+
+.imgHero {
+  clip-path: polygon(1% 0%, 0% 81%, 17% 99%, 100% 99%, 99% 0%);
+}
+
+.container-imgHero {
+  position: relative;
+  overflow: hidden;
+}
+
+.housekeeer {
+  color: #009ebc;
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  position: relative;
+  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%) fixed;
+}
+
+.sectionResponsive {
+  background-color: #c4c4c436;
+  padding: 2rem;
+}
+
+.rounded-circle {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+
+
+.sectionHero {
+  background: white;
+}
+
+
+.hero .overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Oscurece la imagen */
+}
+
+
+.titleHousekeeper {
+  color: #009ebc;
+  font-size: 7rem;
+  line-height: 8rem;
+}
+
+.slogan {
+  color: darkgrey;
+  font-size: 4rem;
+}
+
+.bg-navbar {
+  background-image: linear-gradient(#ffffffd9, #ffffffd9);
+}
+
+.bounce-effect {
+  display: inline-block;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    animation: bounce 0.6s infinite;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+
+.stat {
+  margin-bottom: 20px;
+}
+
+.bar {
+  width: 100%;
+  background: #e0e0e0;
+  overflow: hidden;
+  height: 25px;
+}
+
+.fill {
+  height: 100%;
+  text-align: right;
+  line-height: 25px;
+  padding-right: 10px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(90deg, #4ca0af, #2e537d);
+}
+
+.zoom-effect {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 10px;
+
+  img {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &:hover {
+    img {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.icons {
+  font-size: 3rem;
+}
+
+.section {
+  padding: 6rem;
+}
+
+.navbar-brand {
+  &:hover {
+    color: #009ebc;
+    transition: color 0.3s ease;
+  }
+
+}
+
+.testimonials-section {
+  background-color: #f9f9f9;
+  padding: 60px 0;
+
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #333;
+  }
+
+  .testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    justify-items: center;
+  }
+
+  .testimonial-card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgb(121, 158, 186);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 350px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+
+    .testimonial-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 2px solid #f1f1f1;
+      object-position: top center;
+    }
+
+    .testimonial-content {
+      padding: 20px;
+      text-align: center;
+
+      .testimonial-text {
+        font-style: italic;
+        color: #777;
+        margin-bottom: 15px;
+      }
+
+      .testimonial-name {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .testimonial-role {
+        font-size: 1rem;
+        color: #888;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+
+  .logoMenu {
+    width:20%;
+  }
+}
+
+
+
+@media (max-width: 768px) {
+  .titleHousekeeper {
+    font-size: 2rem;
+  }
+  .slogan {
+    font-size: 2rem;
+  }
+  .hero {
+    background-attachment: scroll;
+    min-height: 30vh;
+  }
+  .titleHero {
+    font-size: 1.5rem;
+  }
+  .section {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 1180px) {
+  .titleHousekeeper {
+    font-size: 3rem;
+  }
+  .slogan {
+    font-size: 2rem;
+  }
+  .hero {
+    background-attachment: scroll;
+    min-height: 30vh;
+  }
+  .titleHero {
+    font-size: 2rem;
+  }
+
+  .logoMenu {
+    width:12%;
+  }
+
+
+}

@@ -1,0 +1,42 @@
+<mat-sidenav-container class="container-fluid">
+  <mat-sidenav #sidenav mode="side" [opened]="isExpanded">
+    <div class="sidenav-title">
+      <span *ngIf="isExpanded">Menú</span>
+    </div>
+
+    <mat-nav-list>
+      <a mat-list-item href="#">
+        <mat-icon>home</mat-icon>
+        <span *ngIf="isExpanded">Inicio</span>
+      </a>
+      <a mat-list-item (click)="createEmployees()">
+        <mat-icon>person</mat-icon>
+        <span *ngIf="isExpanded"  >Crear Empleados</span>
+      </a>
+      <a mat-list-item href="#">
+        <mat-icon>settings</mat-icon>
+        <span *ngIf="isExpanded">Crear Habitaciones</span>
+      </a>
+      <a mat-list-item href="#">
+        <mat-icon>logout</mat-icon>
+        <span *ngIf="isExpanded">Salir</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <mat-toolbar class="d-flex justify-content-between">
+      <button
+        mat-mini-fab
+        (click)="toggleMenu()"
+        class="mat-accent toggle-button d-flex align-items-center justify-content-center">
+        <mat-icon class="fs-4">menu</mat-icon>
+      </button>
+      <div class="ms-auto">
+        <span>Establecimiento: Hotel Deloix </span>
+        <span class="ms-3">Bienvenid@, Margarita</span>
+      </div>
+    </mat-toolbar>
+    <app-housekeeper-content></app-housekeeper-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

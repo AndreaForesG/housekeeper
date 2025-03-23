@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="card shadow-lg p-4">
+        <div class="card-header text-center">
+          <h3 class="card-title title">Crear Cuenta</h3>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="mb-3">
+              <label for="firstName" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="firstName" formControlName="firstName" required />
+            </div>
+            <div class="mb-3">
+              <label for="lastName" class="form-label">Apellidos</label>
+              <input type="text" class="form-control" id="lastName" formControlName="lastName" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input type="email" class="form-control" id="email" formControlName="email" required />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" formControlName="password" required />
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+              <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" required />
+            </div>
+            <button type="submit" class="btn btn-register text-white w-100">Registrarse</button>
+          </form>
+        </div>
+        <div class="card-footer text-center">
+          <a href="/login" class="text-decoration-none title">¿Ya tienes cuenta? Inicia sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
