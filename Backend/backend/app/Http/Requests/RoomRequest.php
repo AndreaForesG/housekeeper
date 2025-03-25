@@ -22,7 +22,7 @@ class RoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'number' => 'required',
         ];
 
     }
@@ -30,7 +30,7 @@ class RoomRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'El título es obligatorio.',
+            'number.required' => 'El título es obligatorio.',
         ];
     }
 }

@@ -34,3 +34,24 @@ html {
 .expansion-panel {
   background: #e1dddd;
 }
+
+.spinner-container {
+  position: absolute;
+  width: 100%;
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: #2e537d;
+  animation: fadeIn 1.5s infinite alternate;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+

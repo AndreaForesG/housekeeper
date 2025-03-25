@@ -162,3 +162,9 @@ Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'getUse
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
+
+
+Route::post('/rooms/create', [RoomController::class, 'store']);
+Route::get('/rooms/hotel/{hotel_id}', [RoomController::class, 'getRoomsByHotel']);
+Route::post('/rooms/import', [RoomController::class, 'importRooms']);
+Route::apiResource('rooms', RoomController::class);

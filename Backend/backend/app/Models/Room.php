@@ -9,7 +9,7 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['hotel_id', 'number'];
+    protected $fillable = ['hotel_id', 'number', 'floor'];
 
     public function hotel(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

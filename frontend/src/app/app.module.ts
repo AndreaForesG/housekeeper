@@ -25,6 +25,9 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { CreateRoomsComponent } from './housekeeper/create-rooms/create-rooms.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 @NgModule({
@@ -35,7 +38,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     RegisterComponent,
     HousekeeperComponent,
     HousekeeperContentComponent,
-    CreateEmployeesComponent
+    CreateEmployeesComponent,
+    CreateRoomsComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +60,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatExpansionModule,
     MatTableModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

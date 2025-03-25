@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RoomRequest;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -22,17 +23,18 @@ class RoomController extends Controller
 
     public function store(RoomRequest $request)
     {
-        $room = Room::create($request->validated());
+        $validator = Validator::make($request->all(), [
+            'number' => 'required|string|max:20',
+            'floor' => 'required|integer',
+            'hotel_id' => 'required|exists:hotels,id',
+        ]);
 
-        if ($request->has('tasks')) {
-            $room->tasks()->sync($request->tasks);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        if ($request->has('users')) {
-            $room->users()->sync($request->users);
-        }
-
-        return response()->json($room, 201);
+        $room = Room::create($request->all());
+        return response()->json(['message' => 'Habitación creada con éxito', 'room' => $room], 201);
     }
 
     public function update(RoomRequest $request, $id)
@@ -78,6 +80,39 @@ class RoomController extends Controller
         $room = Room::findOrFail($id);
         $statuses = $room->statuses;
         return response()->json($statuses);
+    }
+
+    public function importRooms(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt'
+        ]);
+
+        $file = $request->file('file');
+        $csvData = array_map('str_getcsv', file($file));
+
+        foreach ($csvData as $index => $row) {
+            if ($index === 0) continue;
+
+            Room::create([
+                'number' => $row[0],
+                'floor' => $row[1],
+                'hotel_id' => $request->hotel_id
+            ]);
+        }
+
+        return response()->json(['message' => 'Habitaciones importadas correctamente']);
+    }
+
+    public function getRoomsByHotel($hotel_id)
+    {
+        $rooms = Room::where('hotel_id', $hotel_id)->get();
+
+        if ($rooms->isEmpty()) {
+            return response()->json(['message' => 'No hay habitaciones para este hotel'], 404);
+        }
+
+        return response()->json($rooms);
     }
 
 }

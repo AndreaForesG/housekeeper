@@ -6,6 +6,7 @@ import {CreateEmployeesComponent} from "../create-employees/create-employees.com
 import {MatPaginator} from "@angular/material/paginator";
 import {HousekeeperContentComponent} from "../housekeeper-content/housekeeper-content.component";
 import {AuthService} from "../../services/auth.service";
+import {CreateRoomsComponent} from "../create-rooms/create-rooms.component";
 
 @Component({
   selector: 'app-housekeeper',
@@ -65,5 +66,22 @@ getLoggedInUser() {
   logout() {
     this.authService.logout();
 
+  }
+
+  createRooms() {
+    const dialogRef = this.dialog.open(CreateRoomsComponent, {
+      width: 'auto',
+      disableClose: true,
+      panelClass: 'custom-dialog-container',
+      data: {
+        hotel_id : this.hotelLogued
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.housekeeperContent.loadEmployees();
+      }
+    });
   }
 }

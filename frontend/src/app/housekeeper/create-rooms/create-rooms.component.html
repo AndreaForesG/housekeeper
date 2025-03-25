@@ -1,0 +1,43 @@
+<div class="card shadow-lg">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h1 class="mb-0 flex-grow-1 text-center">Crear Habitaciones</h1>
+    <button mat-icon-button class="close-button" (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="roomForm" (ngSubmit)="addRoom()">
+      <div class="mb-3">
+        <label class="form-label">Número de Habitación:</label>
+        <input formControlName="number" type="text" class="form-control"
+               [ngClass]="{'is-invalid': roomForm.get('number')?.invalid && roomForm.get('number')?.touched}" required>
+        <div *ngIf="roomForm.get('number')?.invalid && roomForm.get('number')?.touched" class="invalid-feedback">
+          <span *ngIf="roomForm.get('number')?.hasError('required')">El número de habitación es obligatorio.</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Planta:</label>
+        <input formControlName="floor" type="number" class="form-control"
+               [ngClass]="{'is-invalid': roomForm.get('floor')?.invalid && roomForm.get('floor')?.touched}" required>
+        <div *ngIf="roomForm.get('floor')?.invalid && roomForm.get('floor')?.touched" class="invalid-feedback">
+          <span *ngIf="roomForm.get('floor')?.hasError('required')">La planta es obligatoria.</span>
+          <span *ngIf="roomForm.get('floor')?.hasError('min')">Debe ser un número positivo.</span>
+        </div>
+      </div>
+      <button type="submit" class="btn addRoom text-white w-100" [disabled]="roomForm.invalid">
+        <i class="fas fa-plus"></i> Añadir Habitación
+      </button>
+
+    </form>
+  </div>
+
+</div>
+
+<hr>
+
+<div class="d-flex gap-2 card shadow-lg">
+  <input type="file" class="form-control" (change)="onFileSelect($event)">
+  <button (click)="uploadFile()" class="btn addRoom text-white" [disabled]="!selectedFile">
+    <i class="fas fa-upload "></i> Subir CSV
+  </button>
+</div>

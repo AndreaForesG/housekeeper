@@ -4,6 +4,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {NotificationService} from "../../services/notification.service";
 import {AuthService} from "../../services/auth.service";
+import {RoomsService} from "../../services/rooms.service";
 
 @Component({
   selector: 'app-housekeeper-content',
@@ -12,23 +13,30 @@ import {AuthService} from "../../services/auth.service";
 })
 export class HousekeeperContentComponent implements OnInit, AfterViewInit {
   employees: any = [];
-  displayedColumns: string[] = ['name', 'email', 'role', 'actions'];
-  dataSource = new MatTableDataSource<any>([]);
+  displayedColumnsEmployees: string[] = ['name', 'email', 'role', 'actions'];
+  displayedColumnsRooms: string[] = ['floor', 'number', 'actions'];
+  roomDataSource = new MatTableDataSource<any>([]);
+  dataSourceEmployees = new MatTableDataSource<any>([]);
   hotelLogued: any;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  rooms: any;
+  isLoading: boolean = true;
+  @ViewChild('paginatorRooms') paginatorRooms!: MatPaginator;
+  @ViewChild('paginatorAnother') paginatorEmployees!: MatPaginator;
 
 
   constructor(private userService: UsersService,
               private notificationService: NotificationService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private roomsService: RoomsService,
+              ) { }
 
   ngOnInit(): void {
     this.getLoggedInUser();
   }
 
   ngAfterViewInit() {
-    if (this.dataSource.data.length > 0) {
-      this.dataSource.paginator = this.paginator;
+    if (this.dataSourceEmployees.data.length > 0) {
+      this.dataSourceEmployees.paginator = this.paginatorEmployees;
     }
   }
 
@@ -36,18 +44,16 @@ export class HousekeeperContentComponent implements OnInit, AfterViewInit {
     this.authService.getLoggedInUser().subscribe(data => {
       this.hotelLogued = data.hotel;
       this.loadEmployees();
+      this.loadRooms();
+      this.isLoading = false;
     })
   }
-
 
   loadEmployees() {
     this.userService.getEmployeesByHotel(this.hotelLogued).subscribe(employees => {
       this.employees = employees.filter((employee: { role_id: any }) => employee.role_id != null);
-      this.dataSource.data = this.employees;
-      setTimeout(() => {
-        this.dataSource.paginator = this.paginator;
-      });
-      console.log(this.employees);
+      this.dataSourceEmployees.data = this.employees;
+      this.dataSourceEmployees.paginator = this.paginatorEmployees;
       }
     )
   }
@@ -55,13 +61,35 @@ export class HousekeeperContentComponent implements OnInit, AfterViewInit {
   deleteEmployee(employeeId: number) {
     this.userService.deleteEmployee(employeeId).subscribe(
       () => {
-        this.notificationService.showSuccess('Empleado eliminado con éxito!');
+        this.notificationService.showSuccess('Habitación eliminada con éxito!');
         this.loadEmployees();
       },
         (error: any) => {
-        this.notificationService.showError('Error al eliminar el empleado');
+        this.notificationService.showError('Error al eliminar la habitación');
       }
     );
   }
 
+  loadRooms() {
+    if (this.hotelLogued) {
+      this.roomsService.getRoomsByHotel(this.hotelLogued).subscribe(rooms => {
+        this.rooms = rooms;
+        this.roomDataSource.data = rooms;
+        this.roomDataSource.paginator = this.paginatorRooms;
+      });
+    }
+  }
+
+
+  deleteRoom(roomId: number) {
+    this.roomsService.deleteRoom(roomId).subscribe(
+      () => {
+        this.notificationService.showSuccess('Empleado eliminado con éxito!');
+        this.loadRooms();
+      },
+      (error: any) => {
+        this.notificationService.showError('Error al eliminar el empleado');
+      }
+    );
+  }
 }
