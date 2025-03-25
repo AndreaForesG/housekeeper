@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
@@ -145,3 +146,19 @@ Route::delete('statuses/{status}', [StatusController::class, 'destroy']);
 
 // Relaciones de estados
 Route::get('statuses/{status}/rooms', [StatusController::class, 'getRooms']); // Obtener habitaciones asociadas a un estado
+
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->get('/users', function (Request $request) {
+    return $request->user();
+});
+
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
+
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'getUsersByHotel']);
+
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
+
+Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);

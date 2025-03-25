@@ -21,6 +21,10 @@ import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSelectModule} from "@angular/material/select";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -48,6 +52,10 @@ import {MatSelectModule} from "@angular/material/select";
     ReactiveFormsModule,
     HttpClientModule,
     MatSelectModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

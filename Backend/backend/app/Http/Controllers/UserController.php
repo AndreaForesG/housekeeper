@@ -6,25 +6,63 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-
-    public function index()
+    public function getAuthenticatedUser()
     {
-        $users = User::all();
+        $user = Auth::user();
+
+        $user->load('hotel');
+
+        return response()->json([
+            'user' => $user,
+            'hotel' => $user->hotel_id
+        ]);
+    }
+
+    public function getUsersByHotel(Request $request)
+    {
+        $hotelId = $request->query('hotel_id');
+
+
+        if ($hotelId) {
+            $users = User::where('hotel_id', $hotelId)->get();
+            return response()->json($users);
+        }
+
+        return response()->json(['message' => 'Hotel ID no proporcionado'], 400);
+    }
+
+
+
+    public function index(Request $request)
+    {
+        $hotelId = $request->query('hotel_id');
+        $users = User::where('hotel_id', $hotelId)->get();
+
         return response()->json($users);
     }
 
     public function show($id)
     {
-        $user = User::with(['hotel', 'roles', 'rooms'])->findOrFail($id);
+        $user = User::with(['hotel'])->findOrFail($id);
         return response()->json($user);
     }
 
     public function store(UserRequest $request)
     {
-        $user = User::create();
+
+        $validatedData = $request->validated();
+
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'role_id' => $validatedData['role_id'],
+            'hotel_id' => $validatedData['hotel_id'],
+        ]);
 
         return response()->json($user, 201);
     }

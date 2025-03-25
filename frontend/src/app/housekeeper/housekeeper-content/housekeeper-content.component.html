@@ -1,1 +1,44 @@
-<p>housekeeper-content works!</p>
+<html>
+<body>
+<mat-expansion-panel *ngIf="hotelLogued" [expanded]="true">
+  <mat-expansion-panel-header class="expansion-panel">
+    <mat-panel-title>
+      Empleados
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <table mat-table [dataSource]="dataSource" class="full-width-table">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let employee"> {{employee.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Correo </th>
+      <td mat-cell *matCellDef="let employee"> {{employee.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> Rol </th>
+      <td mat-cell *matCellDef="let employee"> {{employee.role_id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let employee">
+        <button mat-mini-fab color="primary" class="me-2">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" (click)="deleteEmployee(employee.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+</mat-expansion-panel>
+
+</body>
+</html>

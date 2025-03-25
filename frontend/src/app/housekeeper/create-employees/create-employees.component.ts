@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {RolesService} from "../../services/roles.service";
 import {UsersService} from "../../services/users.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {NotificationService} from "../../services/notification.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-create-employees',
@@ -14,14 +18,20 @@ export class CreateEmployeesComponent implements OnInit {
 
   employeeForm!: FormGroup;
   roles: any;
-  hotel_id: number = 1;
+  hotelLogued: any;
 
   constructor(private titleService: Title,
               private route: ActivatedRoute,
               private fb: FormBuilder,
               private roleService: RolesService,
-              private employeeService: UsersService) {
+              private employeeService: UsersService,
+              private notificationService: NotificationService,
+              private authService: AuthService,
+              public dialogRef: MatDialogRef<CreateEmployeesComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+
   }
+
 
   ngOnInit(): void {
     this.route.data.subscribe((data: any) => {
@@ -29,6 +39,7 @@ export class CreateEmployeesComponent implements OnInit {
     });
     this.initForm();
     this.getRoles();
+    this.getLoggedInUser();
   }
 
   initForm() {
@@ -36,29 +47,36 @@ export class CreateEmployeesComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
-      role: ['', Validators.required],
-      hotel_id: ['', Validators.required],
-
+      role_id: ['', Validators.required],
     });
   }
 
+  onClose(): void {
+    this.dialogRef.close();
+  }
+
+  getLoggedInUser() {
+    this.authService.getLoggedInUser().subscribe(data => {
+      this.hotelLogued = data.hotel;
+    })
+  }
 
   onSubmit() {
     if (this.employeeForm.valid) {
       const employeeData = {
         ...this.employeeForm.value,
+        hotel_id: this.hotelLogued
       };
-      console.log(this.employeeForm.value)
       this.employeeService.createEmployees(employeeData).subscribe(
-          (response: any) => {
-          console.log('Empleado creado:', response);
+        (response: any) => {
+          this.notificationService.showSuccess('Empleado creado con éxito!');
+          this.dialogRef.close(true);
         },
-        error => {
-          console.error('Error al crear el empleado', error);
-        }
       );
     }
   }
+
+
 
   getRoles() {
     this.roleService.getAllRoles().subscribe(

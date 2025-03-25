@@ -6,19 +6,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     protected $table = 'users';
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = ['hotel_id', 'name', 'email', 'password', 'role_id'];
+    protected $fillable = ['hotel_id', 'name', 'email', 'password', 'role_id', 'user_type'];
 
     public function hotel(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

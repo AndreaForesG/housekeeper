@@ -25,7 +25,8 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|',
             'password' => 'required|string|min:8',
-            'role' => 'required',
+            'role_id' => 'required',
+            'hotel_id' => 'required'
         ];
 
     }
@@ -36,7 +37,8 @@ class UserRequest extends FormRequest
             'name.required' => 'El nombre es obligatorio',
             'email.required' => 'El correo electrónico es obligatorio',
             'password.required' => 'La contraseña es obligatoria',
-            'role.required' => 'El rol es obligatorio',
+            'role_id.required' => 'El rol es obligatorio',
+            'hotel_id.required' => 'El hotel es obligatorio'
         ];
     }
 }

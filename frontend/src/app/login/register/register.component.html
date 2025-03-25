@@ -6,14 +6,10 @@
           <h3 class="card-title title">Crear Cuenta</h3>
         </div>
         <div class="card-body">
-          <form>
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="mb-3">
-              <label for="firstName" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="firstName" formControlName="firstName" required />
-            </div>
-            <div class="mb-3">
-              <label for="lastName" class="form-label">Apellidos</label>
-              <input type="text" class="form-control" id="lastName" formControlName="lastName" required />
+              <label for="name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name" formControlName="name" required />
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Correo Electrónico</label>

@@ -33,8 +33,11 @@
         <mat-icon class="fs-4">menu</mat-icon>
       </button>
       <div class="ms-auto">
-        <span>Establecimiento: Hotel Deloix </span>
-        <span class="ms-3">Bienvenid@, Margarita</span>
+        <span>Establecimiento: {{hotelName}} </span>
+        <span class="ms-3">Panel Administrador</span>
+        <button mat-mini-fab color="accent" class="ms-3" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+        </button>
       </div>
     </mat-toolbar>
     <app-housekeeper-content></app-housekeeper-content>

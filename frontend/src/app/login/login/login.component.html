@@ -6,7 +6,7 @@
           <h3 class="card-title title">Bienvenid@ a Housekeeper</h3>
         </div>
         <div class="card-body">
-          <form>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="mb-3">
               <label for="email" class="form-label">Correo Electrónico</label>
               <input type="email" class="form-control" id="email" formControlName="email" required />
@@ -15,7 +15,7 @@
               <label for="password" class="form-label">Contraseña</label>
               <input type="password" class="form-control" id="password" formControlName="password" required />
             </div>
-            <button type="submit" class="btn btn-iniciarSesion w-100 text-white" routerlink="/app">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-iniciarSesion w-100 text-white">Iniciar Sesión</button>
           </form>
         </div>
         <div class="card-footer text-center">
