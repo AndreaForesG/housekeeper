@@ -44,6 +44,7 @@ export class CreateRoomsComponent implements OnInit {
     this.roomsService.createRoom(this.roomForm.value).subscribe((response: any) => {
       this.notificationService.showSuccess('Habitación añadida con éxito');
       this.loadRooms();
+      this.dialogRef.close(true);
     });
   }
 
@@ -59,8 +60,9 @@ export class CreateRoomsComponent implements OnInit {
 
     this.roomsService.importRooms(this.selectedFile, this.hotelId).subscribe(response => {
       console.log('Archivo CSV subido:', response);
-      this.notificationService.showSuccess('Habitaciones creadas correctamente')
       this.loadRooms();
+      this.notificationService.showSuccess('Habitaciones creadas correctamente');
+      this.dialogRef.close(true);
     });
   }
 

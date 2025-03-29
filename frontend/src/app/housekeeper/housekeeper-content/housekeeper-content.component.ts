@@ -1,10 +1,11 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {UsersService} from "../../services/users.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {NotificationService} from "../../services/notification.service";
 import {AuthService} from "../../services/auth.service";
 import {RoomsService} from "../../services/rooms.service";
+import {EmployeesTabComponent} from "../employees-tab/employees-tab.component";
 
 @Component({
   selector: 'app-housekeeper-content',
@@ -22,7 +23,7 @@ export class HousekeeperContentComponent implements OnInit, AfterViewInit {
   isLoading: boolean = true;
   @ViewChild('paginatorRooms') paginatorRooms!: MatPaginator;
   @ViewChild('paginatorAnother') paginatorEmployees!: MatPaginator;
-
+  @ViewChild(EmployeesTabComponent) employeesTab!: EmployeesTabComponent;
 
   constructor(private userService: UsersService,
               private notificationService: NotificationService,

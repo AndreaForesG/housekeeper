@@ -28,6 +28,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import { CreateRoomsComponent } from './housekeeper/create-rooms/create-rooms.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
+import { EmployeesTabComponent } from './housekeeper/employees-tab/employees-tab.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     HousekeeperComponent,
     HousekeeperContentComponent,
     CreateEmployeesComponent,
-    CreateRoomsComponent
+    CreateRoomsComponent,
+    EmployeesTabComponent
   ],
   imports: [
     BrowserModule,
