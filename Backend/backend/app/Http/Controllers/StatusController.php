@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StatusRequest;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class StatusController extends Controller
 {
@@ -20,16 +22,20 @@ class StatusController extends Controller
         return response()->json($status);
     }
 
-    public function store(StatusRequest $request)
-    {
-        $status = Status::create($request->validated());
+   public function store(request $request)
+       {
+           $validator = Validator::make($request->all(), [
+               'name' => 'required|string|max:20',
+               'hotel_id' => 'required|exists:hotels,id',
+           ]);
 
-        if ($request->has('rooms')) {
-            $status->rooms()->sync($request->rooms);
-        }
+           if ($validator->fails()) {
+               return response()->json(['errors' => $validator->errors()], 422);
+           }
 
-        return response()->json($status, 201);
-    }
+           $status = Status::create($request->all());
+           return response()->json(['message' => 'Estado creado con éxito', 'status' => $status], 201);
+       }
 
     public function update(StatusRequest $request, $id)
     {
@@ -56,6 +62,13 @@ class StatusController extends Controller
         $status = Status::findOrFail($id);
         $rooms = $status->rooms;
         return response()->json($rooms);
+    }
+
+ public function getStatusByHotel($hotel_id)
+    {
+        $status = Status::where('hotel_id', $hotel_id)->get();
+
+        return response()->json($status);
     }
 
 }

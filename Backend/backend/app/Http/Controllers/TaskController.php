@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class TaskController extends Controller
 {
@@ -20,15 +22,19 @@ class TaskController extends Controller
         return response()->json($task);
     }
 
-    public function store(TaskRequest $request)
+    public function store(request $request)
     {
-        $task = Task::create($request->validated());
+         $validator = Validator::make($request->all(), [
+                     'name' => 'required|string|max:20',
+                     'hotel_id' => 'required|exists:hotels,id',
+                 ]);
 
-        if ($request->has('rooms')) {
-            $task->rooms()->sync($request->rooms);
-        }
+                 if ($validator->fails()) {
+                     return response()->json(['errors' => $validator->errors()], 422);
+                 }
 
-        return response()->json($task, 201);
+                 $task = Task::create($request->all());
+                 return response()->json(['message' => 'Tarea creada con éxito', 'status' => $task], 201);
     }
 
     public function update(TaskRequest $request, $id)
@@ -56,6 +62,13 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $rooms = $task->rooms;
         return response()->json($rooms);
+    }
+
+    public function getTasksByHotel($hotel_id)
+    {
+        $tasks = Task::where('hotel_id', $hotel_id)->get();
+
+        return response()->json($tasks);
     }
 
 }

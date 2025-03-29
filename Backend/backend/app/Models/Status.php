@@ -9,11 +9,16 @@ class Status extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'hotel_id'];
 
     public function rooms(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Room::class, 'room_statuses');
     }
-}
+
+    public function hotel()
+        {
+            return $this->belongsTo(Hotel::class);
+        }
+    }
 

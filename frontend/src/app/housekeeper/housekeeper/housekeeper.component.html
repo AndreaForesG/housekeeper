@@ -6,12 +6,20 @@
 
     <mat-nav-list>
       <a mat-list-item (click)="createEmployees()">
-        <mat-icon>person</mat-icon>
+        <mat-icon class="me-2">person</mat-icon>
         <span *ngIf="isExpanded"  >Crear Empleados</span>
       </a>
       <a mat-list-item (click)="createRooms()">
-        <mat-icon>settings</mat-icon>
+        <mat-icon class="me-2">bed</mat-icon>
         <span *ngIf="isExpanded">Crear Habitaciones</span>
+      </a>
+      <a mat-list-item (click)="createStatus()">
+        <mat-icon class="me-2">settings</mat-icon>
+        <span *ngIf="isExpanded">Crear Estados</span>
+      </a>
+      <a mat-list-item (click)="createTasks()">
+        <mat-icon class="me-2">add_task</mat-icon>
+        <span *ngIf="isExpanded">Crear Tareas</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>

@@ -9,7 +9,7 @@ export class NotificationService {
   constructor(private snackBar: MatSnackBar) {}
 
   showSuccess(message: string, duration: number = 3000): void {
-    this.snackBar.open(message, 'Cerrar', {
+    this.snackBar.open(message, '', {
       duration: duration,
       panelClass: ['success-snackbar'],
       verticalPosition: 'top',
@@ -18,7 +18,7 @@ export class NotificationService {
   }
 
   showError(message: string, duration: number = 3000): void {
-    this.snackBar.open(message, 'Cerrar', {
+    this.snackBar.open(message, '', {
       duration: duration,
       panelClass: ['error-snackbar'],
       verticalPosition: 'top',

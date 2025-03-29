@@ -20,4 +20,16 @@ class Hotel extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
+
+ public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+
 }

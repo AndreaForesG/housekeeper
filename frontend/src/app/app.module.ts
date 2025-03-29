@@ -29,6 +29,8 @@ import { CreateRoomsComponent } from './housekeeper/create-rooms/create-rooms.co
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
 import { EmployeesTabComponent } from './housekeeper/employees-tab/employees-tab.component';
+import { CreateStatusComponent } from './housekeeper/create-status/create-status.component';
+import { CreateTasksComponent } from './housekeeper/create-tasks/create-tasks.component';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { EmployeesTabComponent } from './housekeeper/employees-tab/employees-tab
     HousekeeperContentComponent,
     CreateEmployeesComponent,
     CreateRoomsComponent,
-    EmployeesTabComponent
+    EmployeesTabComponent,
+    CreateStatusComponent,
+    CreateTasksComponent
   ],
   imports: [
     BrowserModule,

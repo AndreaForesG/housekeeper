@@ -168,3 +168,10 @@ Route::post('/rooms/create', [RoomController::class, 'store']);
 Route::get('/rooms/hotel/{hotel_id}', [RoomController::class, 'getRoomsByHotel']);
 Route::post('/rooms/import', [RoomController::class, 'importRooms']);
 Route::apiResource('rooms', RoomController::class);
+Route::apiResource('statuses', StatusController::class);
+Route::get('/statuses/hotel/{hotel_id}', [StatusController::class, 'getStatusByHotel']);
+Route::apiResource('tasks', TaskController::class);
+Route::get('/tasks/hotel/{hotel_id}', [TaskController::class, 'getTasksByHotel']);
+
+
+

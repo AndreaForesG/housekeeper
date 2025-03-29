@@ -1,0 +1,38 @@
+.full-width-table {
+  width: 100%;
+}
+
+.full-width-table th, .full-width-table td {
+  width: auto;
+}
+
+.full-width-table .mat-column-name {
+  width: 25%;
+}
+
+.full-width-table .mat-column-email {
+  width: 25%;
+}
+
+.full-width-table .mat-column-role {
+  width: 25%;
+}
+
+.full-width-table .mat-column-actions {
+  width: 25%;
+  text-align: center;
+}
+
+.full-width-table th, .full-width-table td {
+  padding: 8px 16px;
+}
+
+html {
+  padding: 15px;
+}
+
+.expansion-panel {
+  background: #e1dddd;
+}
+
+
