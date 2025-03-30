@@ -1,0 +1,18 @@
+<html>
+<body>
+<nav class="navbar navbar-light bg-blue text-white px-4 py-3 d-flex flex-wrap justify-content-end align-items-center gap-3">
+  <div class="d-flex flex-column flex-md-row gap-3 text-end">
+    <span class="fw-bold">Bienvenid@, {{userName}}</span>
+    <span class="fw-bold">Fecha de Trabajo: {{ date }}</span>
+    <span class="fw-bold">Panel Usuario</span>
+  </div>
+  <button mat-mini-fab (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</nav>
+<div class="container text-center mt-5">
+  <h1 class="dashboard-title text-center mb-5">Dashboard <span>Housekeeper</span></h1>
+</div>
+<app-dashboard-rooms *ngIf="hotelId" [hotelId] = "hotelId"></app-dashboard-rooms>
+</body>
+</html>

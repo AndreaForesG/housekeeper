@@ -1,0 +1,21 @@
+<mat-accordion [multi]="true" class="p-2 m-2">
+  <mat-expansion-panel *ngFor="let floor of Object.keys(groupedRooms)" [expanded]="true">
+    <mat-expansion-panel-header class="bg-blue">
+      <mat-panel-title>
+        Planta {{ floor }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="container mt-2">
+      <div class="row">
+        <div *ngFor="let room of groupedRooms[+floor]" class="col-6 col-md-3 col-lg-2">
+          <div class="card room-card">
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <h2 class="card-title text-center mb-0">{{ room.number }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
