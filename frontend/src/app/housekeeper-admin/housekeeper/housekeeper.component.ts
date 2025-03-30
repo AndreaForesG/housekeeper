@@ -20,6 +20,7 @@ export class HousekeeperComponent implements OnInit {
   isExpanded = true;
   hotelLogued: any;
   hotelName: any;
+  date: string = "";
   @ViewChild(HousekeeperContentComponent) housekeeperContent!: HousekeeperContentComponent;
 
   constructor(private titleService: Title,
@@ -35,6 +36,7 @@ export class HousekeeperComponent implements OnInit {
       this.titleService.setTitle(data.title);
     });
     this.getLoggedInUser();
+    this.dateCurrently();
   }
 
 getLoggedInUser() {
@@ -67,7 +69,6 @@ getLoggedInUser() {
 
   logout() {
     this.authService.logout();
-
   }
 
   createRooms() {
@@ -119,5 +120,13 @@ getLoggedInUser() {
         this.housekeeperContent.loadTasks();
       }
     });
+  }
+
+  dateCurrently() {
+    const current = new Date();
+    const day = current.getDate().toString().padStart(2, '0');
+    const month = (current.getMonth() + 1).toString().padStart(2, '0');
+    const year = current.getFullYear();
+    this.date = `${day}/${month}/${year}`;
   }
 }

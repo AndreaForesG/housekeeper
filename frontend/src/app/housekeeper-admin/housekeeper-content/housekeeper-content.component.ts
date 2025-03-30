@@ -19,7 +19,7 @@ export class HousekeeperContentComponent implements OnInit {
   status: any = [];
   displayedColumnsEmployees: string[] = ['name', 'email', 'role', 'actions'];
   displayedColumnsRooms: string[] = ['floor', 'number', 'actions'];
-  displayedColumnsStatus: string[] = [ 'name', 'actions'];
+  displayedColumnsStatus: string[] = [ 'name', 'color', 'actions'];
   displayedColumnsTasks: string[] = [ 'name', 'actions'];
   roomDataSource = new MatTableDataSource<any>([]);
   dataSourceEmployees = new MatTableDataSource<any>([]);
@@ -46,8 +46,6 @@ export class HousekeeperContentComponent implements OnInit {
   ngOnInit(): void {
     this.getLoggedInUser();
   }
-
-
 
   getLoggedInUser() {
     this.authService.getLoggedInUser().subscribe(data => {
@@ -90,7 +88,6 @@ export class HousekeeperContentComponent implements OnInit {
       });
     }
   }
-
 
   deleteRoom(roomId: number) {
     this.roomsService.deleteRoom(roomId).subscribe(
@@ -147,5 +144,4 @@ export class HousekeeperContentComponent implements OnInit {
       }
     );
   }
-
 }

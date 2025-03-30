@@ -9,7 +9,7 @@ class Status extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'hotel_id'];
+    protected $fillable = ['name', 'color', 'hotel_id'];
 
     public function rooms(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

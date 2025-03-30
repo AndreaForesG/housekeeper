@@ -1,4 +1,4 @@
-<mat-sidenav-container class="container-fluid">
+<mat-sidenav-container class="container-fluid p-0">
   <mat-sidenav #sidenav mode="side" [opened]="isExpanded">
     <div class="sidenav-title">
       <span *ngIf="isExpanded">Menú</span>
@@ -34,8 +34,9 @@
       </button>
       <div class="ms-auto">
         <span>Establecimiento: {{hotelName}} </span>
+        <span class="ms-3">Fecha de Trabajo: {{ date }}</span>
         <span class="ms-3">Panel Administrador</span>
-        <button mat-mini-fab color="accent" class="ms-3" (click)="logout()">
+        <button mat-mini-fab class="ms-3" (click)="logout()">
           <mat-icon>logout</mat-icon>
         </button>
       </div>

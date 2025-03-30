@@ -14,6 +14,9 @@ export class CreateStatusComponent implements OnInit {
 
   statusForm!: FormGroup;
   hotelLogued: any;
+  selectedColor:string = "";
+  colors: string[] = ['#ef3109', '#81d18f', '#a3dde8', '#e9ed9a', '#A833FF', '#FF33A1'];
+
 
   constructor(private fb: FormBuilder,
               private statusService: StatusService,
@@ -30,7 +33,8 @@ export class CreateStatusComponent implements OnInit {
 
   initForm() {
     this.statusForm = this.fb.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      color: ['']
     })
   }
 

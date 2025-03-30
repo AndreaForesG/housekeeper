@@ -6,15 +6,15 @@ import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing/landing-page/landing-page.component';
 import { LoginComponent } from './login/login/login.component';
 import { RegisterComponent } from './login/register/register.component';
-import { HousekeeperComponent } from './housekeeper/housekeeper/housekeeper.component';
+import { HousekeeperComponent } from './housekeeper-admin/housekeeper/housekeeper.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatListModule} from "@angular/material/list";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import { HousekeeperContentComponent } from './housekeeper/housekeeper-content/housekeeper-content.component';
-import { CreateEmployeesComponent } from './housekeeper/create-employees/create-employees.component';
+import { HousekeeperContentComponent } from './housekeeper-admin/housekeeper-content/housekeeper-content.component';
+import { CreateEmployeesComponent } from './housekeeper-admin/create-employees/create-employees.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {MatInputModule} from "@angular/material/input";
@@ -25,12 +25,14 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
-import { CreateRoomsComponent } from './housekeeper/create-rooms/create-rooms.component';
+import { CreateRoomsComponent } from './housekeeper-admin/create-rooms/create-rooms.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatTabsModule} from "@angular/material/tabs";
-import { EmployeesTabComponent } from './housekeeper/employees-tab/employees-tab.component';
-import { CreateStatusComponent } from './housekeeper/create-status/create-status.component';
-import { CreateTasksComponent } from './housekeeper/create-tasks/create-tasks.component';
+import { EmployeesTabComponent } from './housekeeper-admin/employees-tab/employees-tab.component';
+import { CreateStatusComponent } from './housekeeper-admin/create-status/create-status.component';
+import { CreateTasksComponent } from './housekeeper-admin/create-tasks/create-tasks.component';
+import { DashboardComponent } from './housekeeper-user/dashboard/dashboard.component';
+import { DashboardRoomsComponent } from './housekeeper-user/dashboard-rooms/dashboard-rooms.component';
 
 
 @NgModule({
@@ -45,7 +47,9 @@ import { CreateTasksComponent } from './housekeeper/create-tasks/create-tasks.co
     CreateRoomsComponent,
     EmployeesTabComponent,
     CreateStatusComponent,
-    CreateTasksComponent
+    CreateTasksComponent,
+    DashboardComponent,
+    DashboardRoomsComponent
   ],
   imports: [
     BrowserModule,

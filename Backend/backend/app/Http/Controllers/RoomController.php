@@ -6,6 +6,8 @@ use App\Http\Requests\RoomRequest;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 
 class RoomController extends Controller
 {
@@ -31,6 +33,15 @@ class RoomController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $exists = Room::where('number', $request->number)
+            ->where('floor', $request->floor)
+            ->where('hotel_id', $request->hotel_id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json(['error' => 'Esta habitación ya existe en esta planta'], 409);
         }
 
         $room = Room::create($request->all());
@@ -82,17 +93,30 @@ class RoomController extends Controller
         return response()->json($statuses);
     }
 
-    public function importRooms(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:csv,txt'
-        ]);
+public function importRooms(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:csv,txt'
+    ]);
 
-        $file = $request->file('file');
-        $csvData = array_map('str_getcsv', file($file));
+    $file = $request->file('file');
+    $csvData = array_map('str_getcsv', file($file));
 
+    DB::beginTransaction();
+
+    try {
         foreach ($csvData as $index => $row) {
             if ($index === 0) continue;
+
+            $exists = Room::where('number', $row[0])
+                          ->where('floor', $row[1])
+                          ->where('hotel_id', $request->hotel_id)
+                          ->exists();
+
+            if ($exists) {
+              return response()->json(['error' => 'Habitaciones repetidas']);
+;
+            }
 
             Room::create([
                 'number' => $row[0],
@@ -101,8 +125,14 @@ class RoomController extends Controller
             ]);
         }
 
+        DB::commit();
+
         return response()->json(['message' => 'Habitaciones importadas correctamente']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['error' => 'Hubo un error al importar las habitaciones.'], 500);
     }
+}
 
     public function getRoomsByHotel($hotel_id)
     {

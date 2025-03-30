@@ -18,7 +18,7 @@ class UserController extends Controller
 
         return response()->json([
             'user' => $user,
-            'hotel' => $user->hotel_id
+            'hotel' => $user->hotel_id,
         ]);
     }
 
@@ -26,9 +26,9 @@ class UserController extends Controller
     {
         $hotelId = $request->query('hotel_id');
 
-
         if ($hotelId) {
-            $users = User::where('hotel_id', $hotelId)->get();
+            $users = User::with('role')->where('hotel_id', $hotelId)->get();
+         
             return response()->json($users);
         }
 

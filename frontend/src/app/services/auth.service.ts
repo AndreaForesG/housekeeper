@@ -22,7 +22,7 @@ export class AuthService {
         if (res.user_type === "hotel_admin") {
           this.router.navigate(['/app']);
         } else {
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard']);
         }
       },
       (error) => {
