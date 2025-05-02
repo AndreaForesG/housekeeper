@@ -10,6 +10,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\PlanController;;
+use App\Http\Controllers\PaymentController;
 
 // Obtener todos los hoteles
 Route::get('hotels', [HotelController::class, 'index']);
@@ -172,6 +174,9 @@ Route::apiResource('statuses', StatusController::class);
 Route::get('/statuses/hotel/{hotel_id}', [StatusController::class, 'getStatusByHotel']);
 Route::apiResource('tasks', TaskController::class);
 Route::get('/tasks/hotel/{hotel_id}', [TaskController::class, 'getTasksByHotel']);
+Route::apiResource('plans', PlanController::class);
+Route::post('/create-payment-intent', [PaymentController::class, 'createIntent']);
+
 
 
 

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class AuthController extends Controller
 {
@@ -41,11 +43,23 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
+            'planId' => 'required',
+            'paymentIntentId' => 'required',
         ]);
+
+         Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            $intent = PaymentIntent::retrieve($validated['paymentIntentId']);
+
+            if ($intent->status !== 'succeeded') {
+                return response()->json(['error' => 'El pago no se completó correctamente'], 400);
+            }
+
 
         $hotel = Hotel::create([
             'name' => $request->name,
@@ -59,6 +73,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'user_type' => 'hotel_admin',
             'hotel_id' => $hotel_id,
+            'plan_id' => $validated['planId'],
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

@@ -19,6 +19,8 @@ export class CreateEmployeesComponent implements OnInit {
   employeeForm!: FormGroup;
   roles: any;
   hotelLogued: any;
+  isEditMode: boolean = false;
+
 
   constructor(private titleService: Title,
               private route: ActivatedRoute,
@@ -37,6 +39,9 @@ export class CreateEmployeesComponent implements OnInit {
     this.route.data.subscribe((data: any) => {
       this.titleService.setTitle(data.title);
     });
+    if(this.data) {
+      this.isEditMode = true;
+    }
     this.initForm();
     this.getRoles();
     this.getLoggedInUser();
@@ -44,12 +49,13 @@ export class CreateEmployeesComponent implements OnInit {
 
   initForm() {
     this.employeeForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      role_id: ['', Validators.required],
+      name: [this.data?.employee?.name || '', Validators.required],
+      email: [this.data?.employee?.email || '', [Validators.required, Validators.email]],
+      role_id: [this.data?.employee?.role_id || '', Validators.required],
+      password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(6)]],
     });
   }
+
 
   onClose(): void {
     this.dialogRef.close();
@@ -67,14 +73,26 @@ export class CreateEmployeesComponent implements OnInit {
         ...this.employeeForm.value,
         hotel_id: this.hotelLogued
       };
-      this.employeeService.createEmployees(employeeData).subscribe(
-        (response: any) => {
-          this.notificationService.showSuccess('Empleado creado con éxito!');
-          this.dialogRef.close(true);
-        },
-      );
+
+      if (this.data?.employee) {
+        this.employeeService.updateEmployee(this.data.employee.id, employeeData).subscribe(
+          (response: any) => {
+            this.notificationService.showSuccess('Empleado actualizado con éxito!');
+            this.dialogRef.close(true);
+          }
+        );
+      } else {
+        this.employeeService.createEmployees(employeeData).subscribe(
+          (response: any) => {
+            this.notificationService.showSuccess('Empleado creado con éxito!');
+            this.dialogRef.close(true);
+          }
+        );
+      }
     }
   }
+
+
 
 
 

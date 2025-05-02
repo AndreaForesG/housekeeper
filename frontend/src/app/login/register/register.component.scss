@@ -5,3 +5,29 @@
 .btn-register {
   background-color: #223344;
 }
+
+@media (min-width: 768px) {
+  .col-md-4 {
+    flex: 0 0 auto;
+    width: 50.333333%; /* Esto asegura que las tarjetas de los planes se ocupen de más de la mitad del ancho */
+  }
+
+  /* También podemos asegurarnos de que las tarjetas de los planes se alineen bien */
+  .plan-card {
+    margin-bottom: 30px;
+  }
+
+  .col-sm-10, .col-md-8, .col-lg-7 {
+    max-width: 90%; /* O puedes ajustar este porcentaje a tu gusto */
+  }
+}
+
+@media (max-width: 768px) {
+  /* En dispositivos pequeños, las tarjetas de los planes ocuparán todo el ancho */
+  .plan-card {
+    width: 100%;
+  }
+}
+
+
+

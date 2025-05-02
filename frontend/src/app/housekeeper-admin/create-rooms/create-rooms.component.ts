@@ -60,8 +60,8 @@ export class CreateRoomsComponent implements OnInit {
 
     this.roomsService.importRooms(this.selectedFile, this.hotelId).subscribe(response => {
       console.log('Archivo CSV subido:', response);
-      this.loadRooms();
       this.notificationService.showSuccess('Habitaciones creadas correctamente');
+      this.loadRooms();
       this.dialogRef.close(true);
     });
   }

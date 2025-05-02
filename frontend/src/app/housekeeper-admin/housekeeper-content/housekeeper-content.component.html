@@ -29,9 +29,14 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Acciones</th>
             <td mat-cell *matCellDef="let employee">
-              <button mat-mini-fab color="accent" (click)="deleteEmployee(employee.id)">
+              <div class="gap-2">
+              <button mat-mini-fab color="primary" (click)="editEmployee(employee.id)" [matTooltip]="'Editar Empleado'" >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-mini-fab color="accent" (click)="deleteEmployee(employee.id)" [matTooltip]="'Eliminar Empleado'">
                 <mat-icon>delete</mat-icon>
               </button>
+              </div>
             </td>
           </ng-container>
 

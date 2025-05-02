@@ -37,6 +37,9 @@ export class AuthService {
       email: userData.email,
       password: userData.password,
       password_confirmation: userData.confirmPassword,
+      planId: userData.planId,
+      paymentIntentId: userData.paymentIntentId,
+
     });
   }
 

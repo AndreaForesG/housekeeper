@@ -33,6 +33,7 @@ import { CreateStatusComponent } from './housekeeper-admin/create-status/create-
 import { CreateTasksComponent } from './housekeeper-admin/create-tasks/create-tasks.component';
 import { DashboardComponent } from './housekeeper-user/dashboard/dashboard.component';
 import { DashboardRoomsComponent } from './housekeeper-user/dashboard-rooms/dashboard-rooms.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -51,28 +52,29 @@ import { DashboardRoomsComponent } from './housekeeper-user/dashboard-rooms/dash
     DashboardComponent,
     DashboardRoomsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatCardModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatTabsModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCardModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatExpansionModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatProgressSpinnerModule,
+        MatTabsModule,
+        MatTooltipModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

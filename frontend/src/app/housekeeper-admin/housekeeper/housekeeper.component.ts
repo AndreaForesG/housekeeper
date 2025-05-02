@@ -9,6 +9,7 @@ import {AuthService} from "../../services/auth.service";
 import {CreateRoomsComponent} from "../create-rooms/create-rooms.component";
 import {CreateStatusComponent} from "../create-status/create-status.component";
 import {CreateTasksComponent} from "../create-tasks/create-tasks.component";
+import {UsersService} from "../../services/users.service";
 
 @Component({
   selector: 'app-housekeeper',
@@ -27,6 +28,7 @@ export class HousekeeperComponent implements OnInit {
               private route: ActivatedRoute,
               private dialog: MatDialog,
               private authService: AuthService,
+              private userService: UsersService
               ) { }
 
 
@@ -129,4 +131,21 @@ getLoggedInUser() {
     const year = current.getFullYear();
     this.date = `${day}/${month}/${year}`;
   }
+
+  editEmployee(id: number) {
+    this.userService.getEmployeeById(id).subscribe(employee => {
+      const dialogRef = this.dialog.open(CreateEmployeesComponent, {
+        width: '500px',
+        data: {employee}
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.housekeeperContent.loadEmployees();
+        }
+      });
+    });
+  }
+
+
 }

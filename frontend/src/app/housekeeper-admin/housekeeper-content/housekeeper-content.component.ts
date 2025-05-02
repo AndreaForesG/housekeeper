@@ -8,6 +8,7 @@ import {RoomsService} from "../../services/rooms.service";
 import {EmployeesTabComponent} from "../employees-tab/employees-tab.component";
 import {StatusService} from "../../services/status.service";
 import {TasksService} from "../../services/tasks.service";
+import {CreateEmployeesComponent} from "../create-employees/create-employees.component";
 
 @Component({
   selector: 'app-housekeeper-content',
@@ -33,6 +34,7 @@ export class HousekeeperContentComponent implements OnInit {
   @ViewChild('paginatorEmployees') paginatorEmployees!: MatPaginator;
   @ViewChild('paginatorStatus') paginatorStatus!: MatPaginator;
   @ViewChild('paginatorTasks') paginatorTasks!: MatPaginator;
+  @Output() editEmployeeRequest = new EventEmitter<number>();
 
 
   constructor(private userService: UsersService,
@@ -79,6 +81,10 @@ export class HousekeeperContentComponent implements OnInit {
     );
   }
 
+  editEmployee(id: number) {
+    this.editEmployeeRequest.emit(id);
+  }
+
   loadRooms() {
     if (this.hotelLogued) {
       this.roomsService.getRoomsByHotel(this.hotelLogued).subscribe(rooms => {
@@ -100,6 +106,9 @@ export class HousekeeperContentComponent implements OnInit {
       }
     );
   }
+
+
+
 
   loadStatus() {
     if (this.hotelLogued) {

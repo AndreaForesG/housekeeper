@@ -108,8 +108,8 @@ public function importRooms(Request $request)
         foreach ($csvData as $index => $row) {
             if ($index === 0) continue;
 
-            $exists = Room::where('number', $row[0])
-                          ->where('floor', $row[1])
+            $exists = Room::where('number', $row[1])
+                          ->where('floor', $row[0])
                           ->where('hotel_id', $request->hotel_id)
                           ->exists();
 
@@ -119,8 +119,8 @@ public function importRooms(Request $request)
             }
 
             Room::create([
-                'number' => $row[0],
-                'floor' => $row[1],
+                'number' => $row[1],
+                'floor' => $row[0],
                 'hotel_id' => $request->hotel_id
             ]);
         }

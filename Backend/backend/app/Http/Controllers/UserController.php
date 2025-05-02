@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -28,7 +30,7 @@ class UserController extends Controller
 
         if ($hotelId) {
             $users = User::with('role')->where('hotel_id', $hotelId)->get();
-         
+
             return response()->json($users);
         }
 
@@ -62,30 +64,36 @@ class UserController extends Controller
             'password' => bcrypt($validatedData['password']),
             'role_id' => $validatedData['role_id'],
             'hotel_id' => $validatedData['hotel_id'],
+            'plan_id'  => $validatedData['plan_id'],
         ]);
 
         return response()->json($user, 201);
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->validated());
+        $employee = User::findOrFail($id);
 
-        if ($request->has('hotel_id')) {
-            $user->hotel()->associate($request->hotel_id);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'role_id' => 'required|integer',
+            'password' => 'nullable|string|min:6',
+        ]);
+
+        $employee->name = $validated['name'];
+        $employee->email = $validated['email'];
+        $employee->role_id = $validated['role_id'];
+
+        if (!empty($validated['password'])) {
+            $employee->password = Hash::make($validated['password']);
         }
 
-        if ($request->has('roles')) {
-            $user->roles()->sync($request->roles);
-        }
+        $employee->save();
 
-        if ($request->has('rooms')) {
-            $user->rooms()->sync($request->rooms);
-        }
-
-        return response()->json($user);
+        return response()->json(['message' => 'Empleado actualizado con éxito']);
     }
+
 
     public function destroy($id)
     {

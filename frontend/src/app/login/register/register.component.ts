@@ -1,25 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {NotificationService} from "../../services/notification.service";
+import {PlansService} from "../../services/plans.service";
+import {loadStripe, Stripe, StripeCardElement, StripeElements} from "@stripe/stripe-js";
+import {environment} from "../../../environments/environment";
+import {StripeService} from "../../services/stripe.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit {
 
   registerForm!: FormGroup;
   errorMessage: string = "";
+  plans: any;
+  selectedPlan: any;
+  stripe!: Stripe;
+  elements!: StripeElements;
+  card!: StripeCardElement;
+  cardError: string | null = null;
 
   constructor(private titleService: Title,
               private route: ActivatedRoute,
               private fb: FormBuilder,
               private authService: AuthService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private plansService: PlansService,
+              private stripeService: StripeService,
+              private router: Router) {
 
   }
   ngOnInit(): void {
@@ -27,6 +40,7 @@ export class RegisterComponent implements OnInit {
     this.titleService.setTitle(data.title);
   });
     this.initForm();
+    this.getPlans();
   }
 
   initForm() {
@@ -35,22 +49,111 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
+      planId: ['', Validators.required]
     });
   }
 
-  onSubmit() {
-    if (this.registerForm.invalid) return;
+  async ngAfterViewInit() {
+    const stripeInstance = await loadStripe(environment.stripePublishableKey);
+    if (!stripeInstance) {
+      throw new Error('Stripe no se pudo cargar correctamente');
+    }
+    this.stripe = stripeInstance;
 
-    this.authService.register(this.registerForm.value).subscribe({
-      next: (response) => {
-        this.notificationService.showSuccess('Usuario registrado correctamente');
-        this.registerForm.reset();
+    this.elements = await this.stripe.elements();
+    this.card = this.elements.create('card', {
+      style: {
+        base: {
+          fontSize: '16px',
+          color: '#32325d',
+          '::placeholder': {
+            color: '#a0aec0',
+          },
+        },
+        invalid: {
+          color: '#e53e3e',
+        },
       },
-      error: (error) => {
-        this.errorMessage = error.error.message || 'Error al registrarse';
-      },
+    });
+
+    this.card.mount('#card-element');
+
+    this.card.on('change', (event) => {
+      this.cardError = event.error ? event.error.message : null;
     });
   }
 
 
+
+  async onSubmit() {
+    if (this.registerForm.invalid || !this.selectedPlan) return;
+
+    try {
+      const paymentIntentResponse = await this.stripeService.createPaymentIntent({
+        amount: this.selectedPlan.price * 100,
+        currency: 'eur',
+        planId: this.selectedPlan.id,
+      }).toPromise();
+
+      if(!paymentIntentResponse?.clientSecret) {
+       return;
+      }
+
+      const clientSecret = paymentIntentResponse.clientSecret;
+      const { paymentIntent, error } = await this.stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: this.card,
+          billing_details: {
+            name: this.registerForm.value.name,
+            email: this.registerForm.value.email,
+          },
+        },
+      });
+
+      if (error || !paymentIntent || paymentIntent.status !== 'succeeded') {
+        this.errorMessage = error?.message || 'Error al procesar el pago';
+        return;
+      }
+
+      const formData = {
+        name: this.registerForm.value.name,
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password,
+        planId: this.selectedPlan.id,
+        paymentIntentId: paymentIntent.id,
+      };
+
+      this.authService.register(formData).subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Usuario registrado correctamente');
+          this.registerForm.reset();
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          this.errorMessage = err.error.message || 'Error al registrarse';
+          this.notificationService.showError('Error al registrarse');
+
+
+        }
+      });
+
+    } catch (err) {
+      this.errorMessage = 'Error inesperado. Intenta de nuevo.';
+      this.notificationService.showError('Error inesperado. Intenta de nuevo.');
+      console.error(err);
+    }
+  }
+
+
+  getPlans() {
+    this.plansService.getAllPlans().subscribe(resp => {
+      this.plans = resp;
+    })
+  }
+
+
+  choosePlan(plan: any) {
+    this.selectedPlan = plan;
+    this.registerForm.patchValue({ planId: plan.id });
+  }
 }
