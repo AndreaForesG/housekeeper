@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {NotificationService} from "../../services/notification.service";
 import {PlansService} from "../../services/plans.service";
@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   elements!: StripeElements;
   card!: StripeCardElement;
   cardError: string | null = null;
+  isLoading: boolean = false;
 
   constructor(private titleService: Title,
               private route: ActivatedRoute,
@@ -50,7 +51,18 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
       planId: ['', Validators.required]
-    });
+    }, { validators: this.passwordsMatchValidator });
+  }
+
+  passwordsMatchValidator(form: AbstractControl) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    if (password !== confirmPassword) {
+      form.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+    } else {
+      form.get('confirmPassword')?.setErrors(null);
+    }
+    return null;
   }
 
   async ngAfterViewInit() {
@@ -87,6 +99,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   async onSubmit() {
     if (this.registerForm.invalid || !this.selectedPlan) return;
+    this.isLoading = true;
 
     try {
       const paymentIntentResponse = await this.stripeService.createPaymentIntent({
@@ -96,6 +109,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       }).toPromise();
 
       if(!paymentIntentResponse?.clientSecret) {
+        this.isLoading = false;
        return;
       }
 
@@ -112,6 +126,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
       if (error || !paymentIntent || paymentIntent.status !== 'succeeded') {
         this.errorMessage = error?.message || 'Error al procesar el pago';
+        this.isLoading = false;
         return;
       }
 
@@ -125,22 +140,22 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
       this.authService.register(formData).subscribe({
         next: () => {
-          this.notificationService.showSuccess('Usuario registrado correctamente');
+          this.notificationService.showSuccess('Usuario registrado correctamente. Puede iniciar Sesión.');
           this.registerForm.reset();
           this.router.navigate(['/login']);
+          this.isLoading = false;
         },
         error: (err) => {
           this.errorMessage = err.error.message || 'Error al registrarse';
           this.notificationService.showError('Error al registrarse');
-
-
+          this.isLoading = false;
         }
       });
 
     } catch (err) {
       this.errorMessage = 'Error inesperado. Intenta de nuevo.';
       this.notificationService.showError('Error inesperado. Intenta de nuevo.');
-      console.error(err);
+      this.isLoading = false;
     }
   }
 

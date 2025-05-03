@@ -19,17 +19,40 @@
                 </div>
                 <div class="mb-3">
                   <label for="password" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control" id="password" formControlName="password" autocomplete="new-password" required />
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    formControlName="password"
+                    autocomplete="new-password"
+                    required />
                 </div>
+
                 <div class="mb-3">
                   <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                  <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" autocomplete="new-password" required />
+                  <input
+                    type="password"
+                    class="form-control"
+                    [ngClass]="{
+      'is-invalid': registerForm.get('confirmPassword')?.touched &&
+                    registerForm.get('confirmPassword')?.errors?.['passwordMismatch']
+    }"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    autocomplete="new-password"
+                    required />
+                  <div
+                    *ngIf="registerForm.get('confirmPassword')?.touched &&
+           registerForm.get('confirmPassword')?.errors?.['passwordMismatch']"
+                    class="invalid-feedback">
+                    Las contraseñas no coinciden
+                  </div>
                 </div>
+
                 <div class="mb-3">
                   <img src="assets/register.jpeg" class="img-fluid">
                 </div>
               </div>
-              <!-- Columna para los planes -->
               <div class="col-12 col-sm-6 mb-3">
                 <div class="row justify-content-between">
                   <div
@@ -68,8 +91,12 @@
               <button
                 type="submit"
                 class="btn btn-register text-white px-5"
-                [disabled]="!selectedPlan || registerForm.invalid">
-                Registrarse y Pagar
+                [disabled]="!selectedPlan || registerForm.invalid || isLoading">
+                <span *ngIf="!isLoading">Registrarse y Pagar</span>
+                <span *ngIf="isLoading">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Registrándose y pagando...
+               </span>
               </button>
             </div>
           </form>
