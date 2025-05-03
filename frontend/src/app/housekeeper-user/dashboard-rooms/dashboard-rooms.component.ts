@@ -1,5 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RoomsService} from "../../services/rooms.service";
+import {StatusService} from "../../services/status.service";
+import {TasksService} from "../../services/tasks.service";
+import {UsersService} from "../../services/users.service";
 
 interface Room {
   id: number;
@@ -16,14 +19,36 @@ interface Room {
 export class DashboardRoomsComponent implements OnInit {
 
   rooms: any;
+  status: any;
+  tasks: any;
+  users: any;
   @Input() hotelId!: any;
   groupedRooms: { [key: number]: any[] } = {};
 
 
-  constructor(private roomsService: RoomsService) { }
+  constructor(private roomsService: RoomsService,
+              private statusService: StatusService,
+              private tasksService: TasksService,
+              private usersService: UsersService) { }
 
   ngOnInit(): void {
-    this.loadRooms();
+    this.loadData();
+  }
+
+  loadData() {
+      this.statusService.getStatusByHotel(this.hotelId).subscribe(value => {
+        this.status = value;
+      })
+
+      this.tasksService.getTasksByHotel(this.hotelId).subscribe(value => {
+        this.tasks = value;
+      })
+
+      this.usersService.getEmployeesByHotel(this.hotelId).subscribe((value: any[]) => {
+        this.users = value.filter(user => user.user_type !== "hotel_admin");
+      })
+
+    this.loadRooms()
   }
 
   loadRooms() {
@@ -41,6 +66,10 @@ export class DashboardRoomsComponent implements OnInit {
       });
     });
   }
+
+
+
+
 
 
 
