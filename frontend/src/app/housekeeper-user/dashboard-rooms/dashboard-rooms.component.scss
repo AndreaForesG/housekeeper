@@ -89,9 +89,11 @@
   background-color: #e8e5e5;
 }
 
-.col-lg-2 {
-  width: 13.666667%;
+.custom-col-lg {
+  max-width: 13.666667%;
+  flex: 0 0 13.666667%;
 }
+
 
 .room-card {
   border-width: 5px;

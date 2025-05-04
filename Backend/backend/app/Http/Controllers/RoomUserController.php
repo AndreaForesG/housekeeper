@@ -51,7 +51,7 @@ class RoomUserController extends Controller
         ]);
 
         foreach ($request->room_ids as $room_id) {
-            $room_number = DB::table('rooms')->where('id', $room_id)->value('room_number');
+            $room_number = DB::table('rooms')->where('id', $room_id)->value('number');
             $conflict = DB::table('room_user')
                 ->where('room_id', $room_id)
                 ->where(function ($query) use ($request) {
