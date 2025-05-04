@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RoomStatus extends Model
 {
-    protected $table = 'room_status';
+    protected $table = 'room_statuses';
 
     protected $fillable = [
         'room_id', 'status_id',

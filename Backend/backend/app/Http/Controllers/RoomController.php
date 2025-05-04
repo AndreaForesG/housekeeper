@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoomRequest;
 use App\Models\Room;
+use App\Models\RoomUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use function PHPUnit\Framework\assertEqualsIgnoringCase;
 
 
 class RoomController extends Controller
@@ -142,7 +144,38 @@ public function importRooms(Request $request)
             return response()->json(['message' => 'No hay habitaciones para este hotel'], 404);
         }
 
+        $rooms = $rooms->map(function ($room) {
+            $currentAssignment = $room->hasOne(RoomUser::class)
+                ->whereDate('date_from', '<=', now()->toDateString())
+                ->whereDate('date_to', '>=', now()->toDateString())
+                ->first();
+
+            $assigned_to = $currentAssignment ? $currentAssignment->user?->name : 'Sin asignar';
+
+            $roomStatus = $room->roomStatuses()
+                ->whereDate('date', '=', now()->toDateString())
+                ->latest()
+                ->first();
+
+            $status_name = $roomStatus ? $roomStatus->status->name : 'Sin estado';
+            $status_color = $roomStatus ? $roomStatus->status->color : '#FFFFFF';
+
+            return [
+                'id' => $room->id,
+                'number' => $room->number,
+                'floor' => $room->floor,
+                'assigned_to' => $assigned_to,
+                'status' => $status_name,
+                'status_color' => $status_color,
+            ];
+        });
+
         return response()->json($rooms);
     }
+
+
+
+
+
 
 }

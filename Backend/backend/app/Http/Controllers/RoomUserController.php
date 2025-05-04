@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoomUserRequest;
 use App\Models\RoomUser;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+
 
 class RoomUserController extends Controller
 {
@@ -30,4 +35,60 @@ class RoomUserController extends Controller
 
         return response()->json(['message' => 'Employee removed from room successfully']);
     }
+
+
+    public function assignRooms(Request $request)
+    {
+
+        Log::info('Datos recibidos:', $request->all());
+
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'room_ids' => 'required|array',
+            'room_ids.*' => 'exists:rooms,id',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date|after_or_equal:date_from',
+        ]);
+
+        foreach ($request->room_ids as $room_id) {
+            $conflict = DB::table('room_user')
+                ->where('room_id', $room_id)
+                ->where(function ($query) use ($request) {
+                    $query->whereBetween('date_from', [$request->date_from, $request->date_to])
+                        ->orWhereBetween('date_to', [$request->date_from, $request->date_to])
+                        ->orWhere(function ($q) use ($request) {
+                            $q->where('date_from', '<=', $request->date_from)
+                                ->where('date_to', '>=', $request->date_to);
+                        });
+                })->exists();
+
+            if ($conflict) {
+                return response()->json([
+                    'error' => "La habitación $room_id ya está asignada en ese rango de fechas"
+                ], 422);
+            }
+
+            RoomUser::create([
+                'room_id' => $room_id,
+                'user_id' => $request->user_id,
+                'date_from' => $request->date_from,
+                'date_to' => $request->date_to,
+            ]);
+
+            $room = DB::table('rooms')->find($room_id);
+            $assignedRooms[] = [
+                'room_id' => $room_id,
+                'room_number' => $room->number,
+                'assigned_to' => User::find($request->user_id)->name,
+                'date_from' => $request->date_from,
+                'date_to' => $request->date_to
+            ];
+        }
+
+        return response()->json([
+            'message' => 'Habitaciones asignadas con éxito',
+            'assignedRooms' => $assignedRooms,
+        ]);
+    }
+
 }

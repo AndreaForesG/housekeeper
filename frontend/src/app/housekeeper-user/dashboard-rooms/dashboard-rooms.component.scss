@@ -18,5 +18,82 @@
 }
 
 .bg-blue {
-  background-color: #c6c9cc;
+  background-color: #7DB7C6;
+}
+
+.filters-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  flex: 1 1 200px;
+  max-width: 250px;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    display: none;
+  }
+
+  .filter-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .room-item {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-item {
+    width: 100%;
+  }
+}
+
+.filter-item {
+  margin-right: 10px;
+}
+
+.filter-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  .filter-button {
+    width: auto;
+  }
+}
+
+.mat-expansion-panel {
+  background-color: #e8e5e5;
+}
+
+.col-lg-2 {
+  width: 13.666667%;
+}
+
+.room-card {
+  border-width: 5px;
+  border-style: solid;
 }

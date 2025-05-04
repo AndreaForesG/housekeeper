@@ -64,7 +64,7 @@ class UserController extends Controller
             'password' => bcrypt($validatedData['password']),
             'role_id' => $validatedData['role_id'],
             'hotel_id' => $validatedData['hotel_id'],
-            'plan_id'  => $validatedData['plan_id'],
+            'plan_id'  => $validatedData['plan_id'] ?? null,
         ]);
 
         return response()->json($user, 201);

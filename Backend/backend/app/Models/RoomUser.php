@@ -9,7 +9,7 @@ class RoomUser extends Model
     protected $table = 'room_user';
 
     protected $fillable = [
-        'room_id', 'user_id',
+        'room_id', 'user_id', 'date_from', 'date_to'
     ];
 
     public function room()

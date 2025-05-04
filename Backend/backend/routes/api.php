@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoomStatusController;
+use App\Http\Controllers\RoomUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
@@ -157,8 +159,6 @@ Route::middleware('auth:sanctum')->get('/users', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getAuthenticatedUser']);
-
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'getUsersByHotel']);
 
 Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
@@ -176,6 +176,9 @@ Route::apiResource('tasks', TaskController::class);
 Route::get('/tasks/hotel/{hotel_id}', [TaskController::class, 'getTasksByHotel']);
 Route::apiResource('plans', PlanController::class);
 Route::post('/create-payment-intent', [PaymentController::class, 'createIntent']);
+// routes/api.php
+Route::post('/assign-rooms', [RoomUserController::class, 'assignRooms']);
+Route::post('room-status/change-status', [RoomStatusController::class, 'changeRoomStatus']);
 
 
 

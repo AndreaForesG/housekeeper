@@ -23,7 +23,6 @@ export class UsersService {
     return this.http.post<any>(this.apiUrl, employeeData);
   }
 
-
   getEmployeesByHotel(hotelId: number): Observable<any> {
     const token = localStorage.getItem('token');
     console.log('Token:', token);
@@ -42,8 +41,6 @@ export class UsersService {
   updateEmployee(id: number, data: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, data);
   }
-
-
 
   deleteEmployee(employeeId: number) {
     return this.http.delete<any>(`${this.apiUrl}/${employeeId}`);

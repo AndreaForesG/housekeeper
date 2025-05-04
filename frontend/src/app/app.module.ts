@@ -18,7 +18,7 @@ import { CreateEmployeesComponent } from './housekeeper-admin/create-employees/c
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {MatInputModule} from "@angular/material/input";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSelectModule} from "@angular/material/select";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
@@ -34,6 +34,13 @@ import { CreateTasksComponent } from './housekeeper-admin/create-tasks/create-ta
 import { DashboardComponent } from './housekeeper-user/dashboard/dashboard.component';
 import { DashboardRoomsComponent } from './housekeeper-user/dashboard-rooms/dashboard-rooms.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { AssignRoomsDialogComponent } from './housekeeper-user/assign-rooms-user-dialog/assign-rooms-dialog.component';
+import { AssignRoomsStatusComponent } from './housekeeper-user/assign-rooms-status-dialog/assign-rooms-status.component';
 
 
 @NgModule({
@@ -50,31 +57,39 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     CreateStatusComponent,
     CreateTasksComponent,
     DashboardComponent,
-    DashboardRoomsComponent
+    DashboardRoomsComponent,
+    AssignRoomsDialogComponent,
+    AssignRoomsStatusComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatListModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCardModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatSelectModule,
-        MatSnackBarModule,
-        MatExpansionModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatProgressSpinnerModule,
-        MatTabsModule,
-        MatTooltipModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatCardModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatTooltipModule,
+    FormsModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatAutocompleteModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

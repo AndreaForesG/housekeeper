@@ -26,4 +26,10 @@ class Room extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function roomStatuses()
+    {
+        return $this->hasMany(RoomStatus::class);
+    }
+
 }

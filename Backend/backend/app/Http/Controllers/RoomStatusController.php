@@ -30,4 +30,31 @@ class RoomStatusController extends Controller
 
         return response()->json(['message' => 'Room status removed successfully']);
     }
+
+    public function changeRoomStatus(Request $request)
+    {
+        // Validaciones
+        $request->validate([
+            'status' => 'required|exists:statuses,id',  // Asegúrate de que el estado es válido
+            'date' => 'required|date',  // La fecha de trabajo
+            'rooms' => 'required|array',  // Asegúrate de que se seleccionan habitaciones
+            'rooms.*' => 'exists:rooms,id',  // Las habitaciones deben ser válidas
+        ]);
+
+        // Obtener el estado y la fecha del cuerpo de la solicitud
+        $status = $request->status;
+        $date = $request->date;
+
+        // Iterar sobre las habitaciones seleccionadas y registrar el cambio de estado
+        foreach ($request->rooms as $roomId) {
+            RoomStatus::create([
+                'room_id' => $roomId,
+                'status_id' => $status,  // El ID del estado
+                'date' => $date,  // La fecha de trabajo
+            ]);
+        }
+
+        // Responder con éxito
+        return response()->json(['message' => 'Estados de habitaciones cambiados con éxito.']);
+    }
 }

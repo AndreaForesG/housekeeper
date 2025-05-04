@@ -22,12 +22,16 @@
       "es2020",
       "dom",
       "dom.iterable"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "allowSyntheticDefaultImports": true
+
   }
 }
