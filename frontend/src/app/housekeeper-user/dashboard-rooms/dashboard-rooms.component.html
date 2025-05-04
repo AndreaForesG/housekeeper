@@ -3,8 +3,6 @@
   <div class="menu">
     <ng-container *ngIf="!isLoading">
       <div class="d-flex justify-content-end align-items-center mt-3 mb-3">
-
-        <!-- Botón que abre el mat-menu -->
         <button
           mat-button
           [matMenuTriggerFor]="menuOpciones"
@@ -14,29 +12,20 @@
           <span class="ms-2 d-none d-md-inline">Opciones</span>
         </button>
 
-        <!-- Menú principal -->
         <mat-menu #menuOpciones="matMenu" class="mat-elevation-z4" [overlapTrigger]="false">
-
-          <!-- Asignar empleados -->
           <button mat-menu-item (click)="assignEmployees()">
             <mat-icon>{{ isAssigning ? 'exit_to_app' : 'add' }}</mat-icon>
             <span>{{ isAssigning ? 'Salir de asignar empleados' : 'Asignar empleados' }}</span>
           </button>
-
-          <!-- Cambiar estado -->
           <button mat-menu-item (click)="changeStatus()">
             <mat-icon>bed</mat-icon>
             <span>Cambiar Estado</span>
           </button>
-
-          <!-- Ver leyenda (submenu) -->
           <button mat-menu-item [matMenuTriggerFor]="menuLeyenda">
             <mat-icon>info</mat-icon>
             <span>Ver leyenda de estados</span>
           </button>
         </mat-menu>
-
-        <!-- Submenú de leyenda -->
         <mat-menu #menuLeyenda="matMenu" class="mat-elevation-z4 p-3" [overlapTrigger]="false">
           <div style="width: 260px;">
             <table class="table table-sm mb-0">
@@ -61,23 +50,16 @@
             </table>
           </div>
         </mat-menu>
-
-        <!-- Botón de filtros en móvil -->
         <button class="btn btn-outline-secondary d-md-none ms-2" (click)="toggleFilters()">
           <mat-icon>menu</mat-icon>
         </button>
       </div>
     </ng-container>
-
-
-
-
   </div>
 </div>
 
 <div class="container-fluid">
   <mat-accordion [multi]="true" class="p-2 m-2">
-    <!-- Iteramos sobre cada planta -->
     <mat-expansion-panel *ngFor="let floor of Object.keys(groupedRooms)" [expanded]="true">
       <mat-expansion-panel-header class="bg-blue">
         <mat-panel-title>

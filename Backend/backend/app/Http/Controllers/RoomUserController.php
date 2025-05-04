@@ -51,6 +51,7 @@ class RoomUserController extends Controller
         ]);
 
         foreach ($request->room_ids as $room_id) {
+            $room_number = DB::table('rooms')->where('id', $room_id)->value('room_number');
             $conflict = DB::table('room_user')
                 ->where('room_id', $room_id)
                 ->where(function ($query) use ($request) {
@@ -64,7 +65,7 @@ class RoomUserController extends Controller
 
             if ($conflict) {
                 return response()->json([
-                    'error' => "La habitación $room_id ya está asignada en ese rango de fechas"
+                    'error' => "La habitación $room_number ya está asignada en ese rango de fechas"
                 ], 422);
             }
 
