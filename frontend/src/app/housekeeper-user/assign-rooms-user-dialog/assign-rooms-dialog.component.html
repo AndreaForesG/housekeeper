@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Asignar empleados</h2>
+<div class="container-fluid">
+<form [formGroup]="assignForm" (ngSubmit)="onSubmit()" mat-dialog-content class="responsive-form">
+  <div class="form-group">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Empleado</mat-label>
+      <mat-select formControlName="user_id">
+        <mat-option *ngFor="let user of data.users" [value]="user.id">{{ user.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-group">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Habitaciones</mat-label>
+      <mat-select formControlName="room_ids" multiple>
+        <mat-option *ngFor="let room of data.rooms" [value]="room.id">
+          Habitación {{ room.number }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <div class="col">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Desde</mat-label>
+        <input matInput [matDatepicker]="pickerFrom" formControlName="date_from">
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="col">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Hasta</mat-label>
+        <input matInput [matDatepicker]="pickerTo" formControlName="date_to">
+        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTo></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+</form>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" [disabled]="assignForm.invalid" (click)="onSubmit()">Asignar</button>
+</mat-dialog-actions>
+</div>

@@ -1,0 +1,28 @@
+<div mat-dialog-title class="mb-4">Cambiar Estado</div>
+
+<form [formGroup]="changeStatusForm" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Selecciona las habitaciones</mat-label>
+      <mat-select formControlName="rooms" multiple>
+        <mat-option *ngFor="let room of data.rooms" [value]="room.id">
+          {{ room.number }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of data.statuses" [value]="status.id">{{ status.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-flat-button color="primary" [disabled]="changeStatusForm.invalid" (click)="onSubmit()">Cambiar Estado</button>
+  </mat-dialog-actions>
+</form>
