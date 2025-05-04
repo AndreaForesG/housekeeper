@@ -148,7 +148,9 @@ export class DashboardRoomsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result) {
         this.loadRooms();
+      }
     });
   }
 

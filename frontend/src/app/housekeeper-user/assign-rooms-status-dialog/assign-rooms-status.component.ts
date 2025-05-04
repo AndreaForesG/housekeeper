@@ -35,7 +35,7 @@ export class AssignRoomsStatusComponent implements OnInit {
       this.roomStatus.changeRoomStatus(statusData).subscribe(
         () => {
           this.snackBar.open('Estado de las habitaciones cambiado con éxito.', 'Cerrar', { duration: 3000 });
-          this.dialogRef.close();
+          this.dialogRef.close(this.changeStatusForm.value);
         },
         ( error: any) => {
           this.snackBar.open('Hubo un error al cambiar el estado.', 'Cerrar', { duration: 3000 });
