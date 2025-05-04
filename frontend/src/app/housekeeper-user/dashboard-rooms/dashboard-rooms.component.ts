@@ -4,7 +4,6 @@ import {StatusService} from "../../services/status.service";
 import {TasksService} from "../../services/tasks.service";
 import {UsersService} from "../../services/users.service";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
-import {FormGroup} from "@angular/forms";
 import {AssignRoomsDialogComponent} from "../assign-rooms-user-dialog/assign-rooms-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AssignRoomsService} from "../../services/assign-rooms.service";
@@ -32,10 +31,6 @@ export class DashboardRoomsComponent implements OnInit {
   users: any;
   @Input() hotelId!: any;
   groupedRooms: { [key: number]: any[] } = {};
-  selectedUser: number | null = null;
-  selectedTask: number | null = null;
-  selectedStatus: number | null = null;
-  filteredRooms: Room[] = [];
   isMobile: boolean = false;
   filtersVisible: boolean = false;
   isAssigning: boolean = false;
@@ -90,12 +85,6 @@ export class DashboardRoomsComponent implements OnInit {
       });
     });
   }
-
-
-  toggleFilters() {
-    this.filtersVisible = !this.filtersVisible;
-  }
-
 
   assignEmployees() {
     const dialogRef = this.dialog.open(AssignRoomsDialogComponent, {
