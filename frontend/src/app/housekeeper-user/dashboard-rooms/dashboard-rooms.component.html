@@ -1,76 +1,122 @@
-
 <div class="container-fluid">
-  <div class="menu">
+  <div class="menu container-fluid">
     <ng-container *ngIf="!isLoading">
-      <div class="d-flex justify-content-end align-items-center mt-3 mb-3">
-        <button
-          mat-icon-button
-          [matMenuTriggerFor]="menuOpciones"
-          class="btn btn-secondary shadow-sm rounded-circle"
-        >
+      <div class="row d-flex justify-content-between align-items-center mt-3 mb-3">
+        <button mat-icon-button [matMenuTriggerFor]="menuOpciones" class="btn btn-secondary shadow-sm rounded-circle">
           <mat-icon>more_vert</mat-icon>
         </button>
-
-
-        <mat-menu #menuOpciones="matMenu" class="mat-elevation-z4" [overlapTrigger]="false">
-          <button mat-menu-item (click)="assignEmployees()">
-            <mat-icon>{{ isAssigning ? 'exit_to_app' : 'add' }}</mat-icon>
-            <span>{{ isAssigning ? 'Salir de asignar empleados' : 'Asignar empleados' }}</span>
-          </button>
-          <button mat-menu-item (click)="changeStatus()">
-            <mat-icon>bed</mat-icon>
-            <span>Cambiar Estado</span>
-          </button>
-          <button mat-menu-item [matMenuTriggerFor]="menuLeyenda">
-            <mat-icon>info</mat-icon>
-            <span>Ver leyenda de estados</span>
-          </button>
-        </mat-menu>
-        <mat-menu #menuLeyenda="matMenu" class="mat-elevation-z4 p-3" [overlapTrigger]="false">
-          <div style="width: 260px;">
-            <table class="table table-sm mb-0">
-              <thead class="table-light">
-              <tr>
-                <th>Estado</th>
-                <th>Color</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let item of status">
-                <td>{{ item.name }}</td>
-                <td>
-                  <div
-                    class="rounded border"
-                    style="width: 40px; height: 20px;"
-                    [ngStyle]="{ 'background-color': item.color }"
-                  ></div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </mat-menu>
+        <button mat-icon-button (click)="filtersVisible = !filtersVisible" color="primary">
+          <mat-icon>filter_list</mat-icon>
+        </button>
       </div>
     </ng-container>
+    <mat-menu #menuOpciones="matMenu" class="mat-elevation-z4" [overlapTrigger]="false">
+      <button mat-menu-item (click)="assignEmployees()">
+        <mat-icon>{{ isAssigning ? 'exit_to_app' : 'add' }}</mat-icon>
+        <span>{{ isAssigning ? 'Salir de asignar empleados' : 'Asignar empleados' }}</span>
+      </button>
+      <button mat-menu-item (click)="changeStatus()">
+        <mat-icon>bed</mat-icon>
+        <span>Cambiar Estado</span>
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="menuLeyenda">
+        <mat-icon>info</mat-icon>
+        <span>Ver leyenda de estados</span>
+      </button>
+    </mat-menu>
+
+    <mat-menu #menuLeyenda="matMenu" class="mat-elevation-z4 p-3" [overlapTrigger]="false">
+      <div style="width: 260px;">
+        <table class="table table-sm mb-0">
+          <thead class="table-light">
+          <tr>
+            <th>Estado</th>
+            <th>Color</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of status">
+            <td>{{ item.name }}</td>
+            <td>
+              <div class="rounded border" style="width: 40px; height: 20px;"
+                   [ngStyle]="{ 'background-color': item.color }"></div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-menu>
   </div>
 </div>
 
+<div class="container my-3">
+  <div *ngIf="filtersVisible">
+    <div class="row g-2">
+      <div class="col">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Buscar habitación</mat-label>
+          <input type="text" matInput placeholder="Buscar habitación" [(ngModel)]="filter.roomNumber"
+                 (ngModelChange)="getFilteredGroupedRooms()">
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Empleado(s)</mat-label>
+          <mat-select [(ngModel)]="filter.assignedTo" multiple (selectionChange)="getFilteredGroupedRooms()">
+            <mat-option *ngFor="let user of users" [value]="user.name">{{ user.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Estado(s)</mat-label>
+          <mat-select [(ngModel)]="filter.status" multiple (selectionChange)="getFilteredGroupedRooms()">
+            <mat-option *ngFor="let s of status" [value]="s.name">{{ s.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Planta(s)</mat-label>
+          <mat-select [(ngModel)]="filter.floor" multiple (selectionChange)="getFilteredGroupedRooms()">
+            <mat-option *ngFor="let f of Object.keys(groupedRooms)" [value]="f">{{ f }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end "  *ngIf="isAnyFilterApplied()">
+      <button mat-raised-button color="warn" (click)="clearFilters()" matTooltip="Limpiar Filtros">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+
 <div class="container-fluid">
+  <div *ngIf="isFilteredRoomsEmpty()" class="alert alert-warning mt-3">
+    No hay coincidencias con los filtros aplicados.
+  </div>
+
   <mat-accordion [multi]="true" class="p-2 m-2">
-    <mat-expansion-panel *ngFor="let floor of Object.keys(groupedRooms)" [expanded]="true">
+    <mat-expansion-panel *ngFor="let floor of Object.keys(filteredRooms)" [expanded]="true">
       <mat-expansion-panel-header class="bg-blue">
         <mat-panel-title>
           Planta {{ floor }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-
       <div class="container mt-2">
         <div class="row g-3">
-          <div *ngFor="let room of groupedRooms[+floor]" class="col-6 col-md-3 col-lg-2 d-flex">
+          <div *ngFor="let room of filteredRooms[+floor]" class="col-6 col-md-3 col-lg-2 d-flex">
             <div class="card room-card h-100" [ngStyle]="{'border-color': room.status_color}">
               <div class="card-body d-flex flex-column align-items-center justify-content-center">
                 <div class="assigned-to mb-3 text-center">
-                  <p class="fs-6" [ngClass]="{ 'text-unassigned': room.assigned_to === 'Sin asignar' }">{{ room.assigned_to }}</p>
+                  <p class="fs-6"
+                     [ngClass]="{ 'text-unassigned': room.assigned_to === 'Sin asignar' }">{{ room.assigned_to }}</p>
                 </div>
                 <h2 class="card-title text-center mb-0 fs-4">{{ room.number }}</h2>
               </div>

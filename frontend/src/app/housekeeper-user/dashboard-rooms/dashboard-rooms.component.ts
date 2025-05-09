@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {RoomsService} from "../../services/rooms.service";
 import {StatusService} from "../../services/status.service";
 import {TasksService} from "../../services/tasks.service";
@@ -16,6 +16,9 @@ interface Room {
   hotel_id: number;
   number: string;
   floor: number;
+  status: string;
+  status_color: string;
+  assigned_to: string;
 }
 
 @Component({
@@ -23,7 +26,7 @@ interface Room {
   templateUrl: './dashboard-rooms.component.html',
   styleUrls: ['./dashboard-rooms.component.scss']
 })
-export class DashboardRoomsComponent implements OnInit {
+export class DashboardRoomsComponent implements OnInit, OnChanges {
 
   protected readonly Object = Object;
   rooms: any;
@@ -31,11 +34,20 @@ export class DashboardRoomsComponent implements OnInit {
   tasks: any;
   users: any;
   @Input() hotelId!: any;
-  groupedRooms: { [key: number]: any[] } = {};
+  groupedRooms: { [key: string]: Room[] } = {};
+  filteredRooms: { [key: string]: Room[] } = {};
   isMobile: boolean = false;
-  filtersVisible: boolean = false;
   isAssigning: boolean = false;
   isLoading: any;
+  filter = {
+    roomNumber: '',
+    status: [] as string[],
+    floor: [] as string[],
+    assignedTo: [] as string[]
+  };
+  filtersVisible = false;
+
+
 
   constructor(private roomsService: RoomsService,
               private statusService: StatusService,
@@ -55,6 +67,13 @@ export class DashboardRoomsComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['filter']) {
+      this.getFilteredGroupedRooms();
+    }
+  }
+
+
   loadData() {
     this.statusService.getStatusByHotel(this.hotelId).subscribe(value => {
       this.status = value;
@@ -67,24 +86,8 @@ export class DashboardRoomsComponent implements OnInit {
     this.usersService.getEmployeesByHotel(this.hotelId).subscribe((value: any[]) => {
       this.users = value.filter(user => user.user_type !== "hotel_admin");
     })
-
     this.loadRooms();
-  }
 
-  loadRooms() {
-    this.roomsService.getRoomsByHotel(this.hotelId).subscribe((rooms: Room[]) => {
-      this.rooms = rooms;
-
-      this.groupedRooms = this.rooms.reduce((acc: { [key: number]: Room[] }, room: Room) => {
-        acc[room.floor] = acc[room.floor] || [];
-        acc[room.floor].push(room);
-        return acc;
-      }, {} as { [key: number]: Room[] });
-
-      Object.keys(this.groupedRooms).forEach(floor => {
-        this.groupedRooms[+floor].sort((a, b) => Number(a.number) - Number(b.number));
-      });
-    });
   }
 
   assignEmployees() {
@@ -101,7 +104,6 @@ export class DashboardRoomsComponent implements OnInit {
         const formattedDateFrom = this.formatDate(result.date_from);
         const formattedDateTo = this.formatDate(result.date_to);
 
-        // Verificar que la fecha de fin no sea antes de la fecha de inicio
         if (new Date(formattedDateTo) < new Date(formattedDateFrom)) {
           this.snackBar.open('La fecha de fin no puede ser antes de la fecha de inicio', 'Cerrar', {duration: 5000});
           return;
@@ -113,53 +115,47 @@ export class DashboardRoomsComponent implements OnInit {
           date_to: formattedDateTo
         };
 
-        // Filtrar las habitaciones seleccionadas para eliminar 'selectAll'
         payload.room_ids = payload.room_ids.filter((room: string | number) => room !== 'selectAll');
 
-        // Verificar conflictos en el backend antes de proceder con la asignación
         this.assignRoomsService.checkRoomConflicts(payload).subscribe(response => {
           if (response.conflictExists) {
-            // Si ya hay un conflicto, preguntar al usuario si desea sobreescribir
             const confirmDialogRef = this.dialog.open(ConfirmOverwriteDialogComponent, {
               width: '400px',
-              data: { message: response.message }
+              data: {message: response.message}
             });
 
             confirmDialogRef.afterClosed().subscribe(confirm => {
               if (confirm) {
-                // Si el usuario confirma, proceder con la asignación
                 this.assignRoomsService.assignRooms(payload).subscribe({
                   next: (assignedRooms) => {
                     this.updateRoomCards(assignedRooms.assignedRooms);
                     this.loadRooms();
-                    this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', { duration: 3000 });
+                    this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', {duration: 3000});
                   },
                   error: (error) => {
                     const msg = error.error?.error || 'Error al asignar habitaciones';
-                    this.snackBar.open(msg, 'Cerrar', { duration: 5000 });
+                    this.snackBar.open(msg, 'Cerrar', {duration: 5000});
                   }
                 });
               } else {
-                // Si el usuario cancela la acción
-                this.snackBar.open('La asignación de habitaciones ha sido cancelada', 'Cerrar', { duration: 5000 });
+                this.snackBar.open('La asignación de habitaciones ha sido cancelada', 'Cerrar', {duration: 5000});
               }
             });
           } else {
-            // Si no hay conflictos, proceder con la asignación directamente
             this.assignRoomsService.assignRooms(payload).subscribe({
               next: (assignedRooms) => {
                 this.updateRoomCards(assignedRooms.assignedRooms);
                 this.loadRooms();
-                this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', { duration: 3000 });
+                this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', {duration: 3000});
               },
               error: (error) => {
                 const msg = error.error?.error || 'Error al asignar habitaciones';
-                this.snackBar.open(msg, 'Cerrar', { duration: 5000 });
+                this.snackBar.open(msg, 'Cerrar', {duration: 5000});
               }
             });
           }
         }, error => {
-          this.snackBar.open('Error al verificar conflictos', 'Cerrar', { duration: 5000 });
+          this.snackBar.open('Error al verificar conflictos', 'Cerrar', {duration: 5000});
         });
       }
     });
@@ -187,24 +183,11 @@ export class DashboardRoomsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.loadRooms();
       }
     });
   }
-
-  private updateRoomsStatus(statusRooms: any[]): void {
-    this.rooms = this.rooms.map((room: { id: any; color: null; }) => {
-      const assigned = statusRooms.find((status) => status.color === room.color);
-      if (assigned) {
-        room.color = assigned.color;
-      } else {
-        room.color = null;
-      }
-      return room;
-    });
-  }
-
 
   private formatDate(date: any): string {
     if (typeof date === 'string') return date;
@@ -214,7 +197,76 @@ export class DashboardRoomsComponent implements OnInit {
     return d.toISOString().split('T')[0];
   }
 
+  loadRooms() {
+    this.roomsService.getRoomsByHotel(this.hotelId).subscribe((rooms: Room[]) => {
+      this.rooms = rooms;
 
+      this.groupedRooms = this.rooms.reduce((acc: { [key: number]: Room[] }, room: Room) => {
+        acc[room.floor] = acc[room.floor] || [];
+        acc[room.floor].push(room);
+        return acc;
+      }, {} as { [key: number]: Room[] });
+
+      Object.keys(this.groupedRooms).forEach(floor => {
+        this.groupedRooms[+floor].sort((a, b) => Number(a.number) - Number(b.number));
+      });
+
+      this.getFilteredGroupedRooms();
+    });
+  }
+
+  getFilteredGroupedRooms(): void {
+    const filtered: { [key: string]: Room[] } = {};
+
+    if (
+      !this.filter.roomNumber &&
+      this.filter.status.length === 0 &&
+      this.filter.floor.length === 0 &&
+      this.filter.assignedTo.length === 0
+    ) {
+      this.filteredRooms = {...this.groupedRooms};
+      return;
+    }
+
+    Object.keys(this.groupedRooms).forEach(floor => {
+      const rooms = this.groupedRooms[floor].filter((room: Room) => {
+        return (
+          (!this.filter.roomNumber || room.number.includes(this.filter.roomNumber)) &&
+          (!this.filter.status.length || this.filter.status.includes(room.status)) &&
+          (!this.filter.floor.length || this.filter.floor.includes(floor)) &&
+          (!this.filter.assignedTo.length || this.filter.assignedTo.includes(room.assigned_to))
+        );
+      });
+
+      if (rooms.length > 0) {
+        filtered[floor] = rooms;
+      }
+    });
+
+    this.filteredRooms = filtered;
+    this.isFilteredRoomsEmpty()
+  }
+
+  isFilteredRoomsEmpty(): boolean {
+    return Object.values(this.filteredRooms).every(roomArray => roomArray.length === 0);
+  }
+
+  clearFilters(): void {
+    this.filter = {
+      roomNumber: '',
+      assignedTo: [],
+      status: [],
+      floor: []
+    };
+    this.getFilteredGroupedRooms();
+  }
+
+  isAnyFilterApplied(): boolean {
+    return (
+      this.filter.roomNumber !== '' ||
+      this.filter.assignedTo.length > 0 ||
+      this.filter.status.length > 0 ||
+      this.filter.floor.length > 0
+    );
+  }
 }
-
-

@@ -138,26 +138,24 @@ public function importRooms(Request $request)
 
     public function getRoomsByHotel($hotel_id)
     {
-        $rooms = Room::with(['assignments.user', 'roomStatuses.status'])
-        ->where('hotel_id', $hotel_id)
-            ->get();
+        $rooms = Room::where('hotel_id', $hotel_id)->get();
 
         if ($rooms->isEmpty()) {
             return response()->json(['message' => 'No hay habitaciones para este hotel'], 404);
         }
 
         $rooms = $rooms->map(function ($room) {
-            $currentAssignment = $room->assignments
+            $currentAssignment = $room->hasOne(RoomUser::class)
                 ->where('active', true)
-                ->where('date_from', '<=', now()->toDateString())
-                ->where('date_to', '>=', now()->toDateString())
+                ->whereDate('date_from', '<=', now()->toDateString())
+                ->whereDate('date_to', '>=', now()->toDateString())
                 ->first();
 
             $assigned_to = $currentAssignment ? $currentAssignment->user?->name : 'Sin asignar';
 
-            $roomStatus = $room->roomStatuses
-                ->where('date', now()->toDateString())
-                ->sortByDesc('created_at')
+            $roomStatus = $room->roomStatuses()
+                ->whereDate('date', '=', now()->toDateString())
+                ->latest()
                 ->first();
 
             $status_name = $roomStatus ? $roomStatus->status->name : 'Sin estado';
@@ -175,6 +173,7 @@ public function importRooms(Request $request)
 
         return response()->json($rooms);
     }
+
 
 
 
