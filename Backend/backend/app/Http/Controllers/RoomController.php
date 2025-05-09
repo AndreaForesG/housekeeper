@@ -167,8 +167,8 @@ public function importRooms(Request $request)
                 ->get()
                 ->map(function ($roomTask) {
                     return [
-                        'task_id' => $roomTask->task->id,  // ID de la tarea
-                        'task_name' => $roomTask->task->name,  // Nombre de la tarea
+                        'task_id' => $roomTask->task->id,
+                        'task_name' => $roomTask->task->name,
                         'start_date' => $roomTask->start_date,
                         'end_date' => $roomTask->end_date,
                     ];
@@ -181,7 +181,7 @@ public function importRooms(Request $request)
                 'assigned_to' => $assigned_to,
                 'status' => $status_name,
                 'status_color' => $status_color,
-                'tasks' => $tasks->values(),  // Tareas asociadas a la habitación
+                'tasks' => $tasks->values(),
 
             ];
         });
