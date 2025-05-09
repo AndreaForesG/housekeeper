@@ -37,11 +37,16 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatNativeDateModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { AssignRoomsDialogComponent } from './housekeeper-user/assign-rooms-user-dialog/assign-rooms-dialog.component';
 import { AssignRoomsStatusComponent } from './housekeeper-user/assign-rooms-status-dialog/assign-rooms-status.component';
 import { ConfirmOverwriteDialogComponent } from './housekeeper-user/confirm-overwrite-dialog/confirm-overwrite-dialog.component';
+import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import {
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_FORMATS,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS
+} from '@angular/material-moment-adapter';
 
 
 @NgModule({
@@ -88,11 +93,18 @@ import { ConfirmOverwriteDialogComponent } from './housekeeper-user/confirm-over
     FormsModule,
     MatMenuModule,
     MatCheckboxModule,
-    MatNativeDateModule,
     MatDatepickerModule,
     MatAutocompleteModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
