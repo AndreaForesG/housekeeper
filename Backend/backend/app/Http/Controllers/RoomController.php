@@ -161,6 +161,19 @@ public function importRooms(Request $request)
             $status_name = $roomStatus ? $roomStatus->status->name : 'Sin estado';
             $status_color = $roomStatus ? $roomStatus->status->color : '#FFFFFF';
 
+            $tasks = $room->roomTasks()
+                ->whereDate('start_date', '<=', now()->toDateString())
+                ->whereDate('end_date', '>=', now()->toDateString())
+                ->get()
+                ->map(function ($roomTask) {
+                    return [
+                        'task_id' => $roomTask->task->id,  // ID de la tarea
+                        'task_name' => $roomTask->task->name,  // Nombre de la tarea
+                        'start_date' => $roomTask->start_date,
+                        'end_date' => $roomTask->end_date,
+                    ];
+                });
+
             return [
                 'id' => $room->id,
                 'number' => $room->number,
@@ -168,6 +181,8 @@ public function importRooms(Request $request)
                 'assigned_to' => $assigned_to,
                 'status' => $status_name,
                 'status_color' => $status_color,
+                'tasks' => $tasks->values(),  // Tareas asociadas a la habitación
+
             ];
         });
 

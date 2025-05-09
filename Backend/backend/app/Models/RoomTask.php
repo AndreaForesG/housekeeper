@@ -22,10 +22,6 @@ class RoomTask extends Model
         return $this->belongsTo(Task::class);
     }
 
-    public function roomTasks()
-    {
-        return $this->hasMany(RoomTask::class);
-    }
 
 
 

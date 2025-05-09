@@ -43,6 +43,11 @@ class Room extends Model
         return $this->hasMany(RoomUser::class);
     }
 
+    public function roomTasks()
+    {
+        return $this->hasMany(RoomTask::class);
+    }
+
 
 
 
