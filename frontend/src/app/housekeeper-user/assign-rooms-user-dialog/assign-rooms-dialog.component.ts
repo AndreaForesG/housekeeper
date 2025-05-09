@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MatOptionSelectionChange} from "@angular/material/core";
 
 @Component({
   selector: 'app-assign-rooms-dialog',
@@ -38,5 +39,17 @@ export class AssignRoomsDialogComponent implements OnInit {
   }
 
 
+  onToggleAllRooms(event: MatOptionSelectionChange) {
+    if (event.isUserInput) {
+      const allRoomIds = this.data.rooms.map(room => room.id);
+      const current = this.assignForm.get('room_ids')?.value || [];
+
+      const isAllSelected = allRoomIds.every(id => current.includes(id));
+
+      this.assignForm.get('room_ids')?.setValue(
+        isAllSelected ? [] : allRoomIds
+      );
+    }
+  }
 
 }

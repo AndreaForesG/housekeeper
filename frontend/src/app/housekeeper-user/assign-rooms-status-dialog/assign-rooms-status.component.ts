@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {RoomStatusService} from "../../services/room-status.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatOptionSelectionChange} from "@angular/material/core";
 
 @Component({
   selector: 'app-assign-rooms-status',
@@ -32,6 +33,7 @@ export class AssignRoomsStatusComponent implements OnInit {
   onSubmit() {
     if (this.changeStatusForm.valid) {
       const statusData = this.changeStatusForm.value;
+      statusData.rooms = statusData.rooms.filter((room: string) => room !== 'selectAll');
       this.roomStatus.changeRoomStatus(statusData).subscribe(
         () => {
           this.snackBar.open('Estado de las habitaciones cambiado con éxito.', 'Cerrar', { duration: 3000 });
@@ -51,4 +53,16 @@ export class AssignRoomsStatusComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onToggleAllRooms(event: MatOptionSelectionChange) {
+    if (event.isUserInput) {
+      const allRoomIds = this.data.rooms.map(room => room.id);
+      const current = this.changeStatusForm.get('rooms')?.value || [];
+
+      const isAllSelected = allRoomIds.every(id => current.includes(id));
+
+      this.changeStatusForm.get('rooms')?.setValue(
+        isAllSelected ? [] : allRoomIds
+      );
+    }
+  }
 }

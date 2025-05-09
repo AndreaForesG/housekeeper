@@ -32,4 +32,16 @@ class Room extends Model
         return $this->hasMany(RoomStatus::class);
     }
 
+    public function roomUser()
+    {
+        return $this->hasOne(RoomUser::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(RoomUser::class);
+    }
+
+
+
 }

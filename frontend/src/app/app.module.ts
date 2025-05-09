@@ -41,6 +41,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { AssignRoomsDialogComponent } from './housekeeper-user/assign-rooms-user-dialog/assign-rooms-dialog.component';
 import { AssignRoomsStatusComponent } from './housekeeper-user/assign-rooms-status-dialog/assign-rooms-status.component';
+import { ConfirmOverwriteDialogComponent } from './housekeeper-user/confirm-overwrite-dialog/confirm-overwrite-dialog.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { AssignRoomsStatusComponent } from './housekeeper-user/assign-rooms-stat
     DashboardComponent,
     DashboardRoomsComponent,
     AssignRoomsDialogComponent,
-    AssignRoomsStatusComponent
+    AssignRoomsStatusComponent,
+    ConfirmOverwriteDialogComponent
   ],
   imports: [
     BrowserModule,

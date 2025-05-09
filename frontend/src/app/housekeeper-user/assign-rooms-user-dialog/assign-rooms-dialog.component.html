@@ -14,6 +14,9 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Habitaciones</mat-label>
       <mat-select formControlName="room_ids" multiple>
+        <mat-option [value]="'selectAll'" (onSelectionChange)="onToggleAllRooms($event)">
+          Todas las habitaciones
+        </mat-option>
         <mat-option *ngFor="let room of data.rooms" [value]="room.id">
           Habitación {{ room.number }}
         </mat-option>

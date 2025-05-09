@@ -179,6 +179,9 @@ Route::post('/create-payment-intent', [PaymentController::class, 'createIntent']
 // routes/api.php
 Route::post('/assign-rooms', [RoomUserController::class, 'assignRooms']);
 Route::post('room-status/change-status', [RoomStatusController::class, 'changeRoomStatus']);
+Route::post('assign-rooms/check-room-conflicts', [RoomUserController::class, 'checkRoomConflicts']);
+
+
 
 
 

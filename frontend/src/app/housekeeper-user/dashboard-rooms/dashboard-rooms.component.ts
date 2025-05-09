@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AssignRoomsService} from "../../services/assign-rooms.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AssignRoomsStatusComponent} from "../assign-rooms-status-dialog/assign-rooms-status.component";
+import {ConfirmOverwriteDialogComponent} from "../confirm-overwrite-dialog/confirm-overwrite-dialog.component";
 
 interface Room {
   id: number;
@@ -100,6 +101,7 @@ export class DashboardRoomsComponent implements OnInit {
         const formattedDateFrom = this.formatDate(result.date_from);
         const formattedDateTo = this.formatDate(result.date_to);
 
+        // Verificar que la fecha de fin no sea antes de la fecha de inicio
         if (new Date(formattedDateTo) < new Date(formattedDateFrom)) {
           this.snackBar.open('La fecha de fin no puede ser antes de la fecha de inicio', 'Cerrar', {duration: 5000});
           return;
@@ -111,16 +113,53 @@ export class DashboardRoomsComponent implements OnInit {
           date_to: formattedDateTo
         };
 
-        this.assignRoomsService.assignRooms(payload).subscribe({
-          next: (assignedRooms) => {
-            this.updateRoomCards(assignedRooms.assignedRooms);
-            this.loadRooms();
-            this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', {duration: 3000});
-          },
-          error: (error: { error: { error: string; }; }) => {
-            const msg = error.error?.error || 'Error al asignar habitaciones';
-            this.snackBar.open(msg, 'Cerrar', {duration: 5000});
+        // Filtrar las habitaciones seleccionadas para eliminar 'selectAll'
+        payload.room_ids = payload.room_ids.filter((room: string | number) => room !== 'selectAll');
+
+        // Verificar conflictos en el backend antes de proceder con la asignación
+        this.assignRoomsService.checkRoomConflicts(payload).subscribe(response => {
+          if (response.conflictExists) {
+            // Si ya hay un conflicto, preguntar al usuario si desea sobreescribir
+            const confirmDialogRef = this.dialog.open(ConfirmOverwriteDialogComponent, {
+              width: '400px',
+              data: { message: response.message }
+            });
+
+            confirmDialogRef.afterClosed().subscribe(confirm => {
+              if (confirm) {
+                // Si el usuario confirma, proceder con la asignación
+                this.assignRoomsService.assignRooms(payload).subscribe({
+                  next: (assignedRooms) => {
+                    this.updateRoomCards(assignedRooms.assignedRooms);
+                    this.loadRooms();
+                    this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', { duration: 3000 });
+                  },
+                  error: (error) => {
+                    const msg = error.error?.error || 'Error al asignar habitaciones';
+                    this.snackBar.open(msg, 'Cerrar', { duration: 5000 });
+                  }
+                });
+              } else {
+                // Si el usuario cancela la acción
+                this.snackBar.open('La asignación de habitaciones ha sido cancelada', 'Cerrar', { duration: 5000 });
+              }
+            });
+          } else {
+            // Si no hay conflictos, proceder con la asignación directamente
+            this.assignRoomsService.assignRooms(payload).subscribe({
+              next: (assignedRooms) => {
+                this.updateRoomCards(assignedRooms.assignedRooms);
+                this.loadRooms();
+                this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', { duration: 3000 });
+              },
+              error: (error) => {
+                const msg = error.error?.error || 'Error al asignar habitaciones';
+                this.snackBar.open(msg, 'Cerrar', { duration: 5000 });
+              }
+            });
           }
+        }, error => {
+          this.snackBar.open('Error al verificar conflictos', 'Cerrar', { duration: 5000 });
         });
       }
     });
@@ -170,8 +209,11 @@ export class DashboardRoomsComponent implements OnInit {
   private formatDate(date: any): string {
     if (typeof date === 'string') return date;
     const d = new Date(date);
+    const offset = d.getTimezoneOffset();
+    d.setMinutes(d.getMinutes() - offset);
     return d.toISOString().split('T')[0];
   }
+
 
 }
 

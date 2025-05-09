@@ -39,9 +39,6 @@ class RoomUserController extends Controller
 
     public function assignRooms(Request $request)
     {
-
-        Log::info('Datos recibidos:', $request->all());
-
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'room_ids' => 'required|array',
@@ -49,6 +46,59 @@ class RoomUserController extends Controller
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
         ]);
+
+        $assignedRooms = [];
+
+        foreach ($request->room_ids as $room_id) {
+            RoomUser::where('room_id', $room_id)
+                ->where('active', true)
+                ->where(function ($query) use ($request) {
+                    $query->whereBetween('date_from', [$request->date_from, $request->date_to])
+                        ->orWhereBetween('date_to', [$request->date_from, $request->date_to])
+                        ->orWhere(function ($q) use ($request) {
+                            $q->where('date_from', '<=', $request->date_from)
+                                ->where('date_to', '>=', $request->date_to);
+                        });
+                })
+                ->update(['active' => false]);
+
+            $assignment = RoomUser::create([
+                'room_id' => $room_id,
+                'user_id' => $request->user_id,
+                'date_from' => $request->date_from,
+                'date_to' => $request->date_to,
+                'active' => true,
+            ]);
+
+            $room = DB::table('rooms')->find($room_id);
+            $assignedRooms[] = [
+                'room_id' => $room_id,
+                'room_number' => $room->number,
+                'assigned_to' => $assignment->user->name,
+                'date_from' => $assignment->date_from,
+                'date_to' => $assignment->date_to,
+            ];
+        }
+
+        return response()->json([
+            'message' => 'Habitaciones asignadas con éxito',
+            'assignedRooms' => $assignedRooms,
+        ]);
+    }
+
+
+
+    public function checkRoomConflicts(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'room_ids' => 'required|array',
+            'room_ids.*' => 'exists:rooms,id',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date|after_or_equal:date_from',
+        ]);
+
+        $conflicts = [];
 
         foreach ($request->room_ids as $room_id) {
             $room_number = DB::table('rooms')->where('id', $room_id)->value('number');
@@ -64,32 +114,18 @@ class RoomUserController extends Controller
                 })->exists();
 
             if ($conflict) {
-                return response()->json([
-                    'error' => "La habitación $room_number ya está asignada en ese rango de fechas"
-                ], 422);
+                $conflicts[] = "La habitación $room_number ya está asignada en ese rango de fechas";
             }
-
-            RoomUser::create([
-                'room_id' => $room_id,
-                'user_id' => $request->user_id,
-                'date_from' => $request->date_from,
-                'date_to' => $request->date_to,
-            ]);
-
-            $room = DB::table('rooms')->find($room_id);
-            $assignedRooms[] = [
-                'room_id' => $room_id,
-                'room_number' => $room->number,
-                'assigned_to' => User::find($request->user_id)->name,
-                'date_from' => $request->date_from,
-                'date_to' => $request->date_to
-            ];
         }
 
-        return response()->json([
-            'message' => 'Habitaciones asignadas con éxito',
-            'assignedRooms' => $assignedRooms,
-        ]);
+        if (count($conflicts) > 0) {
+            return response()->json([
+                'conflictExists' => true,
+            ], );
+        }
+
+        return response()->json(['conflictExists' => false]);
     }
+
 
 }
