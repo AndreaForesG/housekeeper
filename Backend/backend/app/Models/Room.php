@@ -19,6 +19,7 @@ class Room extends Model
     public function tasks(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Task::class, 'room_tasks');
+
     }
 
 
@@ -41,6 +42,9 @@ class Room extends Model
     {
         return $this->hasMany(RoomUser::class);
     }
+
+
+
 
 
 

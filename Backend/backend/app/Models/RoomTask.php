@@ -9,7 +9,7 @@ class RoomTask extends Model
     protected $table = 'room_tasks';
 
     protected $fillable = [
-        'room_id', 'task_id',
+        'room_id', 'task_id', 'start_date','end_date'
     ];
 
     public function room()
@@ -21,4 +21,12 @@ class RoomTask extends Model
     {
         return $this->belongsTo(Task::class);
     }
+
+    public function roomTasks()
+    {
+        return $this->hasMany(RoomTask::class);
+    }
+
+
+
 }

@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Asignar tareas</h2>
+<div class="container-fluid">
+  <form [formGroup]="tasksForm" (ngSubmit)="onSubmit()" mat-dialog-content class="responsive-form">
+    <div class="form-group">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Tarea</mat-label>
+        <mat-select formControlName="task_id">
+          <mat-option *ngFor="let task of data.tasks" [value]="task.id">{{ task.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Habitaciones</mat-label>
+        <mat-select formControlName="room_ids" multiple>
+          <mat-option [value]="'selectAll'" (onSelectionChange)="onToggleAllRooms($event)">
+            Todas las habitaciones
+          </mat-option>
+          <mat-option *ngFor="let room of data.rooms" [value]="room.id">
+            Habitaciones {{ room.number }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Rango de fechas</mat-label>
+      <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="tasksForm">
+        <input matStartDate formControlName="start_date" placeholder="Desde">
+        <input matEndDate formControlName="end_date" placeholder="Hasta">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #rangePicker></mat-date-range-picker>
+    </mat-form-field>
+
+  </form>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-flat-button color="primary" [disabled]="tasksForm.invalid" (click)="onSubmit()">Asignar</button>
+  </mat-dialog-actions>
+</div>

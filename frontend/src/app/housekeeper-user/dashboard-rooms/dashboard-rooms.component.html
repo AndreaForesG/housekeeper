@@ -12,8 +12,12 @@
     </ng-container>
     <mat-menu #menuOpciones="matMenu" class="mat-elevation-z4" [overlapTrigger]="false">
       <button mat-menu-item (click)="assignEmployees()">
-        <mat-icon>{{ isAssigning ? 'exit_to_app' : 'add' }}</mat-icon>
-        <span>{{ isAssigning ? 'Salir de asignar empleados' : 'Asignar empleados' }}</span>
+        <mat-icon>person</mat-icon>
+        <span>Asignar empleados</span>
+      </button>
+      <button mat-menu-item (click)="assignTasks()">
+        <mat-icon>task</mat-icon>
+        <span>Asignar Tareas</span>
       </button>
       <button mat-menu-item (click)="changeStatus()">
         <mat-icon>bed</mat-icon>

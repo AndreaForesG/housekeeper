@@ -47,6 +47,7 @@ import {
   MAT_MOMENT_DATE_FORMATS,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS
 } from '@angular/material-moment-adapter';
+import { AssignTasksDialogComponent } from './housekeeper-user/assign-room-tasks-dialog/assign-tasks-dialog.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import {
     DashboardRoomsComponent,
     AssignRoomsDialogComponent,
     AssignRoomsStatusComponent,
-    ConfirmOverwriteDialogComponent
+    ConfirmOverwriteDialogComponent,
+    AssignTasksDialogComponent
   ],
   imports: [
     BrowserModule,

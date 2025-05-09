@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoomStatusController;
+use App\Http\Controllers\RoomTaskController;
 use App\Http\Controllers\RoomUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -180,6 +181,8 @@ Route::post('/create-payment-intent', [PaymentController::class, 'createIntent']
 Route::post('/assign-rooms', [RoomUserController::class, 'assignRooms']);
 Route::post('room-status/change-status', [RoomStatusController::class, 'changeRoomStatus']);
 Route::post('assign-rooms/check-room-conflicts', [RoomUserController::class, 'checkRoomConflicts']);
+Route::post('/room-tasks/assign', [RoomTaskController::class, 'assignTaskToRooms']);
+
 
 
 
