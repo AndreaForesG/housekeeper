@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Completar tareas</h2>
+<mat-dialog-content>
+  <div *ngIf="noTasksToComplete" class="alert alert-warning mt-3">
+    No hay tareas por completar.
+  </div>
+  <ng-container *ngFor="let room of filteredRooms">
+    <h3>Habitación {{ room.number }}</h3>
+
+    <table mat-table [dataSource]="room.tasks" class="mat-elevation-z8 w-100 mb-4">
+
+      <ng-container matColumnDef="task_name">
+        <th mat-header-cell *matHeaderCellDef>Tarea</th>
+        <td mat-cell *matCellDef="let task">
+          <span [style.color]="task.task_color">{{ task.task_name }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fechas</th>
+        <td mat-cell *matCellDef="let task">
+          {{ task.start_date }} - {{ task.end_date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="is_done">
+        <th mat-header-cell *matHeaderCellDef>¿Hecha?</th>
+        <td mat-cell *matCellDef="let task">
+          <mat-checkbox [(ngModel)]="task.is_done_check"></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="observation">
+        <th mat-header-cell *matHeaderCellDef>Observación</th>
+        <td mat-cell *matCellDef="let task">
+          <input class="form-control" [(ngModel)]="task.observations" placeholder="Opcional">
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="save">
+        <th mat-header-cell *matHeaderCellDef>Acción</th>
+        <td mat-cell *matCellDef="let task">
+          <button mat-button (click)=" submitTask(task)" [disabled]="task.submitted">
+            {{ task.submitted ? 'Guardado' : 'Guardar' }}
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['task_name', 'date', 'is_done', 'observation', 'save']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['task_name', 'date', 'is_done', 'observation', 'save'];"></tr>
+    </table>
+  </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

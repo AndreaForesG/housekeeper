@@ -11,6 +11,8 @@ export class DashboardComponent implements OnInit {
   date: string = "";
   userName: string = "";
   hotelId: any;
+  userId: any;
+  dataUser: any;
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -32,6 +34,8 @@ export class DashboardComponent implements OnInit {
       console.log('Response data:', data);
       this.hotelId = data.hotel;
       this.userName = data.user.name;
+      this.userId = data.user.id;
+      this.dataUser = data.user;
     })
   }
 

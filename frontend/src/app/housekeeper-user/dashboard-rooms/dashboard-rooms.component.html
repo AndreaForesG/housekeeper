@@ -15,17 +15,29 @@
         <mat-icon>person</mat-icon>
         <span>Asignar empleados</span>
       </button>
-      <button mat-menu-item (click)="assignTasks()">
-        <mat-icon>task</mat-icon>
-        <span>Asignar Tareas</span>
-      </button>
       <button mat-menu-item (click)="changeStatus()">
         <mat-icon>bed</mat-icon>
         <span>Cambiar Estado</span>
       </button>
+      <button mat-menu-item (click)="assignTasks()">
+        <mat-icon>task</mat-icon>
+        <span>Asignar Tareas</span>
+      </button>
+      <button mat-menu-item (click)="completeTasks()">
+        <mat-icon>done_all</mat-icon>
+        <span>Completar Tareas</span>
+      </button>
+      <button mat-menu-item (click)="showLogs()">
+        <mat-icon>visibility</mat-icon>
+        <span>Ver Logs</span>
+      </button>
       <button mat-menu-item [matMenuTriggerFor]="menuLeyenda">
         <mat-icon>info</mat-icon>
         <span>Ver leyenda de estados</span>
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="menuLeyendaTareas">
+        <mat-icon>info</mat-icon>
+        <span>Ver leyenda de tareas</span>
       </button>
     </mat-menu>
 
@@ -50,6 +62,41 @@
         </table>
       </div>
     </mat-menu>
+    <mat-menu #menuLeyendaTareas="matMenu" class="mat-elevation-z4 p-3" [overlapTrigger]="false">
+      <div style="width: 260px;">
+        <table class="table table-sm mb-0">
+          <thead class="table-light">
+          <tr>
+            <th>Estado</th>
+            <th>Color</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of tasks">
+            <td>{{ item.name }}</td>
+            <td>
+              <div class="rounded border" style="width: 40px; height: 20px;"
+                   [ngStyle]="{ 'background-color': item.color }"></div>
+            </td>
+          </tr>
+          <tr>
+            <td>No completada</td>
+            <td>
+              <div class="circle not-completed"></div>
+            </td>
+          </tr>
+          <tr>
+            <td>Completada</td>
+            <td>
+              <div class="circle completed"></div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-menu>
+
+
   </div>
 </div>
 
@@ -92,7 +139,7 @@
       </div>
     </div>
 
-    <div class="col-12 d-flex justify-content-end "  *ngIf="isAnyFilterApplied()">
+    <div class="col-12 d-flex justify-content-end " *ngIf="isAnyFilterApplied()">
       <button mat-raised-button color="warn" (click)="clearFilters()" matTooltip="Limpiar Filtros">
         <mat-icon>close</mat-icon>
       </button>
@@ -123,6 +170,17 @@
                      [ngClass]="{ 'text-unassigned': room.assigned_to === 'Sin asignar' }">{{ room.assigned_to }}</p>
                 </div>
                 <h2 class="card-title text-center mb-0 fs-4">{{ room.number }}</h2>
+                <div class="task-dots mt-2 d-flex flex-wrap justify-content-center">
+                <span
+                  *ngFor="let task of room.tasks"
+                  class="task-dot me-1 mb-1"
+                  [ngStyle]="{
+                     'background-color': task.log?.is_done ? task.task_color : 'transparent',
+                    'border-color': task.task_color
+                    }"
+                    [title]="task.task_name"
+                ></span>
+                </div>
               </div>
             </div>
           </div>

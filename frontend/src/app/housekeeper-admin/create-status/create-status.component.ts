@@ -14,8 +14,21 @@ export class CreateStatusComponent implements OnInit {
 
   statusForm!: FormGroup;
   hotelLogued: any;
-  selectedColor:string = "";
-  colors: string[] = ['#ef3109', '#81d18f', '#a3dde8', '#e9ed9a', '#A833FF', '#FF33A1'];
+  colors: string[] = [
+    '#ef3109', '#81d18f', '#a3dde8', '#e9ed9a', '#A833FF', '#FF33A1',
+    '#E74C3C', '#3498DB', '#1ABC9C', '#9B59B6', '#34495E', '#16A085',
+    '#27AE60', '#2980B9', '#8E44AD', '#2C3E50', '#F1C40F', '#E67E22',
+    '#D35400', '#C0392B', '#BDC3C7', '#7F8C8D', '#95A5A6', '#ECF0F1',
+    '#FFB6C1', '#FFD700', '#ADFF2F', '#00FFFF', '#DA70D6', '#FF69B4',
+    '#CD5C5C', '#FF4500', '#DC143C', '#00FA9A', '#7B68EE', '#FF00FF',
+    '#6A5ACD', '#BA55D3', '#9370DB', '#4682B4', '#5F9EA0', '#40E0D0',
+    '#00CED1', '#48D1CC', '#20B2AA', '#008B8B', '#B0C4DE', '#ADD8E6',
+    '#BDB76B', '#FA8072', '#F08080', '#FFA07A', '#E9967A', '#FFDEAD',
+    '#DEB887', '#D2B48C', '#BC8F8F', '#FFE4C4', '#FFE4E1', '#FFF0F5',
+    '#FFF5EE', '#F5F5DC', '#FDF5E6', '#F5DEB3', '#FFEBCD', '#E6E6FA',
+    '#F8F8FF', '#DCDCDC', '#696969', '#A9A9A9', '#808080', '#C0C0C0',
+    '#000000', '#FFFFFF'
+  ];
 
 
   constructor(private fb: FormBuilder,
@@ -34,7 +47,7 @@ export class CreateStatusComponent implements OnInit {
   initForm() {
     this.statusForm = this.fb.group({
       name: ['', Validators.required],
-      color: ['']
+      color: ['',Validators.required]
     })
   }
 

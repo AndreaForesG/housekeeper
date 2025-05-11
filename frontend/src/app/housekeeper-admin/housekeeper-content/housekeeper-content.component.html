@@ -133,7 +133,12 @@
             <th mat-header-cell *matHeaderCellDef> Nombre</th>
             <td mat-cell *matCellDef="let task"> {{ task.name }}</td>
           </ng-container>
-
+          <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef> Color</th>
+            <td mat-cell *matCellDef="let task">
+              <span class="color-box" [ngStyle]="{'background-color': task.color}"></span>
+            </td>
+          </ng-container>
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Acciones</th>
             <td mat-cell *matCellDef="let task">

@@ -12,8 +12,10 @@ import {AssignRoomsStatusComponent} from "../assign-rooms-status-dialog/assign-r
 import {ConfirmOverwriteDialogComponent} from "../confirm-overwrite-dialog/confirm-overwrite-dialog.component";
 import {AssignTasksDialogComponent} from "../assign-room-tasks-dialog/assign-tasks-dialog.component";
 import {RoomTasksService} from "../../services/room-tasks.service";
+import {CompleteTasksComponent} from "../complete-tasks/complete-tasks.component";
+import {ShowLogsComponent} from "../show-logs/show-logs.component";
 
-interface Room {
+export interface Room {
   id: number;
   hotel_id: number;
   number: string;
@@ -21,6 +23,25 @@ interface Room {
   status: string;
   status_color: string;
   assigned_to: string;
+  user_id?:number;
+  tasks: Tasks[];
+}
+
+export interface Tasks {
+  task_id: number;
+  task_name: string;
+  start_date: string;
+  end_date: string;
+  task_color: string;
+  room_task_id: string;
+  log?: RoomTaskLog;
+}
+
+export interface RoomTaskLog {
+  task_id: number;
+  room_task_id: number;
+  is_done: boolean;
+  observation: string;
 }
 
 @Component({
@@ -36,10 +57,10 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
   tasks: any;
   users: any;
   @Input() hotelId!: any;
+  @Input() userId!: number;
+  @Input() dataUser!: any;
   groupedRooms: { [key: string]: Room[] } = {};
   filteredRooms: { [key: string]: Room[] } = {};
-  isMobile: boolean = false;
-  isAssigning: boolean = false;
   isLoading: any;
   filter = {
     roomNumber: '',
@@ -55,7 +76,6 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
               private statusService: StatusService,
               private tasksService: TasksService,
               private usersService: UsersService,
-              private breakpointObserver: BreakpointObserver,
               private dialog: MatDialog,
               private assignRoomsService: AssignRoomsService,
               private snackBar: MatSnackBar,
@@ -66,9 +86,6 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.loadData();
-    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
-      this.isMobile = result.matches;
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -315,5 +332,40 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
               }
             });
           }
+  completeTasks() {
+    const dialogRef = this.dialog.open(CompleteTasksComponent, {
+      width: '95vw',
+      maxWidth: '100vw',
+      maxHeight: '90vh',
+      data: {
+        rooms: this.rooms,
+        userId: this.userId
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadRooms();
+      }
+    });
+  }
+
+  showLogs() {
+    const dialogRef = this.dialog.open(ShowLogsComponent, {
+      width: '95vw',
+      maxWidth: '100vw',
+      maxHeight: '90vh',
+      data: {
+        hotelId: this.hotelId,
+        dataUser: this.dataUser
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadRooms();
+      }
+    });
+  }
 }
