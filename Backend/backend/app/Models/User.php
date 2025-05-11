@@ -42,6 +42,14 @@ class User extends Authenticatable
         return $this->belongsTo(Plan::class);
     }
 
+    public function roomTaskLogs()
+    {
+        return $this->hasMany(RoomTaskLog::class);
+    }
+
+
+
+
 
     /**
      * The attributes that should be hidden for serialization.

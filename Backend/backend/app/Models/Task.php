@@ -9,7 +9,7 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'hotel_id'];
+    protected $fillable = ['name', 'hotel_id','color'];
 
     public function rooms(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

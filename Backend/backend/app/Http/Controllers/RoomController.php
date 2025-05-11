@@ -152,6 +152,7 @@ public function importRooms(Request $request)
                 ->first();
 
             $assigned_to = $currentAssignment ? $currentAssignment->user?->name : 'Sin asignar';
+            $user_id = $currentAssignment ? $currentAssignment->user?->id : 'Sin asignar';
 
             $roomStatus = $room->roomStatuses()
                 ->whereDate('date', '=', now()->toDateString())
@@ -164,13 +165,27 @@ public function importRooms(Request $request)
             $tasks = $room->roomTasks()
                 ->whereDate('start_date', '<=', now()->toDateString())
                 ->whereDate('end_date', '>=', now()->toDateString())
+                ->with(['task', 'logs' => function ($q) {
+                    $q->latest();
+                }])
                 ->get()
                 ->map(function ($roomTask) {
+                    $log = $roomTask->logs->first();
+
                     return [
+                        'room_task_id' => $roomTask->id,
                         'task_id' => $roomTask->task->id,
                         'task_name' => $roomTask->task->name,
+                        'task_color' => $roomTask->task->color,
                         'start_date' => $roomTask->start_date,
                         'end_date' => $roomTask->end_date,
+                        'log' => $log ? [
+                            'is_done' => $log->is_done,
+                            'observation' => $log->observation
+                        ] : [
+                            'is_done' => false,
+                            'observation' => 'No hay observaciones'
+                        ],
                     ];
                 });
 
@@ -179,10 +194,10 @@ public function importRooms(Request $request)
                 'number' => $room->number,
                 'floor' => $room->floor,
                 'assigned_to' => $assigned_to,
+                'user_id' => $user_id,
                 'status' => $status_name,
                 'status_color' => $status_color,
                 'tasks' => $tasks->values(),
-
             ];
         });
 

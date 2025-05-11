@@ -22,6 +22,19 @@ class RoomTask extends Model
         return $this->belongsTo(Task::class);
     }
 
+    public function roomTaskLogs()
+    {
+        return $this->hasMany(RoomTaskLog::class);
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(RoomTaskLog::class);
+    }
+
+
+
+
 
 
 
