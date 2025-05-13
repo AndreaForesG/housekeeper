@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class NotificationService {
   constructor(private snackBar: MatSnackBar) {}
 
-  showSuccess(message: string, duration: number = 3000): void {
+  showSuccess(message: string, duration: number = 2000): void {
     this.snackBar.open(message, '', {
       duration: duration,
       panelClass: ['success-snackbar'],
@@ -17,7 +17,7 @@ export class NotificationService {
     });
   }
 
-  showError(message: string, duration: number = 3000): void {
+  showError(message: string, duration: number = 2000): void {
     this.snackBar.open(message, '', {
       duration: duration,
       panelClass: ['error-snackbar'],

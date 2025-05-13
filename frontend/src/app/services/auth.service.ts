@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
+import {NotificationService} from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthService {
 
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {}
 
   login(email: string, password: string) {
     return this.http.post(`${this.apiUrl}login`, { email, password }).subscribe(
@@ -26,7 +27,7 @@ export class AuthService {
         }
       },
       (error) => {
-        console.error('Error al iniciar sesión', error);
+        this.notificationService.showError('Error al iniciar sesión');
       }
     );
   }
