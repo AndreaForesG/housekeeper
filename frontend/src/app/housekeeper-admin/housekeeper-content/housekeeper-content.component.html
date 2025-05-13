@@ -4,6 +4,9 @@
 <ng-container *ngIf="!isLoading; else spinner">
   <mat-tab-group>
     <mat-tab label="Empleados">
+      <div *ngIf="dataSourceEmployees.data.length == 0"class="alert alert-warning mt-3">
+        No hay empleados actualmente.
+      </div>
       <mat-expansion-panel *ngIf="dataSourceEmployees" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>
@@ -23,7 +26,7 @@
 
           <ng-container matColumnDef="role">
             <th mat-header-cell *matHeaderCellDef> Rol</th>
-            <td mat-cell *matCellDef="let employee"> {{ employee.role_id }}</td>
+            <td mat-cell *matCellDef="let employee"> {{ employee.role_id == 3 ? 'Gobernanta'  : 'Limpiador' }}</td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
@@ -50,6 +53,9 @@
     </mat-tab>
 
     <mat-tab label="Habitaciones">
+      <div *ngIf="roomDataSource.data.length == 0"class="alert alert-warning mt-3">
+        No hay habitaciones actualmente.
+      </div>
       <mat-expansion-panel *ngIf="roomDataSource" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>
@@ -86,6 +92,9 @@
     </mat-tab>
 
     <mat-tab label="Estados">
+      <div *ngIf="statusDataSource.data.length == 0" class="alert alert-warning mt-3">
+        No hay estados actualmente.
+      </div>
       <mat-expansion-panel *ngIf="statusDataSource" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>
@@ -122,6 +131,9 @@
     </mat-tab>
 
     <mat-tab label="Tareas">
+      <div *ngIf="tasksDataSource.data.length == 0"class="alert alert-warning mt-3">
+        No hay tareas actualmente.
+      </div>
       <mat-expansion-panel *ngIf="tasksDataSource" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>

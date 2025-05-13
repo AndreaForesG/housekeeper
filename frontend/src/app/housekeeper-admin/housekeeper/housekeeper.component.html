@@ -21,6 +21,11 @@
         <mat-icon class="me-2">add_task</mat-icon>
         <span *ngIf="isExpanded">Crear Tareas</span>
       </a>
+
+      <a mat-list-item (click)="showSituation()">
+        <mat-icon class="me-2">visibility</mat-icon>
+        <span *ngIf="isExpanded">Ver Situación</span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 

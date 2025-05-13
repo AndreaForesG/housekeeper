@@ -1,0 +1,75 @@
+<mat-toolbar color="primary">
+  Control de habitaciones
+</mat-toolbar>
+
+<div style="display: flex; align-items: center; gap: 16px; padding: 16px;">
+  <mat-form-field appearance="fill">
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [(ngModel)]="selectedDate"
+      placeholder="Selecciona una fecha"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="searchByDate()">Buscar</button>
+</div>
+
+
+
+<div class="table-container">
+  <mat-card>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="floor">
+        <th mat-header-cell *matHeaderCellDef>Piso</th>
+        <td mat-cell *matCellDef="let hab">{{ hab.floor }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef>Número</th>
+        <td mat-cell *matCellDef="let hab">{{ hab.number }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="assigned_to">
+        <th mat-header-cell *matHeaderCellDef>Empleado</th>
+        <td mat-cell *matCellDef="let hab">{{ hab.assigned_to }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let hab">
+          <mat-chip [ngStyle]="{'background-color': hab.status_color, 'color': '#000'}">
+            {{ hab.status }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="taskStatus">
+        <th mat-header-cell *matHeaderCellDef>Tareas</th>
+        <td mat-cell *matCellDef="let hab">
+          <mat-chip *ngIf="!hab.tasks?.length">
+            Sin tareas
+          </mat-chip>
+          <mat-chip  *ngIf="hab.tasks?.length && hasPendingTasks(hab)" color="accent" selected>
+            Pendientes
+          </mat-chip>
+          <mat-chip  *ngIf="hab.tasks?.length && !hasPendingTasks(hab)" color="primary" selected>
+            Completadas
+          </mat-chip>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+  </mat-card>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+  </mat-dialog-actions>
+</div>

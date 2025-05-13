@@ -5,6 +5,7 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 import {RoomStatusService} from "../../services/room-status.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatOptionSelectionChange} from "@angular/material/core";
+import {NotificationService} from "../../services/notification.service";
 
 @Component({
   selector: 'app-assign-rooms-status',
@@ -19,7 +20,7 @@ export class AssignRoomsStatusComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private roomStatus: RoomStatusService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
     public dialogRef: MatDialogRef<AssignRoomsStatusComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { rooms: any[],  statuses: any[] }
   ) {
@@ -36,11 +37,11 @@ export class AssignRoomsStatusComponent implements OnInit {
       statusData.rooms = statusData.rooms.filter((room: string) => room !== 'selectAll');
       this.roomStatus.changeRoomStatus(statusData).subscribe(
         () => {
-          this.snackBar.open('Estado de las habitaciones cambiado con éxito.', 'Cerrar', { duration: 3000 });
+          this.notificationService.showSuccess('Estado de las habitaciones cambiado con éxito');
           this.dialogRef.close(this.changeStatusForm.value);
         },
         ( error: any) => {
-          this.snackBar.open('Hubo un error al cambiar el estado.', 'Cerrar', { duration: 3000 });
+          this.notificationService.showError('Hubo un error al cambiar el estado.');
         }
       );
     }

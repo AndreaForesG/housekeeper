@@ -10,6 +10,8 @@ import {CreateRoomsComponent} from "../create-rooms/create-rooms.component";
 import {CreateStatusComponent} from "../create-status/create-status.component";
 import {CreateTasksComponent} from "../create-tasks/create-tasks.component";
 import {UsersService} from "../../services/users.service";
+import {RoomsService} from "../../services/rooms.service";
+import {OpenSituationComponent} from "../open-situation/open-situation.component";
 
 @Component({
   selector: 'app-housekeeper',
@@ -23,12 +25,14 @@ export class HousekeeperComponent implements OnInit {
   hotelName: any;
   date: string = "";
   @ViewChild(HousekeeperContentComponent) housekeeperContent!: HousekeeperContentComponent;
+  dataHotel: any;
 
   constructor(private titleService: Title,
               private route: ActivatedRoute,
               private dialog: MatDialog,
               private authService: AuthService,
-              private userService: UsersService
+              private userService: UsersService,
+              private roomsService: RoomsService
               ) { }
 
 
@@ -147,5 +151,20 @@ getLoggedInUser() {
     });
   }
 
+
+  showSituation() {
+    this.roomsService.getRoomsByHotel(this.hotelLogued).subscribe((result: any) => {
+      this.dataHotel = result;
+
+      const dialogRef = this.dialog.open(OpenSituationComponent, {
+        width: '90vw',
+        maxWidth: 'none',
+        data : {
+          dataHotel : this.dataHotel,
+          hotelId: this.hotelLogued
+        }
+      });
+    });
+  }
 
 }

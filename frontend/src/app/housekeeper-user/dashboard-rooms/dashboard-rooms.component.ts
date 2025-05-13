@@ -3,17 +3,16 @@ import {RoomsService} from "../../services/rooms.service";
 import {StatusService} from "../../services/status.service";
 import {TasksService} from "../../services/tasks.service";
 import {UsersService} from "../../services/users.service";
-import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {AssignRoomsDialogComponent} from "../assign-rooms-user-dialog/assign-rooms-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AssignRoomsService} from "../../services/assign-rooms.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {AssignRoomsStatusComponent} from "../assign-rooms-status-dialog/assign-rooms-status.component";
 import {ConfirmOverwriteDialogComponent} from "../confirm-overwrite-dialog/confirm-overwrite-dialog.component";
 import {AssignTasksDialogComponent} from "../assign-room-tasks-dialog/assign-tasks-dialog.component";
 import {RoomTasksService} from "../../services/room-tasks.service";
 import {CompleteTasksComponent} from "../complete-tasks/complete-tasks.component";
 import {ShowLogsComponent} from "../show-logs/show-logs.component";
+import {NotificationService} from "../../services/notification.service";
 
 export interface Room {
   id: number;
@@ -69,6 +68,7 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
     assignedTo: [] as string[]
   };
   filtersVisible = false;
+  isHousekeeper: boolean = false;
 
 
 
@@ -78,7 +78,7 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
               private usersService: UsersService,
               private dialog: MatDialog,
               private assignRoomsService: AssignRoomsService,
-              private snackBar: MatSnackBar,
+              private notificationService: NotificationService,
               private roomTaskService: RoomTasksService
               ) {
   }
@@ -94,6 +94,11 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
     }
   }
 
+  getIsHousekeeper() {
+    if(this.dataUser.role_id == 3) {
+      this.isHousekeeper = true;
+    }
+  }
 
   loadData() {
     this.statusService.getStatusByHotel(this.hotelId).subscribe(value => {
@@ -106,7 +111,11 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
 
     this.usersService.getEmployeesByHotel(this.hotelId).subscribe((value: any[]) => {
       this.users = value.filter(user => user.user_type !== "hotel_admin");
+      if(this.dataUser.role_id !== 3 ) {
+       this.users =  this.users.filter((u:any) => u.id == this.userId);
+      }
     })
+    this.getIsHousekeeper();
     this.loadRooms();
 
   }
@@ -126,7 +135,7 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
         const formattedDateTo = this.formatDate(result.date_to);
 
         if (new Date(formattedDateTo) < new Date(formattedDateFrom)) {
-          this.snackBar.open('La fecha de fin no puede ser antes de la fecha de inicio', 'Cerrar', {duration: 5000});
+          this.notificationService.showError('La fecha de fin no puede ser antes de la fecha de inicio');
           return;
         }
 
@@ -151,15 +160,15 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
                   next: (assignedRooms) => {
                     this.updateRoomCards(assignedRooms.assignedRooms);
                     this.loadRooms();
-                    this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', {duration: 3000});
+                    this.notificationService.showSuccess('Habitaciones asignadas con éxito ✅');
                   },
                   error: (error) => {
                     const msg = error.error?.error || 'Error al asignar habitaciones';
-                    this.snackBar.open(msg, 'Cerrar', {duration: 5000});
+                    this.notificationService.showError(msg);
                   }
                 });
               } else {
-                this.snackBar.open('La asignación de habitaciones ha sido cancelada', 'Cerrar', {duration: 5000});
+                this.notificationService.showError('La asignación de habitaciones ha sido cancelada');
               }
             });
           } else {
@@ -167,16 +176,16 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
               next: (assignedRooms) => {
                 this.updateRoomCards(assignedRooms.assignedRooms);
                 this.loadRooms();
-                this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', {duration: 3000});
+                this.notificationService.showSuccess('Habitaciones asignadas con éxito ✅');
               },
               error: (error) => {
                 const msg = error.error?.error || 'Error al asignar habitaciones';
-                this.snackBar.open(msg, 'Cerrar', {duration: 5000});
+                this.notificationService.showError(msg);
               }
             });
           }
         }, error => {
-          this.snackBar.open('Error al verificar conflictos', 'Cerrar', {duration: 5000});
+          this.notificationService.showError('Error al verificar conflictos');
         });
       }
     });
@@ -221,6 +230,9 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
   loadRooms() {
     this.roomsService.getRoomsByHotel(this.hotelId).subscribe((rooms: Room[]) => {
       this.rooms = rooms;
+      if(this.dataUser.role_id !== 3) {
+        this.rooms = this.rooms.filter((r:any) => r.user_id == this.userId);
+      }
 
       this.groupedRooms = this.rooms.reduce((acc: { [key: number]: Room[] }, room: Room) => {
         acc[room.floor] = acc[room.floor] || [];
@@ -306,7 +318,7 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
         const formattedDateTo = this.formatDate(result.end_date);
 
         if (new Date(formattedDateTo) < new Date(formattedDateFrom)) {
-          this.snackBar.open('La fecha de fin no puede ser antes de la fecha de inicio', 'Cerrar', {duration: 5000});
+          this.notificationService.showSuccess('La fecha de fin no puede ser antes de la fecha de inicio');
           return;
         }
 
@@ -320,15 +332,15 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
                 this.roomTaskService.assignTasks(payload).subscribe({
                   next: (assignedRooms) => {
                     this.loadRooms();
-                    this.snackBar.open('Habitaciones asignadas con éxito ✅', 'Cerrar', {duration: 3000});
+                    this.notificationService.showSuccess('Habitaciones asignadas con éxito ✅');
                   },
                   error: (error) => {
                     const msg = error.error?.error || 'Error al asignar habitaciones';
-                    this.snackBar.open(msg, 'Cerrar', {duration: 5000});
+                    this.notificationService.showError(msg);
                   }
                 });
               } else {
-                this.snackBar.open('La asignación de habitaciones ha sido cancelada', 'Cerrar', {duration: 5000});
+                this.notificationService.showError('La asignación de habitaciones ha sido cancelada');
               }
             });
           }

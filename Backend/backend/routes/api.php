@@ -187,6 +187,7 @@ Route::post('/room-tasks/assign', [RoomTaskController::class, 'assignTaskToRooms
 // routes/api.php
 Route::post('/room-task-logs', [RoomTaskLogController::class, 'store']);
 Route::get('room-task-logs/logs/{hotelId}', [RoomTaskLogController::class, 'getLogs']);
+Route::get('/rooms/{hotel_id}/date/{date}', [RoomController::class, 'getRoomsByHotel']);
 
 
 

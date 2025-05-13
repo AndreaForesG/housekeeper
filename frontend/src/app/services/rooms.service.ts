@@ -29,6 +29,11 @@ export class RoomsService {
     return this.http.get(`${this.apiUrl}/hotel/${hotelId}`);
   }
 
+  getRoomsByHotelAndDate(hotel_id: number, date: string) {
+    return this.http.get(`${this.apiUrl}/${hotel_id}/date/${date}`);
+  }
+
+
   deleteRoom(roomId: number) {
     return this.http.delete<any>(`${this.apiUrl}/${roomId}`);
   }

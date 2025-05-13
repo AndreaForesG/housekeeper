@@ -10,11 +10,6 @@
     <mat-icon>logout</mat-icon>
   </button>
 </nav>
-<!--
-<div class="container text-center mt-5">
-  <h1 class="dashboard-title text-center mb-5">Dashboard <span>Housekeeper</span></h1>
-</div>
--->
 <app-dashboard-rooms *ngIf="hotelId" [hotelId]="hotelId" [userId]="userId" [dataUser] = "dataUser"></app-dashboard-rooms>
 </body>
 </html>

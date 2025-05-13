@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RoomRequest;
 use App\Models\Room;
 use App\Models\RoomUser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -136,35 +137,41 @@ public function importRooms(Request $request)
     }
 }
 
-    public function getRoomsByHotel($hotel_id)
+    public function getRoomsByHotel($hotel_id, $date = null)
     {
+        // Si no se pasa una fecha, usa la fecha actual
+        $date = $date ? Carbon::parse($date)->toDateString() : now()->toDateString();
+
         $rooms = Room::where('hotel_id', $hotel_id)->get();
 
         if ($rooms->isEmpty()) {
             return response()->json(['message' => 'No hay habitaciones para este hotel'], 404);
         }
 
-        $rooms = $rooms->map(function ($room) {
+        $rooms = $rooms->map(function ($room) use ($date) {
+            // Asignaciones actuales para la fecha
             $currentAssignment = $room->hasOne(RoomUser::class)
                 ->where('active', true)
-                ->whereDate('date_from', '<=', now()->toDateString())
-                ->whereDate('date_to', '>=', now()->toDateString())
+                ->whereDate('date_from', '<=', $date)
+                ->whereDate('date_to', '>=', $date)
                 ->first();
 
             $assigned_to = $currentAssignment ? $currentAssignment->user?->name : 'Sin asignar';
             $user_id = $currentAssignment ? $currentAssignment->user?->id : 'Sin asignar';
 
+            // Obtener el estado de la habitación para la fecha
             $roomStatus = $room->roomStatuses()
-                ->whereDate('date', '=', now()->toDateString())
+                ->whereDate('date', '=', $date)
                 ->latest()
                 ->first();
 
             $status_name = $roomStatus ? $roomStatus->status->name : 'Sin estado';
             $status_color = $roomStatus ? $roomStatus->status->color : '#FFFFFF';
 
+            // Tareas asociadas a la habitación
             $tasks = $room->roomTasks()
-                ->whereDate('start_date', '<=', now()->toDateString())
-                ->whereDate('end_date', '>=', now()->toDateString())
+                ->whereDate('start_date', '<=', $date)
+                ->whereDate('end_date', '>=', $date)
                 ->with(['task', 'logs' => function ($q) {
                     $q->latest();
                 }])

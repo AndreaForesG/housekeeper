@@ -50,6 +50,8 @@ import {
 import { AssignTasksDialogComponent } from './housekeeper-user/assign-room-tasks-dialog/assign-tasks-dialog.component';
 import { CompleteTasksComponent } from './housekeeper-user/complete-tasks/complete-tasks.component';
 import { ShowLogsComponent } from './housekeeper-user/show-logs/show-logs.component';
+import { OpenSituationComponent } from './housekeeper-admin/open-situation/open-situation.component';
+import {MatChipsModule} from "@angular/material/chips";
 
 
 @NgModule({
@@ -72,7 +74,8 @@ import { ShowLogsComponent } from './housekeeper-user/show-logs/show-logs.compon
     ConfirmOverwriteDialogComponent,
     AssignTasksDialogComponent,
     CompleteTasksComponent,
-    ShowLogsComponent
+    ShowLogsComponent,
+    OpenSituationComponent
   ],
   imports: [
     BrowserModule,
@@ -101,6 +104,7 @@ import { ShowLogsComponent } from './housekeeper-user/show-logs/show-logs.compon
     MatCheckboxModule,
     MatDatepickerModule,
     MatAutocompleteModule,
+    MatChipsModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
