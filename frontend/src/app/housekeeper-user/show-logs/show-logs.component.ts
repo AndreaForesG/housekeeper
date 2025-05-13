@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {RoomTaskLogsService} from "../../services/room-task-logs.service";
 import {Observable} from "rxjs";
@@ -14,7 +14,7 @@ import {LogModel} from "../../models/log.model";
 })
 
 
-export class ShowLogsComponent implements OnInit {
+export class ShowLogsComponent implements OnInit, AfterViewInit {
 
   hotelId: any;
   roleId: number | undefined;
@@ -23,7 +23,6 @@ export class ShowLogsComponent implements OnInit {
   displayedColumns: string[] = ['task_name', 'user_name', 'observation', 'is_done', 'completed_at'];
   dataSource = new MatTableDataSource<LogModel>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  pageSize = 10;
 
   constructor(
     public dialogRef: MatDialogRef<ShowLogsComponent>,
@@ -38,6 +37,13 @@ export class ShowLogsComponent implements OnInit {
     this.loadLogs();
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+    });
+  }
+
+
   loadLogs() {
     this.logs$ = this.roomTasksLogService.getLogsForHotel(this.hotelId);
     this.logs$.subscribe(logs => {
@@ -46,7 +52,11 @@ export class ShowLogsComponent implements OnInit {
       }
       this.dataSource.data = logs;
 
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+      });
     });
+
   }
 
 
