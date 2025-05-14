@@ -7,7 +7,7 @@
       <div *ngIf="dataSourceEmployees.data.length == 0"class="alert alert-warning mt-3">
         No hay empleados actualmente.
       </div>
-      <mat-expansion-panel *ngIf="dataSourceEmployees" [expanded]="true">
+      <mat-expansion-panel *ngIf="dataSourceEmployees.data.length > 0" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>
             Empleados
@@ -56,7 +56,7 @@
       <div *ngIf="roomDataSource.data.length == 0"class="alert alert-warning mt-3">
         No hay habitaciones actualmente.
       </div>
-      <mat-expansion-panel *ngIf="roomDataSource" [expanded]="true">
+      <mat-expansion-panel *ngIf="roomDataSource.data.length > 0" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>
             Habitaciones
@@ -95,7 +95,7 @@
       <div *ngIf="statusDataSource.data.length == 0" class="alert alert-warning mt-3">
         No hay estados actualmente.
       </div>
-      <mat-expansion-panel *ngIf="statusDataSource" [expanded]="true">
+      <mat-expansion-panel *ngIf="statusDataSource.data.length > 0" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>
             Estados
@@ -134,7 +134,7 @@
       <div *ngIf="tasksDataSource.data.length == 0"class="alert alert-warning mt-3">
         No hay tareas actualmente.
       </div>
-      <mat-expansion-panel *ngIf="tasksDataSource" [expanded]="true">
+      <mat-expansion-panel *ngIf="tasksDataSource.data.length >0" [expanded]="true">
         <mat-expansion-panel-header class="expansion-panel">
           <mat-panel-title>
             Tareas
