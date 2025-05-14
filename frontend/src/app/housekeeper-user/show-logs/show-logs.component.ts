@@ -50,6 +50,11 @@ export class ShowLogsComponent implements OnInit, AfterViewInit {
       if (this.roleId !== 3) {
         logs = logs.filter(log => log.user_id === this.userId);
       }
+
+      logs.sort((a, b) => {
+        return new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime();
+      });
+
       this.dataSource.data = logs;
 
       setTimeout(() => {
