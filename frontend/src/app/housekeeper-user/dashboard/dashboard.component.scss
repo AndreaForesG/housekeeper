@@ -27,3 +27,23 @@
   }
 }
 
+.logo-navbar {
+  height: 40px;
+  width: auto;
+  filter: drop-shadow(0 0 2px white);
+}
+
+@media (max-width: 768px) {
+  .user-info span {
+    font-size: 0.20rem;
+  }
+
+  .user-info {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .logo-navbar {
+    height: 40px;
+  }
+}
