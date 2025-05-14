@@ -44,7 +44,7 @@ class RoomController extends Controller
             ->exists();
 
         if ($exists) {
-            return response()->json(['error' => 'Esta habitación ya existe en esta planta'], 409);
+            return response()->json(['error' => 'La habitación ya existe en la planta.'], 409);
         }
 
         $room = Room::create($request->all());
@@ -139,17 +139,11 @@ public function importRooms(Request $request)
 
     public function getRoomsByHotel($hotel_id, $date = null)
     {
-        // Si no se pasa una fecha, usa la fecha actual
         $date = $date ? Carbon::parse($date)->toDateString() : now()->toDateString();
 
         $rooms = Room::where('hotel_id', $hotel_id)->get();
 
-        if ($rooms->isEmpty()) {
-            return response()->json(['message' => 'No hay habitaciones para este hotel'], 404);
-        }
-
         $rooms = $rooms->map(function ($room) use ($date) {
-            // Asignaciones actuales para la fecha
             $currentAssignment = $room->hasOne(RoomUser::class)
                 ->where('active', true)
                 ->whereDate('date_from', '<=', $date)
@@ -159,7 +153,6 @@ public function importRooms(Request $request)
             $assigned_to = $currentAssignment ? $currentAssignment->user?->name : 'Sin asignar';
             $user_id = $currentAssignment ? $currentAssignment->user?->id : 'Sin asignar';
 
-            // Obtener el estado de la habitación para la fecha
             $roomStatus = $room->roomStatuses()
                 ->whereDate('date', '=', $date)
                 ->latest()
@@ -168,7 +161,6 @@ public function importRooms(Request $request)
             $status_name = $roomStatus ? $roomStatus->status->name : 'Sin estado';
             $status_color = $roomStatus ? $roomStatus->status->color : '#FFFFFF';
 
-            // Tareas asociadas a la habitación
             $tasks = $room->roomTasks()
                 ->whereDate('start_date', '<=', $date)
                 ->whereDate('end_date', '>=', $date)
