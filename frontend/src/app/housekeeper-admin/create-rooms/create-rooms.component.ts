@@ -12,7 +12,7 @@ import {AuthService} from "../../services/auth.service";
 })
 export class CreateRoomsComponent implements OnInit {
 
-  roomForm!:FormGroup;
+  roomForm!: FormGroup;
   hotelId: number = 0;
   selectedFile: File | null = null;
   rooms: any;
@@ -33,7 +33,6 @@ export class CreateRoomsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.loadRooms();
     this.getLoggedInUser();
   }
 
@@ -54,23 +53,32 @@ export class CreateRoomsComponent implements OnInit {
 
 
   addRoom() {
-    if(this.plan_id == 1) {
-      if(this.rooms.length >= 10) {
+    if (this.plan_id == 1) {
+      if (this.rooms?.length >= 10) {
         this.notificationService.showError("Ha llegado al límite de habitaciones contratadas de su plan gratuito.");
         return;
       }
     }
-    if(this.plan_id == 2) {
-      if(this.rooms.length >= 30) {
+    if (this.plan_id == 2) {
+      if (this.rooms?.length >= 30) {
         this.notificationService.showError("Ha llegado al límite de habitaciones contratadas de su plan básico.");
         return;
       }
     }
-    this.roomsService.createRoom(this.roomForm.value).subscribe((response: any) => {
-      this.notificationService.showSuccess('Habitación añadida con éxito');
-      this.loadRooms();
-      this.dialogRef.close(true);
+    this.roomsService.createRoom(this.roomForm.value).subscribe({
+      next: (response: any) => {
+        this.notificationService.showSuccess('Habitación añadida con éxito');
+        this.dialogRef.close(true);
+      },
+      error: (err) => {
+        if (err.status === 409) {
+          this.notificationService.showError(err.error.error);
+        } else {
+          this.notificationService.showError('Ocurrió un error inesperado');
+        }
+      }
     });
+
   }
 
   onFileSelect(event: any) {
@@ -91,7 +99,7 @@ export class CreateRoomsComponent implements OnInit {
       const lines = fileContent.split('\n').filter(line => line.trim() !== '');
 
       const numNewRooms = lines.length > 1 ? lines.length - 1 : 0;
-      const totalRooms = this.rooms.length + numNewRooms;
+      const totalRooms = this.rooms?.length + numNewRooms;
 
       let maxRooms = 0;
       if (this.plan_id === 1) maxRooms = 10;
@@ -105,10 +113,9 @@ export class CreateRoomsComponent implements OnInit {
       }
 
       this.roomsService.importRooms(this.selectedFile as File, this.hotelId).subscribe(response => {
-        if(!response.error) {
+        if (!response.error) {
           this.notificationService.showSuccess('Habitaciones creadas correctamente');
-          this.loadRooms();
-          this.dialogRef.close(true);
+          this.dialogRef.close();
         } else {
           this.notificationService.showError(response.error)
         }
@@ -123,17 +130,8 @@ export class CreateRoomsComponent implements OnInit {
   }
 
 
-
-
-
-
   onClose(): void {
     this.dialogRef.close();
   }
 
-  loadRooms() {
-    this.roomsService.getRoomsByHotel(this.hotelId).subscribe(rooms =>
-     this.rooms = rooms
-    );
-  }
 }

@@ -8,20 +8,20 @@
   <div class="card-body">
     <form [formGroup]="roomForm" (ngSubmit)="addRoom()">
       <div class="mb-3">
-        <label class="form-label">Número de Habitación:</label>
-        <input formControlName="number" type="text" class="form-control"
-               [ngClass]="{'is-invalid': roomForm.get('number')?.invalid && roomForm.get('number')?.touched}" required>
-        <div *ngIf="roomForm.get('number')?.invalid && roomForm.get('number')?.touched" class="invalid-feedback">
-          <span *ngIf="roomForm.get('number')?.hasError('required')">El número de habitación es obligatorio.</span>
-        </div>
-      </div>
-      <div class="mb-3">
         <label class="form-label">Planta:</label>
         <input formControlName="floor" type="number" class="form-control"
                [ngClass]="{'is-invalid': roomForm.get('floor')?.invalid && roomForm.get('floor')?.touched}" required>
         <div *ngIf="roomForm.get('floor')?.invalid && roomForm.get('floor')?.touched" class="invalid-feedback">
           <span *ngIf="roomForm.get('floor')?.hasError('required')">La planta es obligatoria.</span>
           <span *ngIf="roomForm.get('floor')?.hasError('min')">Debe ser un número positivo.</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Número de Habitación:</label>
+        <input formControlName="number" type="text" class="form-control"
+               [ngClass]="{'is-invalid': roomForm.get('number')?.invalid && roomForm.get('number')?.touched}" required>
+        <div *ngIf="roomForm.get('number')?.invalid && roomForm.get('number')?.touched" class="invalid-feedback">
+          <span *ngIf="roomForm.get('number')?.hasError('required')">El número de habitación es obligatorio.</span>
         </div>
       </div>
       <button type="submit" class="btn addRoom text-white w-100" [disabled]="roomForm.invalid">
@@ -36,6 +36,11 @@
 <hr>
 
 <div class="d-flex gap-2 card shadow-lg">
+  <div class="p-2">
+    <a  href="assets/planta_habitacion.csv" download class="text-primary">
+      <i class="fas fa-file-download"></i> Descargar archivo de ejemplo (CSV)
+    </a>
+  </div>
   <input type="file" class="form-control" (change)="onFileSelect($event)">
   <button (click)="uploadFile()" class="btn addRoom text-white" [disabled]="!selectedFile">
     <i class="fas fa-upload "></i> Subir CSV
