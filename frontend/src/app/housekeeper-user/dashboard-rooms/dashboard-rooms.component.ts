@@ -13,6 +13,7 @@ import {RoomTasksService} from "../../services/room-tasks.service";
 import {CompleteTasksComponent} from "../complete-tasks/complete-tasks.component";
 import {ShowLogsComponent} from "../show-logs/show-logs.component";
 import {NotificationService} from "../../services/notification.service";
+import {OpenSituationComponent} from "../../housekeeper-admin/open-situation/open-situation.component";
 
 export interface Room {
   id: number;
@@ -65,10 +66,12 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
     roomNumber: '',
     status: [] as string[],
     floor: [] as string[],
-    assignedTo: [] as string[]
+    assignedTo: [] as string[],
+    tasks: [] as number[]
   };
   filtersVisible = false;
   isHousekeeper: boolean = false;
+  dataHotel: any;
 
 
 
@@ -255,7 +258,8 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
       !this.filter.roomNumber &&
       this.filter.status.length === 0 &&
       this.filter.floor.length === 0 &&
-      this.filter.assignedTo.length === 0
+      this.filter.assignedTo.length === 0 &&
+      this.filter.tasks.length === 0
     ) {
       this.filteredRooms = {...this.groupedRooms};
       return;
@@ -267,7 +271,9 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
           (!this.filter.roomNumber || room.number.includes(this.filter.roomNumber)) &&
           (!this.filter.status.length || this.filter.status.includes(room.status)) &&
           (!this.filter.floor.length || this.filter.floor.includes(floor)) &&
-          (!this.filter.assignedTo.length || this.filter.assignedTo.includes(room.assigned_to))
+          (!this.filter.assignedTo.length || this.filter.assignedTo.includes(room.assigned_to)) &&
+          (!this.filter.tasks.length ||
+            room.tasks.some(task => this.filter.tasks.includes(task.task_id)))
         );
       });
 
@@ -289,7 +295,8 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
       roomNumber: '',
       assignedTo: [],
       status: [],
-      floor: []
+      floor: [],
+      tasks: []
     };
     this.getFilteredGroupedRooms();
   }
@@ -378,6 +385,21 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
       if (result) {
         this.loadRooms();
       }
+    });
+  }
+
+  showSituation() {
+    this.roomsService.getRoomsByHotel(this.hotelId).subscribe((result: any) => {
+      this.dataHotel = result;
+
+      const dialogRef = this.dialog.open(OpenSituationComponent, {
+        width: '90vw',
+        maxWidth: 'none',
+        data : {
+          dataHotel : this.dataHotel,
+          hotelId: this.hotelId
+        }
+      });
     });
   }
 }

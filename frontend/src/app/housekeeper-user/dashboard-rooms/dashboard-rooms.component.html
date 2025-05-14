@@ -32,6 +32,10 @@
         <mat-icon>visibility</mat-icon>
         <span>Ver Logs</span>
       </button>
+      <button *ngIf="isHousekeeper" mat-menu-item (click)="showSituation()">
+        <mat-icon>calendar_month</mat-icon>
+        <span>Consultar Resumen</span>
+      </button>
       <button mat-menu-item [matMenuTriggerFor]="menuLeyenda">
         <mat-icon>info</mat-icon>
         <span>Ver leyenda de estados</span>
@@ -112,7 +116,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col">
+      <div class="col" *ngIf="isHousekeeper">
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Empleado(s)</mat-label>
           <mat-select [(ngModel)]="filter.assignedTo" multiple (selectionChange)="getFilteredGroupedRooms()">
@@ -131,6 +135,16 @@
       </div>
 
       <div class="col">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Tarea(s)</mat-label>
+        <mat-select [(ngModel)]="filter.tasks" multiple (selectionChange)="getFilteredGroupedRooms()">
+          <mat-option *ngFor="let t of tasks" [value]="t.id">{{ t.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
+    <div class="col">
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Planta(s)</mat-label>
           <mat-select [(ngModel)]="filter.floor" multiple (selectionChange)="getFilteredGroupedRooms()">
@@ -151,8 +165,9 @@
 
 <div class="container-fluid">
   <div *ngIf="isFilteredRoomsEmpty()" class="alert alert-warning mt-3">
-    No hay coincidencias con los filtros aplicados.
+    No hay coincidencias.
   </div>
+
 
   <mat-accordion [multi]="true" class="p-2 m-2">
     <mat-expansion-panel *ngFor="let floor of Object.keys(filteredRooms)" [expanded]="true">

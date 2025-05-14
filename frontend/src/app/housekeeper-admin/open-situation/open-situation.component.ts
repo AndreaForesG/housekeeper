@@ -16,7 +16,7 @@ export class OpenSituationComponent implements OnInit, AfterViewInit {
   rooms : any[]= [];
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  selectedDate: string = '';
+  selectedDate: string = new Date().toISOString().split('T')[0];
 
 
   constructor(
