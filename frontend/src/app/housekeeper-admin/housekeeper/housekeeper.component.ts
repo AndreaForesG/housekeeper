@@ -89,7 +89,7 @@ getLoggedInUser() {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.housekeeperContent.loadEmployees();
+        this.housekeeperContent.loadRooms();
       }
     });
   }
