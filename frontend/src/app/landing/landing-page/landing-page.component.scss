@@ -17,6 +17,14 @@ html, body {
   color: #223344;
   font-weight: bold;
   font-size: 2.5rem;
+  line-height: 3rem;
+}
+
+.titleHero2 {
+  color: #223344;
+  font-weight: bold;
+  font-size: 2rem;
+  line-height: 2.2rem;
 }
 
 .title {
@@ -25,43 +33,11 @@ html, body {
   font-size: 1.5rem;
 }
 
-.titleElegirnos {
-  color: #223344;
-  font-weight: bold;
-  font-size: 2rem;
-  text-decoration: underline;
-  margin-top:3rem;
-}
-
 .footer {
   color: #e1dddd;
   background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%) fixed;
 }
 
-.imgHero {
-  clip-path: polygon(1% 0%, 0% 81%, 17% 99%, 100% 99%, 99% 0%);
-}
-
-.container-imgHero {
-  position: relative;
-  overflow: hidden;
-}
-
-.housekeeer {
-  color: #009ebc;
-}
-
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
-  position: relative;
-  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%) fixed;
-}
 
 .sectionResponsive {
   background-color: #c4c4c436;
@@ -74,10 +50,12 @@ html, body {
   object-fit: cover;
 }
 
-
-
 .sectionHero {
   background: white;
+}
+
+body {
+  font: 16px / 1.7 'Source Sans Pro', Helvetica, 'Helvetica Neue', Arial, sans-serif;
 }
 
 
@@ -85,20 +63,10 @@ html, body {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Oscurece la imagen */
+  background: rgba(0, 0, 0, 0.6);
 }
 
 
-.titleHousekeeper {
-  color: #009ebc;
-  font-size: 7rem;
-  line-height: 8rem;
-}
-
-.slogan {
-  color: darkgrey;
-  font-size: 4rem;
-}
 
 .bg-navbar {
   background-image: linear-gradient(#ffffffd9, #ffffffd9);
@@ -164,9 +132,6 @@ html, body {
   }
 }
 
-.icons {
-  font-size: 3rem;
-}
 
 .section {
   padding: 6rem;
@@ -261,12 +226,6 @@ html, body {
 
 
 @media (max-width: 768px) {
-  .titleHousekeeper {
-    font-size: 2rem;
-  }
-  .slogan {
-    font-size: 2rem;
-  }
   .hero {
     background-attachment: scroll;
     min-height: 30vh;
@@ -280,12 +239,7 @@ html, body {
 }
 
 @media (max-width: 1180px) {
-  .titleHousekeeper {
-    font-size: 3rem;
-  }
-  .slogan {
-    font-size: 2rem;
-  }
+
   .hero {
     background-attachment: scroll;
     min-height: 30vh;
@@ -298,5 +252,213 @@ html, body {
     width:12%;
   }
 
-
 }
+
+
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  text-align: center;
+  top: 40vh;
+  font-size: 2rem;
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  text-align: center;
+  top: 40vh;
+  font-size: 2rem;
+}
+
+.titleHousekeeper,
+.slogan {
+  opacity: 0;
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.titleHousekeeper {
+  animation-delay: 0.3s;
+}
+
+.slogan {
+  animation-delay: 1s;
+}
+
+.titleSofware {
+  font-size: 45px;
+  line-height: 3rem;
+  margin: 2rem;
+}
+.slider-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  overflow: hidden;
+}
+
+.slider img {
+  width: 100%;
+  height: 650px;
+  object-fit: contain;
+  background: transparent;
+  display: block;
+  margin: 0 auto;
+  transition: opacity 0.7s ease-in-out;
+}
+
+/* Dots */
+.dots {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.dots span {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0 8px;
+  background-color: #bbb;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.4s;
+}
+
+.dots span.active {
+  background-color: #333;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .slider img {
+    height: 550px;
+  }
+}
+
+@media (max-width: 900px) {
+  .slider img {
+    height: 400px;
+  }
+}
+
+@media (max-width: 640px) {
+  .slider-container {
+    max-width: 100%;
+  }
+
+  .slider img {
+    height: 280px;
+  }
+}
+
+.nav-link:hover {
+  color: var(--bs-primary);
+  transition: color 0.3s ease;
+}
+
+.min-width-260 {
+  min-width: 260px;
+}
+
+#testimonios .overflow-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+#testimonios .overflow-auto::-webkit-scrollbar {
+  height: 6px;
+}
+#testimonios .overflow-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+@media (min-width: 768px) {
+  #testimonios .overflow-auto {
+    overflow-x: visible !important;
+  }
+
+  #testimonios .d-flex {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  #testimonios .min-width-260 {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: auto;
+  }
+}
+
+.img-slide-in-right {
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideInRight 0.8s forwards ease-out;
+  animation-delay: 1s;
+}
+
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+.img-slide-in-left {
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: slideInLeft 0.8s forwards ease-out;
+  animation-delay: 2s;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+
+
+

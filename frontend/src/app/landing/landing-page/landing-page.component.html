@@ -3,248 +3,293 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
   <title>Housekeeper</title>
 </head>
 <body>
 <header>
   <nav class="navbar navbar-expand-lg navbar-light bg-navbar fixed-top">
-    <div class="container-fluid">
-      <img class="img-fluid logoMenu" src="assets/logoMenu.png" alt="logo">
+    <div class="container-fluid d-flex align-items-center">
+      <a class="navbar-brand" href="#">
+        <img src="assets/logoMenu.png" alt="logo" style="max-height: 40px;">
+      </a>
       <button class="navbar-toggler" type="button" (click)="toggleMenu()"
-              aria-controls="navbarNav" [attr.aria-expanded]="isMenuCollapsed.toString()"
+              aria-controls="navbarNav" [attr.aria-expanded]="(!isMenuCollapsed).toString()"
               aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav" [ngClass]="{'show': !isMenuCollapsed}">
-        <div class="navbar-nav mx-auto text-center">
-          <a class="navbar-brand" href="#inicio">Inicio</a>
-          <a class="navbar-brand" href="#caracteristicas">Características</a>
-          <a class="navbar-brand" href="#impacto">Impacto</a>
-          <a class="navbar-brand" href="#support">Soporte</a>
-          <a class="navbar-brand" href="#testimonios">Testimonios</a>
-        </div>
-        <a class="navbar-brand ms-auto title" routerLink="/login">Iniciar Sesión</a>
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#experiencia">Experiencia</a></li>
+          <li class="nav-item"><a class="nav-link" href="#planes">Planes</a></li>
+          <li class="nav-item"><a class="nav-link" href="#support">Soporte</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonios">Testimonios</a></li>
+        </ul>
+        <button class="btn btn-outline-primary" style="box-shadow: 0 4px 6px rgba(0,0,0,0.2);" routerLink="/login">
+          Iniciar Sesión
+        </button>
+
       </div>
     </div>
   </nav>
-  <section class="container-fluid hero" id="inicio">
-    <div class="text-center">
-      <h1 class="titleHousekeeper">housekeeper</h1>
-      <h2 class="slogan">organiza cada tarea, mejora cada estancia</h2>
-    </div>
-  </section>
 </header>
-<section class="container-fluid p-5">
-  <div class="row d-flex align-items-start">
-    <div class="col-md-4 mt-5">
-      <p class="titleHero">Simplifica la gestión de limpieza de tu hotel con <span class="housekeeer">HOUSEKEEPER</span>
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-6 mt-5">
+<section class="container-fluid py-5 px-3 px-lg-5 mt-5 mt-lg-0" id="inicio">
+  <div class="row align-items-center">
+    <div class="col-lg-4 mb-4 mb-md-0 ml-2 col-md-5">
+      <p class="titleHero">Todo lo que necesita en un software de gestión de tareas</p>
       <p>
-        Te presento nuestra aplicación llamada <strong>Housekeeper</strong>, especializada en organizar la <br>
+        <strong>Housekeeper</strong>, especializada en organizar la
         gestión de limpieza en los hoteles. Gracias a su <strong>facilidad de uso</strong> y su diseño
-        <strong>intuitivo</strong>, podrás gestionar las tareas de limpieza de forma rápida y eficiente. <br>
-        Olvídate del caos y optimiza tus operaciones con nuestra plataforma.<br></p>
-      <div class="d-flex justify-content-center">
-        <button class="btn btn-info mt-3 bounce-effect">Solicitar Una Demo</button>
-      </div>
-    </div>
-    <div class="col-12 text-center">
-      <h3 class="titleElegirnos">Pero, ¿Por qué deberías elegirnos?</h3>
-    </div>
-  </div>
-</section>
-<section class="container-fluid mt-5 sectionResponsive section" id="caracteristicas">
-  <h3 class="title">Usabiliad y accesibilidad en <span class="housekeeer">todos los dispositivos.</span></h3>
-  <hr>
-  <h6 class="fs-4">Nuestra aplicación destaca por su interfaz de usuario intuitiva y fácil de usar desde cualquier dispositivo.</h6>
-  <br>
-  <div class="row">
-    <div class="col-md-4">
-      <figure class="zoom-effect">
-        <img class="img-fluid" src="assets/movil.webp" alt="mockupMovil">
-      </figure>
-      <h5>Mockup Móvil</h5>
-      <hr>
+        <strong>intuitivo</strong>, podrás gestionar las tareas de limpieza de forma rápida y eficiente.
+        Olvídate del caos y optimiza tus operaciones con nuestra plataforma.
+      </p>
+      <div class="d-flex flex-column flex-sm-row gap-3 mt-3">
+        <a href="https://wa.me/635589334?text=Hola%2C%20quiero%20una%20demo" target="_blank">
+          <button class="btn btn-primary bounce-effect">Solicitar Una Demo</button>
+        </a>
 
+        <a href="https://wa.me/635589334?text=Hola%2C%20quisiera%20saber%20m%C3%A1s%20sobre%20su%20servicio" target="_blank">
+          <button class="btn btn-outline-primary bounce-effect">Quiero saber más</button>
+        </a>
+
+      </div>
     </div>
-    <div class="col-md-4">
-      <figure class="zoom-effect">
-        <img class="img-fluid" src="assets/tablet.webp" alt="mockupTablet">
-      </figure>
-      <h5>Mockup Tablet</h5>
-      <hr>
-    </div>
-    <div class="col-md-4">
-      <figure class="zoom-effect">
-        <img class="img-fluid" src="assets/pc.webp" alt="mockupPc">
-      </figure>
-      <h5>Mockup Portátil</h5>
-      <hr>
+    <div class="col-lg-8 col-md-7">
+      <img class="img-fluid" src="assets/213shots_so.png" alt="mockup">
     </div>
   </div>
-  <div class="row mt-5">
-    <div class="col-md-6">
-      <div>
-        <i class="bi bi-person-fill d-flex justify-content-center icons"></i>
-        <h3 class="title mt-3 text-center">
-          <span class="housekeeer">Asignación de Empleados</span> de forma rápida y fácil.
-        </h3>
-        <hr>
-        <h6>
-          Con <strong>Housekeeper</strong>, la persona encargada del departamento de limpieza podrá asignar o desasignar
-          empleados de manera eficiente, asegurando que cada tarea se complete a tiempo. ¡Gestiona el personal de manera
-          sencilla y mantén un control exacto sobre las habitaciones del hotel!
-        </h6>
-      </div>
+</section>
+<div class="container-fluid">
+  <hr class="my-5 custom-line">
+</div>
+<section class="container-fluid py-5 px-3 px-lg-5 " id="experiencia">
+  <div class="row align-items-center">
+    <div class="col-md-4 mb-4 mb-md-0 ml-2">
+      <p class="titleHero2">Una plataforma con panel de administración y diferentes roles</p>
+      <p>
+        <strong>Plataforma</strong> equipada con un panel de administración intuitivo,
+        donde podrás crear empleados, asignar tareas, definir estados y gestionar habitaciones por planta.
+        Todo esto con un sistema de roles que se adapta a cada perfil, garantizando control y seguridad.
+      </p>
     </div>
-    <div class="col-md-6 mt-5 mt-md-0">
-      <div>
-        <i class="bi bi-list-check d-flex justify-content-center icons"></i>
-        <h3 class="title mt-3 text-center">
-          <span class="housekeeer">Asignación de Tareas</span> para cada habitación.
-        </h3>
-        <hr>
-        <h6>
-          Cada empleado podrá recibir tareas asignadas para cada habitación, cambiando su estado con facilidad. Con
-          <strong>Housekeeper</strong>, las tareas se distribuyen de forma clara y precisa, mejorando la eficiencia del
-          equipo.
-        </h6>
-      </div>
+    <div class="col-md-8">
+      <img class="img-fluid img-slide-in-right" src="assets/816shots_so.png" alt="mockup">
     </div>
   </div>
-  <div class="row mt-5">
-    <div class="col-md-6">
-      <div>
-        <i class="bi bi-clock-history d-flex justify-content-center icons"></i>
-        <h3 class="title mt-3 text-center">
-          <span class="housekeeer">Histórico</span> de logs para cada habitación.
-        </h3>
-        <hr>
-        <h6>
-          Nunca pierdas el rastro de las tareas realizadas. Con el historial detallado de logs, podrás ver las tareas
-          completadas por cada empleado en cada habitación, lo que te permite tener un control total de las actividades
-          de limpieza.
-        </h6>
+</section>
+<div class="container-fluid">
+  <hr class="my-5 custom-line">
+</div>
+<section class="container-fluid py-5 px-3 px-lg-5 ">
+  <div class="row align-items-center">
+    <div class="col-md-7">
+      <img class="img-fluid img-slide-in-left" src="assets/87shots_so.png" alt="mockup">
+    </div>
+    <div class="col-md-4 mb-4 mb-md-0 ml-2">
+      <p class="titleHero2 mt-5 mt-md-0">Panel de Usuario</p>
+      <p>
+        <strong>Panel de usuario</strong> con funcionalidades personalizadas según el rol del empleado. El rol superior
+        desbloquea todas las opciones: asignar empleados, cambiar estados, gestionar tareas, marcarlas como completadas,
+        consultar el historial de acciones y visualizar en tiempo real la ocupación y el estado de cada habitación en el
+        calendario. Además, incluye potentes filtros por tarea, empleado, estado, número de
+        habitación y planta, para una gestión ágil y eficiente.
+      </p>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</section>
+<div class="container-fluid">
+  <hr class="my-5 custom-line">
+</div>
+<div classs="container-fluid">
+  <div class="container-fluid d-flex justify-content-center">
+    <p class="titleHero2">Experiencia perfecta en cualquier dispositivo</p>
+
+  </div>
+  <div class="slider-container">
+    <div class="slider">
+      <img [src]="images[currentIndex]" alt="Imagen slider"/>
+    </div>
+  </div>
+
+  <div class="dots">
+  <span
+    *ngFor="let img of images; let i = index"
+    [class.active]="i === currentIndex"
+    (click)="goToSlide(i)">
+  </span>
+  </div>
+
+</div>
+<div class="container-fluid">
+  <hr class="my-5 custom-line">
+</div>
+<section class="container-fluid py-5 px-3 px-lg-5 text-center" id="planes">
+  <div class="mb-5">
+    <p class="titleHero2 fs-2 fw-bold">Diferentes planes a elegir</p>
+    <p class="mx-auto" style="max-width: 600px;">
+      Elige el plan que mejor se adapte a tu negocio y escala sin preocupaciones. Desde una gestión básica y gratuita
+      hasta opciones ilimitadas con todas las funciones premium.
+    </p>
+  </div>
+
+  <div class="row justify-content-center g-4">
+    <div class="col-12 col-md-4">
+      <div class="card p-4 shadow-sm border-0 h-100">
+        <h3 class="mb-2">Plan Gratuito</h3>
+        <p class="text-primary fs-3 fw-bold mb-3">Gratis</p>
+        <p>Ideal para empezar. Gestiona hasta <strong>10 habitaciones</strong> sin costo alguno.</p>
+        <ul class="text-start">
+          <li>Funcionalidades básicas</li>
+          <li>Soporte estándar</li>
+          <li>Sin compromiso</li>
+        </ul>
       </div>
     </div>
-    <div class="col-md-6  mt-5 mt-md-0">
-      <div>
-        <i class="bi bi-gear-fill d-flex justify-content-center icons"></i>
-        <h3 class="title mt-3 text-center">
-          <span class="housekeeer">Automatización</span> de tareas repetitivas.
-        </h3>
-        <hr>
-        <h6>
-          <strong>Housekeeper</strong> no solo te ayuda a gestionar las tareas, sino que también automatiza las acciones
-          repetitivas, asegurando que se asignen de manera eficiente y sin errores. Deja que el sistema haga el trabajo
-          pesado mientras tú te concentras en lo importante.
-        </h6>
+
+    <div class="col-12 col-md-4">
+      <div class="card p-4 shadow-sm border-0 h-100">
+        <h3 class="mb-2">Plan Profesional</h3>
+        <p class="text-primary fs-3 fw-bold mb-3">39,99 €/mes</p>
+        <p>Perfecto para crecer. Hasta <strong>30 habitaciones</strong> con funciones avanzadas.</p>
+        <ul class="text-start">
+          <li>Reportes detallados</li>
+          <li>Soporte prioritario</li>
+          <li>Integraciones adicionales</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card p-4 shadow-sm border-0 h-100">
+        <h3 class="mb-2">Plan Ilimitado</h3>
+        <p class="text-primary fs-3 fw-bold mb-3">69,99 €/mes</p>
+        <p>Todo sin límites. Gestiona <strong>habitaciones ilimitadas</strong> y accede a todas las funcionalidades
+          premium.</p>
+        <ul class="text-start">
+          <li>Soporte 24/7 dedicado</li>
+          <li>Funciones exclusivas</li>
+          <li>Actualizaciones gratuitas</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
-<section class="estadisticas container-fluid section" id="impacto">
-  <h2 class="titleHero mb-2 text-center"><span class="housekeeer">Impacto</span> de Housekeeper en tu hotel</h2>
-  <div class="mt-2">
-    <p class="mt-4">📉 Reducción de tiempo en asignación de tareas</p>
-    <div class="bar">
-      <div class="fill" style="width: 80%;">80%</div>
+<div class="container-fluid">
+  <hr class="my-5 custom-line">
+</div>
+<section class="container-fluid py-5 section" id="support">
+  <div class="text-center mb-5">
+    <h2 class="display-5 fw-bold titleHero2">
+      <span class="text-primary titleHero2">Soporte</span> y Atención al Cliente
+    </h2>
+    <p class="text-muted mt-2">Estamos aquí para ti, en todo momento.</p>
+  </div>
+
+  <div class="row justify-content-center gx-5">
+    <div class="col-md-5 mb-4">
+      <div class="bg-white p-4 rounded shadow-sm h-100">
+        <h2 class="h4">Estamos aquí para ayudarte</h2>
+        <hr/>
+        <p>
+          En <strong>Housekeeper</strong>, creemos que un buen soporte es clave para el éxito. Por eso, nuestro equipo
+          de
+          atención al cliente está disponible para resolver cualquier duda o problema que puedas tener.
+        </p>
+        <p>
+          Ya sea que necesites asistencia técnica o simplemente quieras saber cómo optimizar tu uso de
+          <strong>Housekeeper</strong>, estamos solo a un mensaje de distancia.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-5 mb-4">
+      <div class="bg-white p-4 rounded shadow-sm h-100">
+        <h2 class="h4">Soporte dedicado 24/7</h2>
+        <hr/>
+        <p>
+          Nuestro equipo de soporte está disponible en todo momento para asegurarse de que nunca te falte ayuda. Ya sea
+          por chat en vivo, correo electrónico o teléfono, nuestra prioridad es ofrecerte un servicio excelente.
+        </p>
+        <p>
+          Confía en nosotros para brindarte una atención rápida y personalizada, porque entendemos que el tiempo es
+          esencial.
+        </p>
+      </div>
     </div>
   </div>
-  <div class="mt-2">
-    <p class="mt-4">✅ Aumento de eficiencia en limpieza</p>
-    <div class="bar">
-      <div class="fill" style="width: 90%;">90%</div>
-    </div>
-  </div>
-  <div class="mt-2">
-    <p class="mt-4">💬 Mejora en la comunicación del equipo</p>
-    <div class="bar">
-      <div class="fill" style="width: 85%;">85%</div>
+
+  <div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="ratio ratio-16x9 rounded overflow-hidden shadow">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          class="w-100 h-100"
+          style="object-fit: cover;"
+        >
+          <source src="assets/video1.mp4" type="video/mp4"/>
+          Tu navegador no soporta la reproducción de video.
+        </video>
+      </div>
     </div>
   </div>
 </section>
-<section class="container-fluid p-5 section sectionResponsive" id="support">
-  <h2 class="titleHero mb-2 text-center"><span class="housekeeer">Soporte</span> y Atención al Cliente</h2>
-  <div class="row mt-4">
-    <div class="col-md-6">
-      <h3 class="title mt-3">Estamos aquí para ayudarte</h3>
-      <hr>
-      <p>
-        En <strong>Housekeeper</strong>, creemos que un buen soporte es clave para el éxito. Por eso, nuestro equipo de
-        atención al cliente está disponible para resolver cualquier duda o problema que puedas tener. Nos aseguramos de
-        que cada miembro de tu equipo pueda aprovechar al máximo nuestra plataforma, ofreciendo respuestas rápidas y
-        soluciones efectivas.
-      </p>
-      <p>
-        Ya sea que necesites asistencia técnica o simplemente quieras saber cómo optimizar tu uso de
-        <strong>Housekeeper</strong>, estamos solo a un mensaje de distancia.
-      </p>
-    </div>
-    <div class="col-md-6">
-      <h3 class="title mt-3">Soporte dedicado 24/7</h3>
-      <hr>
-      <p>
-        Nuestro equipo de soporte está disponible en todo momento para asegurarse de que nunca te falte ayuda. Ya sea
-        por chat en vivo, correo electrónico o teléfono, nuestra prioridad es ofrecerte un servicio excelente.
-        ¡La satisfacción de nuestros clientes es nuestra meta!
-      </p>
-      <p>
-        Confía en nosotros para brindarte una atención rápida y personalizada, porque entendemos que el tiempo es
-        esencial.
-      </p>
-    </div>
-  </div>
-</section>
-<section class="testimonials-section p-5" id="testimonios">
+<div class="container-fluid">
+  <hr class="my-5 custom-line">
+</div>
+
+<section class=" py-5 mb-5" id="testimonios">
   <div class="container">
-    <h3 class="titleHero text-center mb-4">Testimonios</h3>
-    <div class="testimonials">
-      <div class="testimonial-card">
-        <img src="assets/testimonial1.jpg" alt="Cliente 1" class="testimonial-image">
-        <div class="testimonial-content">
-          <p class="testimonial-text">"Este es el mejor servicio que he probado. ¡Totalmente recomendable!"</p>
-          <hr>
-          <h4 class="testimonial-name">Juan Pérez</h4>
-          <p class="testimonial-role">CEO, Empresa XYZ</p>
+    <div class="d-flex overflow-auto gap-3 pb-2">
+
+      <!-- Testimonio 1 -->
+      <div class="border rounded p-3 bg-white shadow-sm min-width-260">
+        <div class="d-flex align-items-center mb-1" style="gap: 8px;">
+          <img src="assets/testimonial1.jpg" alt="Cliente 1" class="rounded-circle"
+               style="width:20px; height:20px; object-fit:cover;">
+          <div>
+            <strong class="small">Juan Pérez</strong><br>
+            <small class="text-muted">CEO, Empresa XYZ</small>
+          </div>
         </div>
-      </div>
-      <div class="testimonial-card">
-        <img src="assets/testimonial2.jpg" alt="Cliente 2" class="testimonial-image">
-        <div class="testimonial-content">
-          <p class="testimonial-text">"El impacto en mi negocio fue inmediato. Los resultados hablan por sí mismos."</p>
-          <hr>
-          <h4 class="testimonial-name">María García</h4>
-          <p class="testimonial-role">Directora de Marketing, ABC Corp.</p>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <img src="assets/testimonial3.jpg" alt="Cliente 3" class="testimonial-image">
-        <div class="testimonial-content">
-          <p class="testimonial-text">"Un equipo profesional y comprometido. Sin duda, una inversión que valió la
-            pena."</p>
-          <hr>
-          <h4 class="testimonial-name">Pedro López</h4>
-          <p class="testimonial-role">Fundador, Startup123</p>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <img src="assets/testimonial4.jpg" alt="Cliente 4" class="testimonial-image">
-        <div class="testimonial-content">
-          <p class="testimonial-text">"La atención al cliente y el soporte que recibimos ha sido excepcional. ¡Una
-            experiencia increíble!"</p>
-          <hr>
-          <h4 class="testimonial-name">Ana Martínez</h4>
-          <p class="testimonial-role">Gerente de Operaciones, Innovatech</p>
-        </div>
+        <div class="text-warning mb-1" style="font-size: 0.9rem;">★★★★★</div>
+        <p class="mb-0 small">"Este es el mejor servicio que he probado. ¡Totalmente recomendable!"</p>
       </div>
 
+      <!-- Testimonio 2 -->
+      <div class="border rounded p-3 bg-white shadow-sm min-width-260">
+        <div class="d-flex align-items-center mb-1" style="gap: 8px;">
+          <img src="assets/testimonial2.jpg" alt="Cliente 2" class="rounded-circle"
+               style="width:20px; height:20px; object-fit:cover;">
+          <div>
+            <strong class="small">María García</strong><br>
+            <small class="text-muted">Marketing, ABC Corp.</small>
+          </div>
+        </div>
+        <div class="text-warning mb-1" style="font-size: 0.9rem;">★★★★★</div>
+        <p class="mb-0 small">"El impacto en mi negocio fue inmediato. Los resultados hablan por sí mismos."</p>
+      </div>
+
+      <!-- Testimonio 3 -->
+      <div class="border rounded p-3 bg-white shadow-sm min-width-260">
+        <div class="d-flex align-items-center mb-1" style="gap: 8px;">
+          <img src="assets/testimonial3.jpg" alt="Cliente 3" class="rounded-circle"
+               style="width:20px; height:20px; object-fit:cover;">
+          <div>
+            <strong class="small">Pedro López</strong><br>
+            <small class="text-muted">Startup123</small>
+          </div>
+        </div>
+        <div class="text-warning mb-1" style="font-size: 0.9rem;">★★★★★</div>
+        <p class="mb-0 small">"Un equipo profesional y comprometido. Sin duda, una inversión que valió la pena."</p>
+      </div>
     </div>
   </div>
 </section>
-
 <footer class="container-fluid footer">
   <div class="row align-items-center">
     <div class="col-md-6 text-center text-md-left">
