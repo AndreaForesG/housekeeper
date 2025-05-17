@@ -115,7 +115,7 @@ export class CreateRoomsComponent implements OnInit {
       this.roomsService.importRooms(this.selectedFile as File, this.hotelId).subscribe(response => {
         if (!response.error) {
           this.notificationService.showSuccess('Habitaciones creadas correctamente');
-          this.dialogRef.close();
+          this.dialogRef.close(true);
         } else {
           this.notificationService.showError(response.error)
         }
