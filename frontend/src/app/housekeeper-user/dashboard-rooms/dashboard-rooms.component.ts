@@ -142,6 +142,27 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
           return;
         }
 
+        const workDate = new Date();
+        const dateFrom = new Date(formattedDateFrom);
+        const dateTo = new Date(formattedDateTo);
+
+        workDate.setHours(0, 0, 0, 0);
+
+        if (dateTo < dateFrom) {
+          this.notificationService.showError('La fecha de fin no puede ser antes de la fecha de inicio');
+          return;
+        }
+
+        if (dateFrom < workDate) {
+          this.notificationService.showError('La fecha de inicio no puede ser menor a la fecha de trabajo');
+          return;
+        }
+
+        if (dateTo < workDate) {
+          this.notificationService.showError('La fecha de fin no puede ser menor a la fecha de trabajo');
+          return;
+        }
+
         const payload = {
           ...result,
           date_from: formattedDateFrom,
