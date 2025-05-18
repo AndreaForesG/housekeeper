@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 class AuthController extends Controller
 {
@@ -91,5 +94,16 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Sesión cerrada correctamente']);
     }
+
+    public function downloadInvoice(Request $request)
+    {
+        $data = $request->only(['name', 'email', 'planId']);
+        $plan = Plan::find($data['planId']);
+
+        $pdf = Pdf::loadView('invoices.pdf', ['userData' => $data, 'plan' => $plan]);
+
+        return $pdf->stream('factura.pdf');
+    }
+
 
 }

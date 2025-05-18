@@ -14,6 +14,11 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) {}
 
+  downloadInvoice(userData: any): Observable<Blob> {
+     return this.http.post(`${this.apiUrl}invoice/download`, userData, { responseType: 'blob' });
+  }
+
+
   login(email: string, password: string) {
     return this.http.post(`${this.apiUrl}login`, { email, password }).subscribe(
       (res: any) => {

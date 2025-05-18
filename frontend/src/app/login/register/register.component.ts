@@ -8,6 +8,7 @@ import {PlansService} from "../../services/plans.service";
 import {loadStripe, Stripe, StripeCardElement, StripeElements} from "@stripe/stripe-js";
 import {environment} from "../../../environments/environment";
 import {StripeService} from "../../services/stripe.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
               private notificationService: NotificationService,
               private plansService: PlansService,
               private stripeService: StripeService,
-              private router: Router) {
+              private router: Router,
+              private http: HttpClient) {
 
   }
   ngOnInit(): void {
@@ -141,6 +143,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       this.authService.register(formData).subscribe({
         next: () => {
           this.notificationService.showSuccess('Usuario registrado correctamente. Puede iniciar Sesión.');
+          this.authService.downloadInvoice(formData).subscribe(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'factura.pdf';
+            a.click();
+            window.URL.revokeObjectURL(url);
+          });
+
+
           this.registerForm.reset();
           this.router.navigate(['/login']);
           this.isLoading = false;

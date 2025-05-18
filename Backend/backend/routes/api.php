@@ -178,18 +178,14 @@ Route::apiResource('tasks', TaskController::class);
 Route::get('/tasks/hotel/{hotel_id}', [TaskController::class, 'getTasksByHotel']);
 Route::apiResource('plans', PlanController::class);
 Route::post('/create-payment-intent', [PaymentController::class, 'createIntent']);
-// routes/api.php
 Route::post('/assign-rooms', [RoomUserController::class, 'assignRooms']);
 Route::post('room-status/change-status', [RoomStatusController::class, 'changeRoomStatus']);
 Route::post('assign-rooms/check-room-conflicts', [RoomUserController::class, 'checkRoomConflicts']);
 Route::post('/room-tasks/assign', [RoomTaskController::class, 'assignTaskToRooms']);
-
-// routes/api.php
 Route::post('/room-task-logs', [RoomTaskLogController::class, 'store']);
 Route::get('room-task-logs/logs/{hotelId}', [RoomTaskLogController::class, 'getLogs']);
 Route::get('/rooms/{hotel_id}/date/{date}', [RoomController::class, 'getRoomsByHotel']);
-
-
+Route::post('/invoice/download', [AuthController::class, 'downloadInvoice']);
 
 
 
