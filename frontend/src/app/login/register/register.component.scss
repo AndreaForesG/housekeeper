@@ -1,9 +1,9 @@
 .container-fluid {
-  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%) fixed;
+  background: linear-gradient(180deg, #009ebc 0%, #203a43 50%, #2c5364 100%) fixed;
 }
 
 .btn-register {
-  background-color: #223344;
+  background-color: #009ebc;
 }
 
 input.is-invalid,
@@ -17,6 +17,13 @@ textarea.is-invalid {
   color: #dc3545;
 }
 
+.text {
+  color: #009ebc
+}
+
+.title {
+  color: #0f2027;
+}
 
 @media (min-width: 768px) {
   .col-md-4 {
@@ -33,12 +40,21 @@ textarea.is-invalid {
   }
 }
 
+.form-control:focus {
+  border-color: #009ebc !important; /* por ejemplo, verde */
+  box-shadow: 0 0 0 0.25rem rgb(163, 221, 232) !important;
+}
+
+
 @media (max-width: 768px) {
   .plan-card {
     width: 100%;
   }
 }
 
+.margin-top-eye  {
+  margin-top: 2rem;
+}
 
 
 

@@ -100,7 +100,6 @@ export class CreateEmployeesComponent implements OnInit {
     this.roleService.getAllRoles().subscribe(
       data => {
         this.roles = data;
-        console.log(data)
       },
       error => {
         console.error('Error al obtener los roles', error)

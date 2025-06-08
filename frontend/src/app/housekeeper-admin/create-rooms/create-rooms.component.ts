@@ -44,10 +44,18 @@ export class CreateRoomsComponent implements OnInit {
     });
   }
 
+  loadRooms() {
+      this.roomsService.getRoomsByHotel(this.hotelLogued).subscribe(rooms => {
+        this.rooms = rooms;
+      });
+  }
+
+
   getLoggedInUser() {
     this.authService.getLoggedInUser().subscribe(data => {
       this.hotelLogued = data.hotel;
       this.plan_id = data.user.plan_id
+      this.loadRooms();
     })
   }
 
@@ -103,7 +111,7 @@ export class CreateRoomsComponent implements OnInit {
 
       let maxRooms = 0;
       if (this.plan_id === 1) maxRooms = 10;
-      else if (this.plan_id === 2) maxRooms = 30;
+      else if (this.plan_id === 2) maxRooms = 30;8
 
       if (totalRooms > maxRooms) {
         this.notificationService.showError(

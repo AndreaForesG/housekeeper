@@ -23,11 +23,21 @@
         <span *ngIf="isExpanded">Crear Tareas</span>
       </a>
 
-      <a mat-list-item (click)="showSituation()">
+      <a class="mb-4" mat-list-item (click)="showSituation()">
         <mat-icon class="me-2">visibility</mat-icon>
         <span *ngIf="isExpanded">Ver Situación</span>
       </a>
     </mat-nav-list>
+    <mat-list class="bottom-list" *ngIf="isExpanded">
+      <mat-list-item>
+        <mat-icon class="me-2">info</mat-icon>
+        <span>{{ plan }}</span>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon class="me-2">refresh</mat-icon>
+        <span>{{ renewPlan }}</span>
+      </mat-list-item>
+    </mat-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="sidenav-content">

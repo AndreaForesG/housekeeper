@@ -1,11 +1,20 @@
 .container-fluid {
-  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%) fixed;
+  background: linear-gradient(180deg, #009ebc  0%, #203a43 50%, #2c5364 100%) fixed;
 }
 
 .title {
-  color: #223344;
+  color: #0f2027;
+}
+
+.title1 {
+  color: #009ebc;
 }
 
 .btn-iniciarSesion {
-  background-color: #223344;
+  background-color: #009ebc;
+}
+
+.form-control:focus {
+  border-color: #009ebc !important; /* por ejemplo, verde */
+  box-shadow: 0 0 0 0.25rem rgb(163, 221, 232) !important;
 }

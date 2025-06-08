@@ -26,6 +26,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   card!: StripeCardElement;
   cardError: string | null = null;
   isLoading: boolean = false;
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
+
 
   constructor(private titleService: Title,
               private route: ActivatedRoute,

@@ -46,4 +46,21 @@ mat-toolbar {
 
 }
 
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 8px;
+}
+
+.nav-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.bottom-list {
+  margin-top: 30rem;
+  border-top: 1px solid #ddd;
+  padding-top: 8px;
+}
 

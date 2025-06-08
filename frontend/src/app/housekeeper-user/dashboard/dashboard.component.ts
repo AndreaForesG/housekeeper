@@ -31,7 +31,6 @@ export class DashboardComponent implements OnInit {
 
   getLoggedInUser() {
     this.authService.getLoggedInUser().subscribe(data => {
-      console.log('Response data:', data);
       this.hotelId = data.hotel;
       this.userName = data.user.name;
       this.userId = data.user.id;

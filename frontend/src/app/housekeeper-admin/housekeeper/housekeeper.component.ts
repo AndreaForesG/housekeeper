@@ -24,8 +24,10 @@ export class HousekeeperComponent implements OnInit {
   hotelLogued: any;
   hotelName: any;
   date: string = "";
+  plan: any;
   @ViewChild(HousekeeperContentComponent) housekeeperContent!: HousekeeperContentComponent;
   dataHotel: any;
+  renewPlan: any;
 
   constructor(private titleService: Title,
               private route: ActivatedRoute,
@@ -47,10 +49,20 @@ export class HousekeeperComponent implements OnInit {
 
 getLoggedInUser() {
   this.authService.getLoggedInUser().subscribe(data => {
-    console.log('Response data:', data);
     this.hotelLogued = data.hotel;
     this.hotelName = data.user.hotel.name;
-    console.log(this.hotelLogued);
+    this.plan = data.user.plan_id;
+    if(this.plan == 1) {
+      this.plan = "Plan Asequible"
+    } else if(this.plan == 2) {
+      this.plan = "Plan Básico"
+    } else {
+      this.plan = "Plan Pro"
+    }
+    const createdDate = new Date(data.user.created_at);
+    const renewDate = new Date(createdDate);
+    renewDate.setMonth(renewDate.getMonth() + 1);
+    this.renewPlan = renewDate.toLocaleDateString();
   })
 }
 

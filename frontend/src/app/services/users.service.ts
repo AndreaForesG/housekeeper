@@ -25,7 +25,6 @@ export class UsersService {
 
   getEmployeesByHotel(hotelId: number): Observable<any> {
     const token = localStorage.getItem('token');
-    console.log('Token:', token);
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
