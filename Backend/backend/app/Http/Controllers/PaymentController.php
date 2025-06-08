@@ -17,7 +17,8 @@ class PaymentController extends Controller
             'planId' => 'required|integer'
         ]);
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(config('services.stripe.secret'));
+
 
         $intent = PaymentIntent::create([
             'amount' => intval($request->amount),

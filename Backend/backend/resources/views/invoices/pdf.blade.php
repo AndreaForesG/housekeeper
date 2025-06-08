@@ -28,7 +28,7 @@
             font-weight: 700;
             font-size: 24px;
             margin-bottom: 20px;
-            color: #0d6efd;
+            color: #009ebc;
         }
 
         table {
@@ -84,12 +84,12 @@
     <tbody>
     <tr>
         <td>Plan: {{ $plan->name }}</td>
-        <td>{{ number_format($plan->price, 2) }} €</td>
+        <td>{{ number_format((float) $plan->price, 2) }} €</td>
     </tr>
     </tbody>
 </table>
 
-<p class="total">Total: {{ number_format($plan->price, 2) }} €</p>
+<p class="total">Total: {{ number_format((float) $plan->price, 2) }} €</p>
 
 <div class="footer">
     Gracias por confiar en Housekeeper.<br>

@@ -34,5 +34,14 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET'),
+    ],
+    'brevo' => [
+        'username' => env('MAIL_BREVO_USERNAME'),
+        'password' => env('MAIL_BREVO_PASSWORD'),
+    ],
+
+
 
 ];

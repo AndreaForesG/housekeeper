@@ -12,7 +12,7 @@ import {RoomsService} from "../../services/rooms.service";
 })
 export class OpenSituationComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['floor', 'number', 'assigned_to', 'status', 'taskStatus'];
+  displayedColumns: string[] = ['floor', 'number', 'assigned_to', 'taskStatus','status'];
   rooms : any[]= [];
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;

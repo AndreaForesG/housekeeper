@@ -64,7 +64,9 @@ export class HousekeeperContentComponent implements OnInit {
     this.userService.getEmployeesByHotel(this.hotelLogued).subscribe(employees => {
       this.employees = employees.filter((employee: { role_id: any }) => employee.role_id != null);
       this.dataSourceEmployees.data = this.employees;
-      this.dataSourceEmployees.paginator = this.paginatorEmployees;
+      setTimeout(() => {
+        this.dataSourceEmployees.paginator = this.paginatorEmployees;
+      });
       }
     )
   }
@@ -90,7 +92,9 @@ export class HousekeeperContentComponent implements OnInit {
       this.roomsService.getRoomsByHotel(this.hotelLogued).subscribe(rooms => {
         this.rooms = rooms;
         this.roomDataSource.data = rooms;
-        this.roomDataSource.paginator = this.paginatorRooms;
+        setTimeout(() => {
+          this.roomDataSource.paginator = this.paginatorRooms;
+        });
       });
     }
   }
@@ -115,7 +119,9 @@ export class HousekeeperContentComponent implements OnInit {
       this.statusService.getStatusByHotel(this.hotelLogued).subscribe(status => {
         this.status = status;
         this.statusDataSource.data = status;
-        this.statusDataSource.paginator = this.paginatorStatus;
+        setTimeout(() => {
+          this.statusDataSource.paginator = this.paginatorStatus;
+        })
       });
     }
   }
@@ -137,7 +143,9 @@ export class HousekeeperContentComponent implements OnInit {
       this.tasksService.getTasksByHotel(this.hotelLogued).subscribe(tasks => {
         this.tasks = tasks;
         this.tasksDataSource.data = tasks;
-        this.tasksDataSource.paginator = this.paginatorTasks;
+        setTimeout(() => {
+          this.tasksDataSource.paginator = this.paginatorTasks;
+        })
       });
     }
   }

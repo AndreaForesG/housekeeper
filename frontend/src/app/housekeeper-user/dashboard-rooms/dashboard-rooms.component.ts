@@ -360,15 +360,15 @@ export class DashboardRoomsComponent implements OnInit, OnChanges {
                 this.roomTaskService.assignTasks(payload).subscribe({
                   next: (assignedRooms) => {
                     this.loadRooms();
-                    this.notificationService.showSuccess('Habitaciones asignadas con éxito ✅');
+                    this.notificationService.showSuccess('Tareas asignadas con éxito ✅');
                   },
                   error: (error) => {
-                    const msg = error.error?.error || 'Error al asignar habitaciones';
+                    const msg = error.error?.error || 'Error al asignar tareas';
                     this.notificationService.showError(msg);
                   }
                 });
               } else {
-                this.notificationService.showError('La asignación de habitaciones ha sido cancelada');
+                this.notificationService.showError('La asignación de tareas ha sido cancelada');
               }
             });
           }

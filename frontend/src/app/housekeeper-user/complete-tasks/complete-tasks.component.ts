@@ -38,7 +38,12 @@ export class CompleteTasksComponent implements OnInit {
 
   submitTask(task: any) {
     const now = new Date();
-    const completedAt = now.toISOString().slice(0, 19).replace('T', ' ');
+
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    const completedAt = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}` +
+      ` ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
 
     const payload = {
       room_task_id: task.room_task_id,
