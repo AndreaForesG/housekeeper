@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Backend Laravel
+  backend:
+    build:
+      context: ./Backend/backend
+    container_name: laravel-backend
+    ports:
+      - "8000:80"
+    volumes:
+      - ./Backend/backend:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - housekeeper
+
+  # MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: housekeeper
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - housekeeper
+
+  # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - housekeeper
+
+  #frontend
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: angular-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - housekeeper
+
+
+networks:
+  housekeeper:
+
+volumes:
+  db_data:
