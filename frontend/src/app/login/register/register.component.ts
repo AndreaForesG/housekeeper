@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {NotificationService} from "../../services/notification.service";
 import {PlansService} from "../../services/plans.service";
@@ -59,16 +59,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }, { validators: this.passwordsMatchValidator });
   }
 
-  passwordsMatchValidator(form: AbstractControl) {
-    const password = form.get('password')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-    if (password !== confirmPassword) {
-      form.get('confirmPassword')?.setErrors({ passwordMismatch: true });
-    } else {
-      form.get('confirmPassword')?.setErrors(null);
-    }
-    return null;
+  passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    return password && confirmPassword && password !== confirmPassword
+      ? { passwordMismatch: true }
+      : null;
   }
+
 
   async ngAfterViewInit() {
     const stripeInstance = await loadStripe(environment.stripePublishableKey);

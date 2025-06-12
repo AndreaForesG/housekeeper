@@ -111,9 +111,9 @@ export class CreateRoomsComponent implements OnInit {
 
       let maxRooms = 0;
       if (this.plan_id === 1) maxRooms = 10;
-      else if (this.plan_id === 2) maxRooms = 30;8
+      else if (this.plan_id === 2) maxRooms = 30;
 
-      if (totalRooms > maxRooms) {
+      if (this.plan_id !== 3 && totalRooms > maxRooms) {
         this.notificationService.showError(
           `La importación excede el límite de habitaciones de su plan. Tiene ${this.rooms.length} habitaciones y el archivo contiene ${numNewRooms}. Límite: ${maxRooms}.`
         );

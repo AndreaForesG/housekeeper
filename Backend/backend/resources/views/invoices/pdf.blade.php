@@ -67,7 +67,7 @@
 </head>
 <body>
 
-<img src="{{ public_path('images/logo.png') }}" class="watermark" alt="Logo Marca de Agua">
+<!-- <img src="{{ public_path('images/logo.png') }}" class="watermark" alt="Logo Marca de Agua"> -->
 
 <h1>Subscripción Housekeeper</h1>
 

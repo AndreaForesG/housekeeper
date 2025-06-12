@@ -43,6 +43,10 @@
                     class="form-control pe-5"
                     id="confirmPassword"
                     formControlName="confirmPassword"
+                    [class.is-invalid]="
+    registerForm.get('confirmPassword')?.touched &&
+    (registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch'))
+  "
                     required />
 
                   <button type="button"
@@ -52,12 +56,9 @@
       {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
     </span>
                   </button>
-
-
-                <div
-                    *ngIf="registerForm.get('confirmPassword')?.touched &&
-           registerForm.get('confirmPassword')?.errors?.['passwordMismatch']"
-                    class="invalid-feedback">
+                  <div *ngIf="registerForm.hasError('passwordMismatch') &&
+            registerForm.get('confirmPassword')?.touched"
+                       class="invalid-feedback">
                     Las contraseñas no coinciden
                   </div>
                   <div
