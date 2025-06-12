@@ -30,50 +30,50 @@
                   <button type="button"
                           class="btn btn-sm btn-link position-absolute top-50 end-0 translate-middle-y me-2"
                           (click)="showPassword = !showPassword">
-              <span class="material-icons text-dark margin-top-eye">
-                {{ showPassword ? 'visibility_off' : 'visibility' }}
-              </span>
+                     <span class="material-icons text-dark margin-top-eye">
+                     {{ showPassword ? 'visibility_off' : 'visibility' }}
+                    </span>
                   </button>
                 </div>
 
                 <div class="mb-3 position-relative">
                   <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+
                   <input
                     [type]="showConfirmPassword ? 'text' : 'password'"
                     class="form-control pe-5"
                     id="confirmPassword"
                     formControlName="confirmPassword"
                     [class.is-invalid]="
-    registerForm.get('confirmPassword')?.touched &&
-    (registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch'))
-  "
-                    required />
+      registerForm.get('confirmPassword')?.touched &&
+      (registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch'))
+    "
+                    required
+                    style="height: 40px;" />
 
-                  <button type="button"
-                          class="btn btn-sm btn-link position-absolute top-50 end-0 translate-middle-y me-2"
-                          (click)="showConfirmPassword = !showConfirmPassword">
-    <span class="material-icons text-dark margin-top-eye">
+                  <button
+                    type="button"
+                    class="btn btn-sm  position-absolute top-0 end-0 me-2 margin-top-eye"
+                    style="height: 40px; display: flex; align-items: center;"
+                    (click)="showConfirmPassword = !showConfirmPassword">
+    <span class="material-icons text-dark">
       {{ showConfirmPassword ? 'visibility_off' : 'visibility' }}
     </span>
                   </button>
+
                   <div *ngIf="registerForm.hasError('passwordMismatch') &&
-            registerForm.get('confirmPassword')?.touched"
+              registerForm.get('confirmPassword')?.touched"
                        class="invalid-feedback">
                     Las contraseñas no coinciden
                   </div>
-                  <div
-                    *ngIf="registerForm.get('password')?.touched &&
-           registerForm.get('password')?.errors?.['minlength']"
-                    class="invalid-feedback">
-                    Las contraseñas deben tener 8 carácteres
-                  </div>
-                  <div
-                    *ngIf="registerForm.get('confirmPassword')?.touched &&
-         registerForm.get('confirmPassword')?.errors?.['minlength']"
-                    class="invalid-feedback">
+
+                  <div *ngIf="registerForm.get('confirmPassword')?.touched &&
+              registerForm.get('confirmPassword')?.errors?.['minlength']"
+                       class="invalid-feedback">
                     La contraseña debe tener al menos 8 caracteres
                   </div>
                 </div>
+
 
                 <div class="mb-3">
                   <img src="assets/register.jpeg" class="img-fluid">
