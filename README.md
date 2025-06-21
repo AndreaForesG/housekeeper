@@ -41,3 +41,14 @@ Housekeeper es una aplicación web diseñada para facilitar y optimizar la gesti
 1. Clonar el repositorio  
    ```bash
    git clone https://github.com/tu-usuario/housekeeper.git
+
+## Uso y distribución
+
+Este proyecto no permite su uso, copia, modificación, distribución ni explotación sin autorización expresa de la autora.  
+Queda prohibida cualquier reproducción total o parcial con fines comerciales o no comerciales.
+
+## Licencia
+
+Reservados todos los derechos. No se permite la redistribución ni uso sin permiso explícito.
+
+
